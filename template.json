@@ -1,0 +1,39 @@
+{
+    "questions": [
+        {
+            "content": "What is 2+2?",
+            "answer": "a",
+            "original_points": 10,
+            "type": "mcqs",
+            "question_group": 1,
+            "option_a": "4",
+            "option_b": "3",
+            "option_c": "5",
+            "option_d": "8",
+            "option_e": "1",
+            "option_f": "10",
+            "image_link": "http://sample.image.link",
+            "content_link": "http://sample.content.link"
+        },
+        {
+            "content": "What do call this symbol + ?",
+            "answer": "Addition",
+            "original_points": 20,
+            "type": "short answer",
+            "question_group": 2,
+            "image_link": "http://another.image.link",
+            "content_link": "http://sample.content.link"
+        },
+        {
+            "content": "Which symbol is multiplication?",
+            "answer": "b",
+            "original_points": 20,
+            "type": "Another type",
+            "question_group": 2,
+            "option_a": "images_sec/30.png",
+            "option_b": "images_sec/30.png",
+            "image_link": "http://another.image.link",
+            "content_link": "http://sample.content.link"
+        }
+    ]
+}

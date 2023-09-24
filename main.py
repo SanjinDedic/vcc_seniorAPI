@@ -381,9 +381,27 @@ async def upload_database(file: UploadFile = File(...)):
             # Insert data from the JSON into the questions table
             for question in data['questions']:
                 cursor.execute(
-                    "INSERT INTO questions (content, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, image_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (question['content'], question['answer'], question['original_points'], question['current_points'], question['type'],
-                    question['question_group'], question['option_a'], question['option_b'], question['option_c'], question['option_d'], question['image_link'])
+                    "INSERT INTO questions (content, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        question['content'],
+                        question['answer'],
+                        question['original_points'],
+                        question['original_points'],
+                        question['type'],
+                        question['question_group'],
+                        question.get('option_a', None),
+                        question.get('option_b', None),
+                        question.get('option_c', None),
+                        question.get('option_d', None),
+                        question.get('option_e', None),
+                        question.get('option_f', None),
+                        question.get('option_g', None),
+                        question.get('option_h', None),
+                        question.get('option_i', None),
+                        question.get('option_j', None),
+                        question.get('image_link', None),
+                        question.get('content_link', None)
+                    )
                 )
 
             conn.commit()
