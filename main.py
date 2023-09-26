@@ -35,6 +35,10 @@ class User(BaseModel):
     team_name: str
     password: str
 
+class ManualQuestions(BaseModel):
+    team_id: int
+    scores: dict
+
 
 # Set up logging
 logging.basicConfig(filename='app.log', level=logging.INFO,
@@ -157,6 +161,26 @@ async def get_comp_table():
     ]
     
     return {"teams": teams}
+
+@app.get("/manual_questions/")
+async def manual_questions():
+    rows = execute_db_query(f"""
+    SELECT teams.id, teams.name, manual_scores.q1_score, manual_scores.q2_score, manual_scores.q3_score
+    FROM teams
+    LEFT JOIN manual_scores ON teams.id = manual_scores.team_id
+    """)
+    
+    teams = [
+        {
+        "team_id": row[0],
+            "team_name": row[1],
+            "q1_score": row[2],
+            "q2_score": row[3],
+            "q3_score": row[4]
+        } for row in rows
+    ]
+    
+    return teams
 
 @app.get("/questions")
 async def get_questions():
@@ -374,10 +398,20 @@ async def upload_database(file: UploadFile = File(...)):
             );
             """
 
+            manual_question_table = """
+            CREATE TABLE "manual_scores" (
+                "team_id"	INTEGER UNIQUE,
+                "q1_score"	INTEGER,
+                "q2_score"	INTEGER,
+                "q3_score"	INTEGER,
+                FOREIGN KEY("team_id") REFERENCES "teams"("id")
+            );
+            """
+
             cursor.execute(teams_table)
             cursor.execute(questions_table)
             cursor.execute(attempted_questions_table)
-
+            cursor.execute(manual_question_table)
             # Insert data from the JSON into the questions table
             for question in data['questions']:
                 cursor.execute(
@@ -482,7 +516,29 @@ async def team_login(user: User):
             
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error: {e}")
-    
+
+
+@app.post("/update_manual_score/")
+async def update_manual_score(data: ManualQuestions):
+    try:
+        old_scores = execute_db_query("SELECT q1_score, q2_score, q3_score FROM manual_scores WHERE team_id = ?",(data.team_id,))
+        
+        if not old_scores:
+            old_scores = (0,0,0)
+        else:
+            old_scores = old_scores[0]
+        score_diff = (int(data.scores['q1_score'])+int(data.scores['q2_score'])+int(data.scores['q3_score'])) - sum(old_scores)
+        execute_db_query("""
+                INSERT OR REPLACE INTO manual_scores (team_id, q1_score, q2_score, q3_score)
+                VALUES (?, ?, ?, ?)
+            """,(data.team_id, data.scores['q1_score'], data.scores['q2_score'], data.scores['q3_score'],))
+        
+        execute_db_query(" UPDATE teams SET score = score + ? WHERE id = ?",(score_diff, data.team_id,))
+
+        return {"status": "success"}
+    except Exception as e:
+        return {"status": "failed"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
