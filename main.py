@@ -473,6 +473,14 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
                 WHERE name = ?
             """, (team_name, ))
 
+            #find the team id for a given team_name
+            team_id = execute_db_query("SELECT id FROM teams WHERE name = ?",(team_name,))
+            execute_db_query("""
+                UPDATE manual_scores
+                SET q1_score = 0, q2_score = 0, q3_score = 0
+                WHERE team_id = ?
+            """, (team_id, ))
+
             execute_db_query("""
                 DELETE FROM attempted_questions
                 WHERE team_name = ?
