@@ -215,7 +215,7 @@ async def submit_answer_mcqs(a: Answer):
 async def submit_answer_sa(a: Answer):
     try:
         correct_ans, question_pts = get_question(id=a.id)
-        team_ip, score, attempted_qs, solved_qs = get_team(team_name=a.team_name)
+        score, attempted_qs, solved_qs = get_team(team_name=a.team_name)
         previous_attempts = get_attempts(team_name=a.team_name,id=a.id)
         
         attempts_made = 1 if not previous_attempts else previous_attempts[0]+1
