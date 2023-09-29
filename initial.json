@@ -1,0 +1,124 @@
+{
+    "questions": [
+        {
+            "content": "Which of the following tools is often used for network discovery and security auditing?",
+            "answer": "d",
+            "original_points": 10,
+            "type": "multiple_choice",
+            "question_group": null,
+            "option_a": "Nmap",
+            "option_b": "Wireshark",
+            "option_c": "Metasploit",
+            "option_d": "All of the above",
+            "option_e": "",
+            "option_f": "",
+            "image_link": "images_sec/1.png",
+            "content_link": ""
+        },
+        {
+            "content": "What is the common name for vulnerabilities that are unknown to the vendor?",
+            "answer": "a",
+            "original_points": 10,
+            "type": "short_answer",
+            "question_group": null,
+            "image_link": "images_sec/2.png",
+            "content_link": ""
+        },
+        {
+            "content": "Which of the following programming languages is most commonly used for writing exploit code?",
+            "answer": "a",
+            "original_points": 10,
+            "type": "multiple_choice",
+            "question_group": null,
+            "option_a": "Python",
+            "option_b": "Ruby",
+            "option_c": "C",
+            "option_d": "Java",
+            "option_e": "",
+            "option_f": "",
+            "image_link": "images_sec/3.png",
+            "content_link": ""
+        },
+        {
+            "content": "What is the technique called where an attacker intercepts communication between two parties without their knowledge?",
+            "answer": "c",
+            "original_points": 10,
+            "type": "short_answer",
+            "question_group": null,
+            "image_link": "images_sec/4.png",
+            "content_link": ""
+        },
+        {
+            "content": "Which type of malware is designed to replicate itself and spread to other computers?",
+            "answer": "c",
+            "original_points": 10,
+            "type": "multiple_choice",
+            "question_group": null,
+            "option_a": "Virus",
+            "option_b": "Worm",
+            "option_c": "Trojan",
+            "option_d": "Ransomware",
+            "option_e": "",
+            "option_f": "",
+            "image_link": "images_sec/5.png",
+            "content_link": ""
+        },
+        {
+            "content": "What is the process of trying to decode encrypted or hashed data called?",
+            "answer": "a",
+            "original_points": 10,
+            "type": "short_answer",
+            "question_group": null,
+            "image_link": "images_sec/6.png",
+            "content_link": ""
+        },
+        {
+            "content": "Which of the following is a popular tool used for password cracking?",
+            "answer": "d",
+            "original_points": 10,
+            "type": "multiple_choice",
+            "question_group": null,
+            "option_a": "John the Ripper",
+            "option_b": "Nessus",
+            "option_c": "Burp Suite",
+            "option_d": "Aircrack-ng",
+            "option_e": "",
+            "option_f": "",
+            "image_link": "images_sec/7.png",
+            "content_link": ""
+        },
+        {
+            "content": "What method is used to disguise a harmful link or website to make it appear legitimate?",
+            "answer": "a",
+            "original_points": 10,
+            "type": "short_answer",
+            "question_group": null,
+            "image_link": "images_sec/8.png",
+            "content_link": ""
+        },
+        {
+            "content": "What is the process of attempting to gain unauthorized access to a computer system by posing as an authorized user?",
+            "answer": "d",
+            "original_points": 10,
+            "type": "multiple_choice",
+            "question_group": null,
+            "option_a": "Spoofing",
+            "option_b": "Phishing",
+            "option_c": "Brute-Force Attack",
+            "option_d": "Social Engineering",
+            "option_e": "",
+            "option_f": "",
+            "image_link": "images_sec/9.png",
+            "content_link": ""
+        },
+        {
+            "content": "What is the technique used by hackers to exploit a buffer overflow vulnerability in a targeted system?",
+            "answer": "d",
+            "original_points": 10,
+            "type": "short_answer",
+            "question_group": null,
+            "image_link": "images_sec/10.png",
+            "content_link": ""
+        }
+    ]
+}

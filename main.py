@@ -86,13 +86,6 @@ def get_question(id: str):
         raise HTTPException(status_code=404, detail="Question not found")
     return result[0]
 
-
-def get_team(team_name: str):
-    result = execute_db_query(f"SELECT score,attempted_questions,solved_questions FROM teams WHERE name = ?", (team_name,))
-    if not result:
-        raise HTTPException(status_code=404, detail="Team not found")
-    return result[0]
-
 def get_attempts(team_name: str,id: str):
     result = execute_db_query(f"SELECT attempt_count FROM attempted_questions WHERE team_name = ? AND question_id = ?", (team_name, id,), fetchone=True)
     return result
@@ -103,11 +96,8 @@ def decrement_question_points(question_id: int):
 def reset_question_points():
     execute_db_query("UPDATE questions SET current_points = original_points")
 
-
-def update_team(name: str, score: int, solved_qs: int, attempted_qs: int):
-    execute_db_query(
-        f"UPDATE teams SET score = ?, attempted_questions = ?, solved_questions = ? WHERE name = ?", 
-        params=(score, attempted_qs, solved_qs, name))
+def update_team(name: str, points: int):
+    execute_db_query("UPDATE teams SET score = score + ? WHERE name = ?", (points, name))
 
 def update_attempted_questions(name: str, question_id: str, solved: bool, attempts=1):
     existing_record = execute_db_query(f"SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (name, question_id,), fetchone=True)
@@ -122,17 +112,30 @@ def update_attempted_questions(name: str, question_id: str, solved: bool, attemp
 
 @app.get("/get_comp_table")
 async def get_comp_table():
-    raw_teams = execute_db_query(f"SELECT name, solved_questions, attempted_questions, score, color FROM teams")
-    
+    status = execute_db_query(f"""
+        SELECT 
+            t.name, 
+            SUM(a.solved) AS solved_questions,
+            COUNT(a.question_id) AS attempted_questions,
+            t.score,
+            t.color
+        FROM 
+            teams t
+        LEFT JOIN 
+            attempted_questions a ON t.name = a.team_name
+        GROUP BY 
+            t.name
+        ORDER BY
+            t.score DESC;""")
+
     teams = [
         {
-            "name": team[0],
-            "solved_questions": team[1],
-            "attempted_questions": team[2],
-            "score": team[3],
-            "color": team[4]
-        }
-        for team in raw_teams
+            "name": row[0],
+            "solved_questions": row[1],
+            "attempted_questions": row[2],
+            "score": row[3],
+            "color": row[4]
+        } for row in status
     ]
     
     return {"teams": teams}
@@ -190,21 +193,15 @@ async def get_questions():
 async def submit_answer_mcqs(a: Answer):
     try:
         correct_ans, question_pts = get_question(id=a.id)
-        score, attempted_qs, solved_qs = get_team(team_name=a.team_name)
         is_correct = a.answer == correct_ans
-        attempted_qs += 1
         if is_correct:
-            score += question_pts
-            solved_qs += 1
-            update_team(name=a.team_name, score=score, solved_qs=solved_qs, attempted_qs=attempted_qs)
             update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
             decrement_question_points(question_id=a.id)
-            return {"message": "Correct"}
-        
-        update_team(name=a.team_name, score=score, solved_qs=solved_qs, attempted_qs=attempted_qs)
+            return {"message": "Correct"}  
+        update_team(name=a.team_name, points=question_pts)
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
-
-        return {"message": "Incorrect", "correct_answer": correct_ans}
+        return {"message": "Incorrect"}
+    
     except HTTPException as e:
         raise e
     except Exception as e:
@@ -215,26 +212,18 @@ async def submit_answer_mcqs(a: Answer):
 async def submit_answer_sa(a: Answer):
     try:
         correct_ans, question_pts = get_question(id=a.id)
-        score, attempted_qs, solved_qs = get_team(team_name=a.team_name)
         previous_attempts = get_attempts(team_name=a.team_name,id=a.id)
-        
         attempts_made = 1 if not previous_attempts else previous_attempts[0]+1
         is_correct = a.answer == correct_ans or similar(correct_ans, a.answer)
         if is_correct:
-            attempted_qs += 1
-            score += question_pts
-            solved_qs += 1
-            update_team(name=a.team_name, score=score, solved_qs=solved_qs, attempted_qs=attempted_qs)
+            update_team(name=a.team_name, points=question_pts)
             update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
             decrement_question_points(question_id=a.id)
             return {"message": "Correct"}
-        
         if attempts_made >= 3: 
-            attempted_qs += 1
-            update_team(name=a.team_name, score=score, solved_qs=solved_qs, attempted_qs=attempted_qs)
+            update_team(name=a.team_name, points=question_pts)
             update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
-            return {"message": "Incorrect", "correct_answer": correct_ans}
-        
+            return {"message": "Incorrect"}
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
         
         return {"message": "Try again"}
@@ -243,7 +232,7 @@ async def submit_answer_sa(a: Answer):
     except Exception as e:
         logging.error("Error occurred when submitting answer", exc_info=True)
         raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
-
+        
 
 @app.post("/team_signup/")
 async def quick_signup(team: TeamSignUp):
@@ -288,7 +277,7 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
         if team_name:
             execute_db_query("""
                 UPDATE teams 
-                SET score = 0, attempted_questions = 0, solved_questions = 0 
+                SET score = 0 
                 WHERE name = ?
             """, (team_name, ))
 
@@ -300,7 +289,7 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
         else:
             execute_db_query("""
                 UPDATE teams 
-                SET score = 0, attempted_questions = 0, solved_questions = 0
+                SET score = 0 
             """)
 
             execute_db_query("""
@@ -376,138 +365,142 @@ async def upload_database(file: UploadFile = File(...)):
                 
             file_location = os.path.join("json", file.filename)
             if os.path.exists(file_location):
-                
-                CURRENT_DB=f"{file.filename}.db"
+                CURRENT_DB = f"{file.filename[0:-5]}.db"
                 return {"status": "error", "message": f"File '{file.filename}' already uploaded!"}
             
             content = file.file.read()
             
-
             with open(file_location, "wb+") as file_object:
                 file_object.write(content)
-
+                
             data = json.loads(content)
-
-            # Create and initialize database
-            conn = sqlite3.connect(f"{file.filename}.db")
-            cursor = conn.cursor()
-
-            # Define tables
-            teams_table = """
-            CREATE TABLE "teams" (
-                "name"	TEXT NOT NULL UNIQUE,
-                "password"	TEXT NOT NULL,
-                "score"	INTEGER DEFAULT 0,
-                "color"	TEXT,
-                "attempted_questions"	INTEGER DEFAULT 0,
-                "solved_questions"	INTEGER DEFAULT 0,
-                PRIMARY KEY("name")
-            );
-            """
-
-            questions_table = """
-            CREATE TABLE "questions" (
-                "id"	INTEGER,
-                "content"	TEXT NOT NULL,
-                "answer"	TEXT NOT NULL,
-                "original_points"	INTEGER NOT NULL,
-                "current_points"	INTEGER,
-                "type"	TEXT,
-                "question_group"	INTEGER,
-                "option_a"	TEXT,
-                "option_b"	TEXT,
-                "option_c"	TEXT,
-                "option_d"	TEXT,
-                "option_e"	TEXT,
-                "option_f"	TEXT,
-                "option_g"	TEXT,
-                "option_h"	TEXT,
-                "option_i"	TEXT,
-                "option_j"	TEXT,
-                "image_link"	TEXT,
-                "content_link"	TEXT,
-                PRIMARY KEY("id")
-            );
-            """
-
-            attempted_questions_table = """
-            CREATE TABLE "attempted_questions" (
-                "team_name"	text,
-                "question_id"	INTEGER,
-                "timestamp"	datetime,
-                "solved"	boolean NOT NULL,
-                "attempt_count"	INTEGER DEFAULT 0,
-                FOREIGN KEY("team_name") REFERENCES "teams"("name"),
-                FOREIGN KEY("question_id") REFERENCES "questions"("id")
-            );
-            """
-
-            manual_question_table = """
-            CREATE TABLE "manual_scores" (
-                "team_name"	TEXT UNIQUE,
-                "q1_score"	INTEGER,
-                "q2_score"	INTEGER,
-                "q3_score"	INTEGER,
-                "q4_score"  INTEGER,
-                FOREIGN KEY("team_name") REFERENCES "teams"("name")
-            );
-            """
-
-            cursor.execute(teams_table)
-            cursor.execute(questions_table)
-            cursor.execute(attempted_questions_table)
-            cursor.execute(manual_question_table)
-            # Insert data from the JSON into the questions table
-            for question in data['questions']:
-                cursor.execute(
-                    "INSERT INTO questions (content, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (
-                        question['content'],
-                        question['answer'],
-                        question['original_points'],
-                        question['original_points'],
-                        question['type'],
-                        question['question_group'],
-                        question.get('option_a', None),
-                        question.get('option_b', None),
-                        question.get('option_c', None),
-                        question.get('option_d', None),
-                        question.get('option_e', None),
-                        question.get('option_f', None),
-                        question.get('option_g', None),
-                        question.get('option_h', None),
-                        question.get('option_i', None),
-                        question.get('option_j', None),
-                        question.get('image_link', None),
-                        question.get('content_link', None)
-                    )
-                )
-
-            with open('teams.json', 'r') as file:
-                data = json.load(file)
-                teams_list = data['teams']
-
-            for team in teams_list:
-                cursor.execute("INSERT INTO teams (name, password, score, color, attempted_questions, solved_questions) VALUES (?,?,?,?,?,?)",(team, "123", 0, random_color(), 0, 0))
-
-            cursor.execute("""INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score)
-            SELECT name, 0, 0, 0, 0 FROM teams
-            WHERE name NOT IN (SELECT team_name FROM manual_scores);""")
-
-            conn.commit()
-            conn.close()
-
+            CURRENT_DB = f"{file.filename[0:-5]}.db"
             
-            CURRENT_DB=f"{file.filename}.db"
+            # Call create_database function
+            create_database(data)
 
             return {"status": "success", "message": f"Database {file.filename}.db created successfully!"}
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-
     else:
         return {"status": "failed", "message": "File Not uploaded"}
 
 
+def create_database(data):
+    db_file_path = f"{CURRENT_DB}"
+
+    # Delete the database file if it already exists
+    if os.path.exists(db_file_path):
+        os.remove(db_file_path)
+    try:
+        conn = sqlite3.connect(db_file_path)
+        cursor = conn.cursor()
+        
+        # Define tables
+        teams_table = """
+        CREATE TABLE "teams" (
+            "name"	TEXT NOT NULL UNIQUE,
+            "password"	TEXT NOT NULL,
+            "score"	INTEGER DEFAULT 0,
+            "color"	TEXT,
+            PRIMARY KEY("name")
+        );
+        """
+        questions_table = """
+        CREATE TABLE "questions" (
+            "id"	INTEGER,
+            "content"	TEXT NOT NULL,
+            "answer"	TEXT NOT NULL,
+            "original_points"	INTEGER NOT NULL,
+            "current_points"	INTEGER,
+            "type"	TEXT,
+            "question_group"	INTEGER,
+            "option_a"	TEXT,
+            "option_b"	TEXT,
+            "option_c"	TEXT,
+            "option_d"	TEXT,
+            "option_e"	TEXT,
+            "option_f"	TEXT,
+            "option_g"	TEXT,
+            "option_h"	TEXT,
+            "option_i"	TEXT,
+            "option_j"	TEXT,
+            "image_link"	TEXT,
+            "content_link"	TEXT,
+            PRIMARY KEY("id")
+        );
+        """
+        attempted_questions_table = """
+        CREATE TABLE "attempted_questions" (
+            "team_name"	text,
+            "question_id"	INTEGER,
+            "timestamp"	datetime,
+            "solved"	boolean NOT NULL,
+            "attempt_count"	INTEGER DEFAULT 0,
+            FOREIGN KEY("team_name") REFERENCES "teams"("name"),
+            FOREIGN KEY("question_id") REFERENCES "questions"("id")
+        );
+        """
+        manual_question_table = """
+        CREATE TABLE "manual_scores" (
+            "team_name"	TEXT UNIQUE,
+            "q1_score"	INTEGER,
+            "q2_score"	INTEGER,
+            "q3_score"	INTEGER,
+            "q4_score"  INTEGER,
+            FOREIGN KEY("team_name") REFERENCES "teams"("name")
+        );
+        """
+
+        cursor.execute(teams_table)
+        cursor.execute(questions_table)
+        cursor.execute(attempted_questions_table)
+        cursor.execute(manual_question_table)
+        print(data)
+        for question in data['questions']:
+            cursor.execute(
+                "INSERT INTO questions (content, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    question['content'],
+                    question['answer'],
+                    question['original_points'],
+                    question['original_points'],
+                    question['type'],
+                    question['question_group'],
+                    question.get('option_a', None),
+                    question.get('option_b', None),
+                    question.get('option_c', None),
+                    question.get('option_d', None),
+                    question.get('option_e', None),
+                    question.get('option_f', None),
+                    question.get('option_g', None),
+                    question.get('option_h', None),
+                    question.get('option_i', None),
+                    question.get('option_j', None),
+                    question.get('image_link', None),
+                    question.get('content_link', None)
+                )
+            )
+        with open('teams.json', 'r') as file:
+            data = json.load(file)
+            teams_list = data['teams']
+        for team in teams_list:
+            cursor.execute("INSERT INTO teams (name, password, score, color) VALUES (?,?,?,?)",(team, "123", 0, random_color()))
+
+        cursor.execute("""INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score)
+        SELECT name, 0, 0, 0, 0 FROM teams
+        WHERE name NOT IN (SELECT team_name FROM manual_scores);""")
+
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        logging.error("An error occurred when creating the database", exc_info=True)
+        raise e
+
+
 if __name__ == "__main__":
+    with open('initial.json', 'r') as f:
+        initial_data = json.load(f)
+    create_database(initial_data)
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
