@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from typing import List
 import json
 
-CURRENT_DB="comp.db"
+CURRENT_DB="initial.db"
 
 class TeamSignUp(BaseModel):
     name: str
@@ -117,12 +117,14 @@ async def get_comp_table():
             t.name, 
             SUM(a.solved) AS solved_questions,
             COUNT(a.question_id) AS attempted_questions,
-            t.score,
+            t.score + m.q1_score + m.q2_score + m.q3_score + m.q4_score AS score,
             t.color
         FROM 
             teams t
         LEFT JOIN 
             attempted_questions a ON t.name = a.team_name
+        LEFT JOIN
+            manual_scores m ON t.name = m.team_name
         GROUP BY 
             t.name
         ORDER BY
@@ -202,8 +204,6 @@ async def submit_answer_mcqs(a: Answer):
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
         return {"message": "Incorrect"}
     
-    except HTTPException as e:
-        raise e
     except Exception as e:
         logging.error("Error occurred when submitting answer", exc_info=True)
         raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
@@ -227,8 +227,6 @@ async def submit_answer_sa(a: Answer):
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
         
         return {"message": "Try again"}
-    except HTTPException as e:
-        raise e
     except Exception as e:
         logging.error("Error occurred when submitting answer", exc_info=True)
         raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
@@ -242,7 +240,7 @@ async def quick_signup(team: TeamSignUp):
         if existing_team is not None:
             return {"status":"failed", "message": "Team already exists"}
         
-        execute_db_query("INSERT INTO teams (name, password, score,color, attempted_questions, solved_questions) VALUES (?, ?, ?, ?, ?, ?)", (team.name,team.password,0,team_color, 0, 0, ))
+        execute_db_query("INSERT INTO teams (name, password, score, color) VALUES (?, ?, ?, ?)", (team.name,team.password,0,team_color))
         
         execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.name,0,0,0,0,))
 
@@ -271,8 +269,6 @@ async def set_json(filename: str):
 @app.post("/reset_rankings/")
 async def reset_team_data(team_name: str = Query(None, description="The name of the team to reset. If not provided, all teams will be reset.")):
     try:
-        
-
         # Reset stats for a specific team
         if team_name:
             execute_db_query("""
@@ -439,6 +435,7 @@ def create_database(data):
             "attempt_count"	INTEGER DEFAULT 0,
             FOREIGN KEY("team_name") REFERENCES "teams"("name"),
             FOREIGN KEY("question_id") REFERENCES "questions"("id")
+            PRIMARY KEY("team_name", "timestamp")
         );
         """
         manual_question_table = """
@@ -456,7 +453,7 @@ def create_database(data):
         cursor.execute(questions_table)
         cursor.execute(attempted_questions_table)
         cursor.execute(manual_question_table)
-        print(data)
+
         for question in data['questions']:
             cursor.execute(
                 "INSERT INTO questions (content, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",

@@ -2,7 +2,7 @@
     "questions": [
         {
             "content": "Where is VCC held?",
-            "answer": "a",
+            "answer": "b",
             "original_points": 10,
             "type": "mcqs",
             "question_group": 1,
@@ -17,7 +17,7 @@
         },
         {
             "content": "What do call this symbol + ?",
-            "answer": "Addition",
+            "answer": "plus",
             "original_points": 20,
             "type": "short answer",
             "question_group": 1,
@@ -25,19 +25,8 @@
             "content_link": "https://www.youtube.com/watch?v=uegzHgKcyqk"
         },
         {
-            "content": "Which symbol is multiplication?",
-            "answer": "b",
-            "original_points": 20,
-            "type": "Another type",
-            "question_group": 1,
-            "option_a": "images_sec/30.png",
-            "option_b": "images_sec/30.png",
-            "image_link": "http://another.image.link",
-            "content_link": "http://sample.content.link"
-        },
-        {
             "content": "What is the technique called where an attacker intercepts communication between two parties without their knowledge?",
-            "answer": "c",
+            "answer": "man in the middle",
             "original_points": 10,
             "type": "short answer",
             "question_group": 1,
@@ -46,7 +35,7 @@
         },
         {
             "content": "Which type of malware is designed to replicate itself and spread to other computers?",
-            "answer": "c",
+            "answer": "b",
             "original_points": 10,
             "type": "mcqs",
             "question_group": 2,
@@ -61,7 +50,7 @@
         },
         {
             "content": "What is the process of trying to decode encrypted or hashed data called?",
-            "answer": "a",
+            "answer": "decryption",
             "original_points": 10,
             "type": "short answer",
             "question_group": 2,
@@ -70,7 +59,7 @@
         },
         {
             "content": "Which of the following is a popular tool used for password cracking?",
-            "answer": "d",
+            "answer": "a",
             "original_points": 10,
             "type": "mcqs",
             "question_group": 2,
@@ -85,7 +74,7 @@
         },
         {
             "content": "What method is used to disguise a harmful link or website to make it appear legitimate?",
-            "answer": "a",
+            "answer": "phishing",
             "original_points": 10,
             "type": "short answer",
             "question_group": 2,
@@ -109,7 +98,7 @@
         },
         {
             "content": "What is the technique used by hackers to exploit a buffer overflow vulnerability in a targeted system?",
-            "answer": "d",
+            "answer": "buffer overflow",
             "original_points": 10,
             "type": "short answer",
             "question_group": 2,
