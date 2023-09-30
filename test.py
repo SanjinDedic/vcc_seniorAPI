@@ -55,6 +55,23 @@ def test_submit_mcqs_answer_correct():
     assert response.status_code == 200
     assert response.json() == {"message": "Correct"}
 
+def test_submit_mcqs_answer_correct_cheat():
+    # Submit a correct answer
+    response = client.post("/submit_mcqs_answer", json={
+        "id": "1",
+        "team_name": "Test Team",
+        "answer": "b"
+    })
+    assert response.status_code == 200
+    assert response.json() == {"message": "Correct"}
+    response = client.post("/submit_mcqs_answer", json={
+        "id": "1",
+        "team_name": "Test Team",
+        "answer": "b"
+    })
+    assert response.status_code == 200
+    assert response.json() == {"message": "Question already attempted"}
+
 def test_submit_mcqs_answer_incorrect():
     # Submit an incorrect answer
     response = client.post("/submit_mcqs_answer", json={
@@ -97,20 +114,25 @@ def test_submit_sa_answer_incorrect():
     assert response.json() == {"message": "Try again"}
 
 def test_submit_sa_answer_out_of_tries():
-    # Submit an incorrect answer 3 times
-    for i in range(2):
-        response = client.post("/submit_sa_answer", json={
-            "id": 6,
-            "team_name": "Test Team",
-            "answer": "b"
-        })
-        assert response.status_code == 200
-        assert response.json() == {"message": "Try again"}
     response = client.post("/submit_sa_answer", json={
         "id": 6,
         "team_name": "Test Team",
         "answer": "b"
     })
     assert response.status_code == 200
-    assert response.json() == {"message": "Incorrect"}
+    assert response.json() == {"message": "Try again"}
+    response = client.post("/submit_sa_answer", json={
+        "id": 6,
+        "team_name": "Test Team",
+        "answer": "b"
+    })
+    assert response.status_code == 200
+    assert response.json() == {"message": "Try again"}
+    response = client.post("/submit_sa_answer", json={
+        "id": 6,
+        "team_name": "Test Team",
+        "answer": "b"
+    })
+    assert response.status_code == 200
+    assert response.json() == {"message": "No attempts left"}
 

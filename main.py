@@ -86,9 +86,9 @@ def get_question(id: str):
         raise HTTPException(status_code=404, detail="Question not found")
     return result[0]
 
-def get_attempts(team_name: str,id: str):
-    result = execute_db_query(f"SELECT attempt_count FROM attempted_questions WHERE team_name = ? AND question_id = ?", (team_name, id,), fetchone=True)
-    return result
+def get_attempts_count(team_name: str,id: str):
+    count = execute_db_query("SELECT COUNT(*) FROM attempted_questions WHERE team_name = ? AND question_id = ?", (team_name, id,))
+    return count[0][0]
     
 def decrement_question_points(question_id: int):
     execute_db_query("UPDATE questions SET current_points = current_points - 1 WHERE id = ?", (question_id,))
@@ -193,14 +193,18 @@ async def get_questions():
 
 @app.post("/submit_mcqs_answer")
 async def submit_answer_mcqs(a: Answer):
+    #check if team and question in attempted_questions table if not return error
+    existing = execute_db_query("SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (a.team_name, a.id,), fetchone=True)
+    if existing:
+        return {"message": "Question already attempted"}
     try:
         correct_ans, question_pts = get_question(id=a.id)
         is_correct = a.answer == correct_ans
         if is_correct:
             update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
             decrement_question_points(question_id=a.id)
+            update_team(name=a.team_name, points=question_pts)
             return {"message": "Correct"}  
-        update_team(name=a.team_name, points=question_pts)
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
         return {"message": "Incorrect"}
     
@@ -212,21 +216,20 @@ async def submit_answer_mcqs(a: Answer):
 async def submit_answer_sa(a: Answer):
     try:
         correct_ans, question_pts = get_question(id=a.id)
-        previous_attempts = get_attempts(team_name=a.team_name,id=a.id)
-        attempts_made = 1 if not previous_attempts else previous_attempts[0]+1
+        attempts_made = get_attempts_count(team_name=a.team_name,id=a.id)
+        if attempts_made >= 3:
+            return {"message": "No attempts left"}
         is_correct = a.answer == correct_ans or similar(correct_ans, a.answer)
         if is_correct:
             update_team(name=a.team_name, points=question_pts)
-            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
+            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made+1)
             decrement_question_points(question_id=a.id)
             return {"message": "Correct"}
-        if attempts_made >= 3: 
-            update_team(name=a.team_name, points=question_pts)
-            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
-            return {"message": "Incorrect"}
-        update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made)
-        
-        return {"message": "Try again"}
+        update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made+1)
+        if attempts_made < 2: #its 
+            return {"message": "Try again"}
+        else:
+            return {"message": "No attempts left"}
     except Exception as e:
         logging.error("Error occurred when submitting answer", exc_info=True)
         raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
