@@ -99,15 +99,11 @@ def reset_question_points():
 def update_team(name: str, points: int):
     execute_db_query("UPDATE teams SET score = score + ? WHERE name = ?", (points, name))
 
-def update_attempted_questions(name: str, question_id: str, solved: bool, attempts=1):
-    existing_record = execute_db_query(f"SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (name, question_id,), fetchone=True)
-    if existing_record:
-        execute_db_query(f"UPDATE attempted_questions SET attempt_count = ?, timestamp = ?, solved = ? WHERE team_name = ? AND question_id = ?", 
-        params=(attempts, datetime.now(), solved, name, question_id))
-    else:
-        execute_db_query(
-            f"INSERT INTO attempted_questions VALUES (?, ?, ?, ?, ?)",
-            params=(name, question_id, datetime.now(), solved, attempts))
+def update_attempted_questions(name: str, question_id: str, solved: bool):
+    execute_db_query(
+        f"INSERT INTO attempted_questions VALUES (?, ?, ?, ?)",
+        params=(name, question_id, datetime.now(), solved)
+    )
 
 
 @app.get("/get_comp_table")
@@ -222,11 +218,11 @@ async def submit_answer_sa(a: Answer):
         is_correct = a.answer == correct_ans or similar(correct_ans, a.answer)
         if is_correct:
             update_team(name=a.team_name, points=question_pts)
-            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made+1)
+            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
             decrement_question_points(question_id=a.id)
             return {"message": "Correct"}
-        update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct,attempts=attempts_made+1)
-        if attempts_made < 2: #its 
+        update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
+        if attempts_made < 2: # attempts was already incremented in update_attempted_questions
             return {"message": "Try again"}
         else:
             return {"message": "No attempts left"}
@@ -435,7 +431,6 @@ def create_database(data):
             "question_id"	INTEGER,
             "timestamp"	datetime,
             "solved"	boolean NOT NULL,
-            "attempt_count"	INTEGER DEFAULT 0,
             FOREIGN KEY("team_name") REFERENCES "teams"("name"),
             FOREIGN KEY("question_id") REFERENCES "questions"("id")
             PRIMARY KEY("team_name", "timestamp")
