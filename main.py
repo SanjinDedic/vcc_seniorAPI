@@ -156,30 +156,42 @@ async def manual_questions():
     
     return teams
 
-@app.get("/questions")
-async def get_questions():
+@app.get("/questions/{team_name}")
+async def get_questions(team_name : str):
+    questions = execute_db_query("SELECT * FROM questions")
     
-    questions = execute_db_query("SELECT id, content, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link FROM questions")
-
+    # Dictionary to store transformed questions
     transformed_questions = []
 
     for question in questions:
         # Extracting options from the fetched row (from option_a to option_j)
-        options = question[5:15]  # Adjust indices accordingly based on your table's structure
+        options = question[7:17]  # Adjusting indices based on your provided table's structure
 
         # Filtering out null options
         valid_options = [opt for opt in options if opt is not None]
+
+        # Check attempts for each question for the specified team
+        attempt_data = execute_db_query("""
+            SELECT COUNT(*), MAX(solved)
+            FROM attempted_questions
+            WHERE team_name = ? AND question_id = ?
+        """, (team_name, question[0],),fetchone=True)
+
+        attempt_count = attempt_data[0]
+        solved_status = attempt_data[1]
 
         # Constructing the question object
         transformed_question = {
             'id': question[0],
             'content': question[1],
-            'current_points': question[2],
-            'type': question[3],
-            'question_group': question[4],
+            'current_points': question[4],
+            'type': question[5],
+            'question_group': question[6],
             'options': valid_options,
-            'image_link': question[15],
-            'content_link': question[16] 
+            'image_link': question[17],
+            'content_link': question[18],
+            'attempt_count': attempt_count,
+            'solved': solved_status
         }
 
         transformed_questions.append(transformed_question)
@@ -225,7 +237,7 @@ async def submit_answer_sa(a: Answer):
         if attempts_made < 2: # attempts was already incremented in update_attempted_questions
             return {"message": "Try again"}
         else:
-            return {"message": "No attempts left"}
+            return {"message": "Incorrect"}
     except Exception as e:
         logging.error("Error occurred when submitting answer", exc_info=True)
         raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
