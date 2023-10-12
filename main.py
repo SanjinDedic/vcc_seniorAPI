@@ -119,7 +119,7 @@ async def get_comp_table():
         SELECT 
             t.name, 
             SUM(a.solved) AS solved_questions,
-            COUNT(a.question_id) AS attempted_questions,
+            COUNT(DISTINCT a.question_id) AS attempted_questions,
             t.score + m.q1_score + m.q2_score + m.q3_score + m.q4_score AS score,
             t.color
         FROM 
