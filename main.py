@@ -166,45 +166,48 @@ async def manual_questions():
 @app.get("/questions/{team_name}")
 async def get_questions(team_name : str):
     questions = execute_db_query("SELECT * FROM questions")
-    
+    teams = execute_db_query("SELECT name FROM teams")
+    team_names = [team[0] for team in teams]
     # Dictionary to store transformed questions
     transformed_questions = []
+    if team_name in team_names:
 
-    for question in questions:
-        # Extracting options from the fetched row (from option_a to option_j)
-        options = question[7:17]  # Adjusting indices based on your provided table's structure
+        for question in questions:
+            # Extracting options from the fetched row (from option_a to option_j)
+            options = question[7:17]  # Adjusting indices based on your provided table's structure
 
-        # Filtering out null options
-        valid_options = [opt for opt in options if opt is not None]
+            # Filtering out null options
+            valid_options = [opt for opt in options if opt is not None]
 
-        # Check attempts for each question for the specified team
-        attempt_data = execute_db_query("""
-            SELECT COUNT(*), MAX(solved)
-            FROM attempted_questions
-            WHERE team_name = ? AND question_id = ?
-        """, (team_name, question[0],),fetchone=True)
+            # Check attempts for each question for the specified team
+            attempt_data = execute_db_query("""
+                SELECT COUNT(*), MAX(solved)
+                FROM attempted_questions
+                WHERE team_name = ? AND question_id = ?
+            """, (team_name, question[0],),fetchone=True)
 
-        attempt_count = attempt_data[0]
-        solved_status = attempt_data[1]
+            attempt_count = attempt_data[0]
+            solved_status = attempt_data[1]
 
-        # Constructing the question object
-        transformed_question = {
-            'id': question[0],
-            'content': question[1],
-            'current_points': question[4],
-            'type': question[5],
-            'question_group': question[6],
-            'options': valid_options,
-            'image_link': question[17],
-            'content_link': question[18],
-            'attempt_count': attempt_count,
-            'solved': solved_status
-        }
+            # Constructing the question object
+            transformed_question = {
+                'id': question[0],
+                'content': question[1],
+                'current_points': question[4],
+                'type': question[5],
+                'question_group': question[6],
+                'options': valid_options,
+                'image_link': question[17],
+                'content_link': question[18],
+                'attempt_count': attempt_count,
+                'solved': solved_status
+            }
 
-        transformed_questions.append(transformed_question)
+            transformed_questions.append(transformed_question)
 
-    return {"questions": transformed_questions}
-
+        return {"questions": transformed_questions}
+    else:
+        return {"questions": "Error"}
 
 @app.post("/submit_mcqs_answer")
 async def submit_answer_mcqs(a: Answer):
@@ -224,8 +227,7 @@ async def submit_answer_mcqs(a: Answer):
         return {"message": "Incorrect"}
     
     except Exception as e:
-        logging.error("Error occurred when submitting answer", exc_info=True)
-        raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
+        return {"message":"An error occurred when submitting the answer."}
 
 @app.post("/submit_sa_answer")
 async def submit_answer_sa(a: Answer):
@@ -246,8 +248,7 @@ async def submit_answer_sa(a: Answer):
         else:
             return {"message": "Incorrect"}
     except Exception as e:
-        logging.error("Error occurred when submitting answer", exc_info=True)
-        raise HTTPException(status_code=500, detail="An error occurred when submitting the answer.")
+        return {"message":"An error occurred when submitting the answer."}
         
 
 @app.post("/team_signup/")
@@ -316,7 +317,7 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
             return {"status": "success", "message": "Data for all teams has been reset."}
 
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error: {e}")
+        return {"status": "failed", "message": "Cannot reset due to an error"}
 
 @app.post("/reset_questions_score/")
 async def reset_questions_score():
@@ -324,7 +325,7 @@ async def reset_questions_score():
         reset_question_points()
         return {"status": "success", "message": "Questions scores have been reset. "}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error: {e}")
+        return {"status": "failed", "message": "Cannot reset due to an error"}
     
 @app.post("/team_login")
 async def team_login(user: Team):
