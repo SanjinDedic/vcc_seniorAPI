@@ -119,12 +119,9 @@ async def verify_team_credentials(request: Request):
     team_password = request.headers.get("Team-Password")
     if not team_name or not team_password:
         return False
-    with open('teams.json', 'r') as file:
-        data = json.load(file)
-        teams_list = data['teams']
-    for team in teams_list:
-        if team['name'] == team_name and team['password'] == team_password:
-            return True
+    result = execute_db_query("SELECT * FROM teams WHERE name = ? and password = ?",(team_name,team_password,))
+    if result:
+        return True
         
     return False
 
