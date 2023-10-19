@@ -365,19 +365,18 @@ def test_get_comp_table():
 
 
 def test_get_manual_questions():
-    response = requests.get(f"{base_url}/manual_questions")
+    response = requests.get(f"{base_url}/manual_questions",headers={"Password": "BOSSMAN"})
     assert response.status_code == 200
-
     assert response.json() == test_answer_2
 
 
 def test_get_team_questions():
-    response = requests.get(f"{base_url}/questions/RedWolves")
+    response = requests.get(f"{base_url}/questions/RedWolves",headers={"Team-Name": "RedWolves","Team-Password": "123"})
     assert response.status_code == 200
     assert response.json() == test_answer_3
 
 def test_get_any_team_questions():
-    response = requests.get(f"{base_url}/questions/anything")
+    response = requests.get(f"{base_url}/questions/anything",headers={"Team-Name": "RedWolves","Team-Password": "123"})
     assert response.status_code == 200
     assert response.json() == {"questions":"Error"}
 
@@ -387,7 +386,7 @@ def test_submit_mcqs_answer_correct():
     "answer": "b",
     "team_name": "RedWolves"
     }
-    response = requests.post(f"{base_url}/submit_mcqs_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_mcqs_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Correct"}
 
@@ -397,7 +396,7 @@ def test_submit_mcqs_answer_incorrect():
     "answer": "a",
     "team_name": "RedWolves"
     }
-    response = requests.post(f"{base_url}/submit_mcqs_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_mcqs_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Incorrect"}
 
@@ -408,7 +407,7 @@ def test_submit_mcqs_answer_already_attempted():
     "answer": "a",
     "team_name": "RedWolves"
     }
-    response = requests.post(f"{base_url}/submit_mcqs_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_mcqs_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Question already attempted"}
 
@@ -418,7 +417,7 @@ def test_submit_mcqs_answer_error():
     "answer": "66",
     "team_name": "RedWdolves"
     }
-    response = requests.post(f"{base_url}/submit_mcqs_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_mcqs_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"An error occurred when submitting the answer."}
 
@@ -428,7 +427,7 @@ def test_submit_sa_answer_correct():
     "answer": "plus",
     "team_name": "RedWolves"
     }
-    response = requests.post(f"{base_url}/submit_sa_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_sa_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Correct"}
 
@@ -439,7 +438,7 @@ def test_submit_sa_answer_incorrect():
     "team_name": "RedWolves"
     }
     for i in range(3):
-        response = requests.post(f"{base_url}/submit_sa_answer",json=payload)
+        response = requests.post(f"{base_url}/submit_sa_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Incorrect"}
 
@@ -450,7 +449,7 @@ def test_submit_sa_answer_try_again():
     "answer": "a",
     "team_name": "RedWolves"
     }
-    response = requests.post(f"{base_url}/submit_sa_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_sa_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Try again"}
 
@@ -461,7 +460,7 @@ def test_submit_sa_answer_full_attempts():
     "answer": "pl",
     "team_name": "RedWolves"
     }
-    response = requests.post(f"{base_url}/submit_sa_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_sa_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"Question already attempted"}
 
@@ -472,7 +471,7 @@ def test_submit_sa_answer_error():
     "answer": "6gf",
     "team_name": "RedWdolvesdaww"
     }
-    response = requests.post(f"{base_url}/submit_sa_answer",json=payload)
+    response = requests.post(f"{base_url}/submit_sa_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"message":"An error occurred when submitting the answer."}
 
@@ -481,7 +480,7 @@ def test_team_signup():
     "name": "NewTeam",
     "password": "123"
     }
-    response = requests.post(f"{base_url}/team_signup/",json=payload)
+    response = requests.post(f"{base_url}/team_signup/",headers={"Password": "BOSSMAN"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"status": "success", "message": "Team has been added"}
 
@@ -496,7 +495,7 @@ def test_team_signup_exists():
 
 def json_files():
    
-    response = requests.post(f"{base_url}/json-files/")
+    response = requests.post(f"{base_url}/json-files/",headers={"Password": "BOSSMAN"})
     assert response.status_code == 200
     #assert response.json() == {"message":"An error occurred when submitting the answer."}
 
@@ -504,18 +503,18 @@ def set_json():
     payload = {
     "filename": "test.json"
     }
-    response = requests.post(f"{base_url}/set_json/",json=payload)
+    response = requests.post(f"{base_url}/set_json/",headers={"Password": "BOSSMAN"},json=payload)
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "Wrong file selected!"}
 
 def reset_rankings():
-    response = requests.post(f"{base_url}/reset_rankings/")
+    response = requests.post(f"{base_url}/reset_rankings/",headers={"Password": "BOSSMAN"})
     assert response.status_code == 200
     assert response.json() == {"status": "success", "message": "Data for all teams has been reset."}
 
 def reset_question_score():
     
-    response = requests.post(f"{base_url}/reset_questions_score/")
+    response = requests.post(f"{base_url}/reset_questions_score/",headers={"Password": "BOSSMAN"})
     assert response.status_code == 200
     assert response.json() == {"status": "success", "message": "Questions scores have been reset. "}
 
