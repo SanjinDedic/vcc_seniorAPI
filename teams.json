@@ -1,25 +1,86 @@
 {
     "teams": [
-      "RedWolves",
-      "BlueSharks",
-      "ThunderBolts",
-      "QuickFoxes",
-      "CyberKnights",
-      "DataMiners",
-      "SkyEagles",
-      "SeaLions",
-      "MountainGoats",
-      "DarkHorses",
-      "SilverHawks",
-      "GoldenBears",
-      "SwiftCats",
-      "MightyOwls",
-      "FrostWolves",
-      "SolarFlares",
-      "MoonWalkers",
-      "StarFighters",
-      "WindRiders",
-      "FirePhoenix"
+      {
+        "name": "RedWolves",
+        "password": "123"
+      },
+      {
+        "name": "BlueSharks",
+        "password": "123"
+      },
+      {
+        "name": "ThunderBolts",
+        "password": "123"
+      },
+      {
+        "name": "QuickFoxes",
+        "password": "123"
+      },
+      {
+        "name": "CyberKnights",
+        "password": "123"
+      },
+      {
+        "name": "DataMiners",
+        "password": "123"
+      },
+      {
+        "name": "SkyEagles",
+        "password": "123"
+      },
+      {
+        "name": "SeaLions",
+        "password": "123"
+      },
+      {
+        "name": "MountainGoats",
+        "password": "123"
+      },
+      {
+        "name": "DarkHorses",
+        "password": "123"
+      },
+      {
+        "name": "SilverHawks",
+        "password": "123"
+      },
+      {
+        "name": "GoldenBears",
+        "password": "123"
+      },
+      {
+        "name": "SwiftCats",
+        "password": "123"
+      },
+      {
+        "name": "MightyOwls",
+        "password": "123"
+      },
+      {
+        "name": "FrostWolves",
+        "password": "123"
+      },
+      {
+        "name": "SolarFlares",
+        "password": "123"
+      },
+      {
+        "name": "MoonWalkers",
+        "password": "123"
+      },
+      {
+        "name": "StarFighters",
+        "password": "123"
+      },
+      {
+        "name": "WindRiders",
+        "password": "123"
+      },
+      {
+        "name": "FirePhoenix",
+        "password": "123"
+      }
+      
     ]
   }
   

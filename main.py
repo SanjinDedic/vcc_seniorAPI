@@ -4,7 +4,7 @@ import random
 import sqlite3
 from datetime import datetime
 from difflib import SequenceMatcher
-from fastapi import FastAPI,UploadFile, HTTPException, status, File, Query
+from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -44,12 +44,13 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
     "https://vccfinal.com",
-    "https://vccfinal.com:8000"
+    "https://vccfinal.com:8000",
+    "http://172.21.80.1:8000"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -113,6 +114,32 @@ def update_attempted_questions(name: str, question_id: str, solved: bool):
     )
 
 
+async def verify_team_credentials(request: Request):
+    team_name = request.headers.get("Team-Name")
+    team_password = request.headers.get("Team-Password")
+    if not team_name or not team_password:
+        return False
+    with open('teams.json', 'r') as file:
+        data = json.load(file)
+        teams_list = data['teams']
+    for team in teams_list:
+        if team['name'] == team_name and team['password'] == team_password:
+            return True
+        
+    return False
+
+async def verify_admin_credentials(request: Request):
+    admin_password = request.headers.get("Password")
+    if not admin_password:
+        return False
+    if admin_password=="BOSSMAN":
+        print("donea")
+        return True
+    else:
+        return False
+
+
+
 @app.get("/get_comp_table")
 async def get_comp_table():
     status = execute_db_query(f"""
@@ -146,7 +173,10 @@ async def get_comp_table():
     return {"teams": teams}
 
 @app.get("/manual_questions/")
-async def manual_questions():
+async def manual_questions(is_authenticated: bool = Depends(verify_admin_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Admin credentials are wrong"}
+    
     rows = execute_db_query(f"""
     SELECT team_name, q1_score, q2_score, q3_score, q4_score
     FROM manual_scores """)
@@ -164,7 +194,10 @@ async def manual_questions():
     return teams
 
 @app.get("/questions/{team_name}")
-async def get_questions(team_name : str):
+async def get_questions(team_name : str,is_authenticated: bool = Depends(verify_team_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Team credentials are wrong"}
+    
     questions = execute_db_query("SELECT * FROM questions")
     teams = execute_db_query("SELECT name FROM teams")
     team_names = [team[0] for team in teams]
@@ -210,7 +243,10 @@ async def get_questions(team_name : str):
         return {"questions": "Error"}
 
 @app.post("/submit_mcqs_answer")
-async def submit_answer_mcqs(a: Answer):
+async def submit_answer_mcqs(a: Answer,is_authenticated: bool = Depends(verify_team_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Team credentials are wrong"}
+    
     #check if team and question in attempted_questions table if not return error
     existing = execute_db_query("SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (a.team_name, a.id,), fetchone=True)
     if existing:
@@ -230,7 +266,10 @@ async def submit_answer_mcqs(a: Answer):
         return {"message":"An error occurred when submitting the answer."}
 
 @app.post("/submit_sa_answer")
-async def submit_answer_sa(a: Answer):
+async def submit_answer_sa(a: Answer,is_authenticated: bool = Depends(verify_team_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Team credentials are wrong"}
+    
     try:
         correct_ans, question_pts = get_question(id=a.id)
         attempts_made = get_attempts_count(team_name=a.team_name,id=a.id)
@@ -252,7 +291,10 @@ async def submit_answer_sa(a: Answer):
         
 
 @app.post("/team_signup/")
-async def quick_signup(team: TeamSignUp):
+async def quick_signup(team: TeamSignUp,is_authenticated: bool = Depends(verify_admin_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Admin credentials are wrong"}
+    
     try:
         team_color = random_color()
         existing_team = execute_db_query("SELECT * FROM teams WHERE name = ? AND password = ?", (team.name,team.password,), fetchone=True)
@@ -269,7 +311,9 @@ async def quick_signup(team: TeamSignUp):
         return {"status":"failed", "message": "Error occured"}
         
 @app.get("/json-files/")
-async def list_json_files():
+async def list_json_files(is_authenticated: bool = Depends(verify_admin_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Admin credentials are wrong"}
     try:
         files = [f for f in os.listdir("json") if os.path.isfile(os.path.join("json", f)) and f.endswith(".json")]
         return {"status": "success", "files": files}
@@ -278,7 +322,9 @@ async def list_json_files():
 
    
 @app.post("/set_json/")
-async def set_json(filename: str):
+async def set_json(filename: str,is_authenticated: bool = Depends(verify_admin_credentials)):
+    if not is_authenticated:
+            return {"status": "failed", "message": "Admin credentials are wrong"}
     if filename:
         CURRENT_DB=f"{filename}.db"
         return {"status": "success", "message": "Database updated!"}
@@ -286,8 +332,10 @@ async def set_json(filename: str):
         return {"status": "failed", "message": "Wrong file selected!"}
 
 @app.post("/reset_rankings/")
-async def reset_team_data(team_name: str = Query(None, description="The name of the team to reset. If not provided, all teams will be reset.")):
+async def reset_team_data(team_name: str = Query(None, description="The name of the team to reset. If not provided, all teams will be reset."),is_authenticated: bool = Depends(verify_admin_credentials)):
     try:
+        if not is_authenticated:
+            return {"status": "failed", "message": "Admin credentials are wrong"}
         # Reset stats for a specific team
         if team_name:
             execute_db_query("""
@@ -320,8 +368,10 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
         return {"status": "failed", "message": "Cannot reset due to an error"}
 
 @app.post("/reset_questions_score/")
-async def reset_questions_score():
+async def reset_questions_score(is_authenticated: bool = Depends(verify_admin_credentials)):
     try:
+        if not is_authenticated:
+            return {"status": "failed", "message": "Admin credentials are wrong"}
         reset_question_points()
         return {"status": "success", "message": "Questions scores have been reset. "}
     except Exception as e:
@@ -338,12 +388,23 @@ async def team_login(user: Team):
             return {"status": "failed", "message": "No team found with these credentials"}
             
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error: {e}")
+         return {"status": "failed", "message": "Server error"}
+
+@app.get("/admin_login")
+async def admin_login(is_authenticated: bool = Depends(verify_admin_credentials)):
+    if not is_authenticated:
+        return {"status": "failed"}
+    else:
+        return {"status": "success"}
+
 
 
 @app.post("/update_manual_score/")
-async def update_manual_score(data: TeamsInput):
+async def update_manual_score(data: TeamsInput,is_authenticated: bool = Depends(verify_admin_credentials)):
+    if not is_authenticated:
+            return {"status": "failed"}
     try:
+        
         for team in data.teams:
             scores = team.scores
             
@@ -370,8 +431,10 @@ async def update_manual_score(data: TeamsInput):
 
 
 @app.post("/upload/")
-async def upload_database(file: UploadFile = File(...)):
+async def upload_database(file: UploadFile = File(...),is_authenticated: bool = Depends(verify_admin_credentials)):
     global CURRENT_DB
+    if not is_authenticated:
+            return {"status": "failed","message":"Authentication failed"}
     if file:
         try:
             # Ensure it's a JSON file
@@ -500,7 +563,7 @@ def create_database(data):
             data = json.load(file)
             teams_list = data['teams']
         for team in teams_list:
-            cursor.execute("INSERT INTO teams (name, password, score, color) VALUES (?,?,?,?)",(team, "123", 0, random_color()))
+            cursor.execute("INSERT INTO teams (name, password, score, color) VALUES (?,?,?,?)",(team["name"], team["password"], 0, random_color()))
 
         cursor.execute("""INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score)
         SELECT name, 0, 0, 0, 0 FROM teams
