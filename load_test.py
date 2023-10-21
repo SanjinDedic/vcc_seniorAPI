@@ -38,12 +38,12 @@ class UserBehavior(HttpUser):
     
     @task(2)
     def get_manual_questions(self):
-        self.client.get("/get_manual_questions",headers={"Password": "BOSSMAN"})
+        self.client.get("/get_manual_questions",json={"admin_password":"BOSSMAN"})
 
     @task(4)
     def get_questions_for_teams(self):
         for team_name in self.team_data["teams"]:
-            self.client.get(f"/questions/{team_name}",headers={"Team-Name": "RedWolves","Team-Password": "123"})
+            self.client.get(f"/questions/{team_name}",json={"team_name": "RedWolves","password": "123"})
     
     @task(5)
     def submit_answer(self):
@@ -52,6 +52,7 @@ class UserBehavior(HttpUser):
             payload = {
                 "id": "1",
                 "answer": "b",
-                "team_name": team_name
+                "team_name": team_name,
+                "team_password": "123"
             }
-            self.client.post("/submit_mcqs_answer",headers={"Team-Name": "RedWolves","Team-Password": "123"}, json=payload)
+            self.client.post("/submit_mcqs_answer", json=payload)
