@@ -1,83 +1,111 @@
 {
     "teams": [
       {
-        "name": "RedWolves",
+        "name": "ALBION 1",
         "password": "123"
       },
       {
-        "name": "BlueSharks",
+        "name": "ASCOT 1",
         "password": "123"
       },
       {
-        "name": "ThunderBolts",
+        "name": "ASCOT 2",
         "password": "123"
       },
       {
-        "name": "QuickFoxes",
+        "name": "BRUNSWICK 1",
         "password": "123"
       },
       {
-        "name": "CyberKnights",
+        "name": "BRUNSWICK 2",
         "password": "123"
       },
       {
-        "name": "DataMiners",
+        "name": "CAMELOT 1",
         "password": "123"
       },
       {
-        "name": "SkyEagles",
+        "name": "CAMELOT 2",
         "password": "123"
       },
       {
-        "name": "SeaLions",
+        "name": "COOLAROO 1",
         "password": "123"
       },
       {
-        "name": "MountainGoats",
+        "name": "DONCASTER 1",
         "password": "123"
       },
       {
-        "name": "DarkHorses",
+        "name": "DONCASTER 2",
         "password": "123"
       },
       {
-        "name": "SilverHawks",
+        "name": "ELSTERNWICK 1",
         "password": "123"
       },
       {
-        "name": "GoldenBears",
+        "name": "GLEN 1",
         "password": "123"
       },
       {
-        "name": "SwiftCats",
+        "name": "KEYSBOROUGH 1",
         "password": "123"
       },
       {
-        "name": "MightyOwls",
+        "name": "KEYSBOROUGH 2",
         "password": "123"
       },
       {
-        "name": "FrostWolves",
+        "name": "MONBULK 1",
         "password": "123"
       },
       {
-        "name": "SolarFlares",
+        "name": "MONBULK 2",
         "password": "123"
       },
       {
-        "name": "MoonWalkers",
+        "name": "ORCHARD 1",
         "password": "123"
       },
       {
-        "name": "StarFighters",
+        "name": "ORCHARD 2",
         "password": "123"
       },
       {
-        "name": "WindRiders",
+        "name": "ROBERTS 1",
         "password": "123"
       },
       {
-        "name": "FirePhoenix",
+        "name": "SALTWATER 1",
+        "password": "123"
+      },
+      {
+        "name": "SALTWATER 2",
+        "password": "123"
+      },
+      {
+        "name": "SUNSHINE 1",
+        "password": "123"
+      },
+      {
+        "name": "SUNSHINE 2",
+        "password": "123"
+      },
+      {
+        "name": "TARNEIT 1",
+        "password": "123"
+      },
+      {
+        "name": "TARNEIT 2",
+        "password": "123"
+      },
+      {
+        "name": "WHEELERS 1",
+        "password": "123"
+      },
+      {
+        "name": "WHEELERS 2",
         "password": "123"
       }
       

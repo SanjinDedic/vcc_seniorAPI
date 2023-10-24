@@ -101,9 +101,11 @@ def get_question(id: str):
 def get_attempts_count(team_name: str,id: str):
     count = execute_db_query("SELECT COUNT(*) FROM attempted_questions WHERE team_name = ? AND question_id = ?", (team_name, id,))
     return count[0][0]
-    
+
+#TEMPORARILY DISABLED FOR 1 POINT 
 def decrement_question_points(question_id: int):
-    execute_db_query("UPDATE questions SET current_points = current_points - 1 WHERE id = ?", (question_id,))
+    #execute_db_query("UPDATE questions SET current_points = current_points - 1 WHERE id = ?", (question_id,))
+    pass
 
 def reset_question_points():
     execute_db_query("UPDATE questions SET current_points = original_points")
