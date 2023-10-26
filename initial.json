@@ -6,7 +6,7 @@
             "original_points": 1,
             "type": "short answer",
             "question_group": 1,
-            "image_link": "images/word pseudocode.png",
+            "image_link": "images/word_pseudocode.png",
             "content_link": ""
         },
         {
@@ -19,7 +19,7 @@
             "option_b": "Move to the right until he touches the blue box, meowing as he passes through the red box.",
             "option_c": "Move to the right until he touches the red box, then meow and stop.",
             "option_d": "Nothing",
-            "image_link": "images/first scratch problem.png",
+            "image_link": "images/first_scratch_problem.png",
             "content_link": ""
         },
         {
@@ -28,7 +28,7 @@
             "original_points": 2,
             "type": "short answer",
             "question_group": 1,
-            "image_link": "images/number flowchart.png",
+            "image_link": "images/number_flowchart.png",
             "content_link": ""
         },
         {
@@ -41,7 +41,7 @@
             "option_b": "It must have a '#' OR it must be exactly 10 characters long",
             "option_c": "It must have a '#' AND it must be at least 10 characters long",
             "option_d": "It must have a '#' AND it must be exactly 10 characters long",
-            "image_link": "images/second scratch problem.png",
+            "image_link": "images/second_scratch_problem.png",
             "content_link": ""
         },
         {
@@ -54,7 +54,7 @@
             "option_b": "After 3 tries OR after a correct password is entered",
             "option_c": "After a correct password is entered",
             "option_d": "Never",
-            "image_link": "images/second scratch problem.png",
+            "image_link": "images/second_scratch_problem.png",
             "content_link": ""
         },
         {
@@ -63,7 +63,7 @@
             "original_points": 1,
             "type": "short answer",
             "question_group": 1,
-            "image_link": "images/number pseudocode.png",
+            "image_link": "images/number_pseudocode.png",
             "content_link": ""
         },
         {
@@ -76,7 +76,7 @@
             "option_b": "grey",
             "option_c": "orange",
             "option_d": "green",
-            "image_link": "images/walking problem.png",
+            "image_link": "images/walking_problem.png",
             "content_link": ""
         },
         {
@@ -115,7 +115,7 @@
             "option_b": "Savannah Cat says sorry every time.",
             "option_c": "Savannah Cat never says sorry.",
             "option_d": "Savannah Cat says sorry if they didn't draw anything.",
-            "image_link": "images/code addition.png",
+            "image_link": "images/code_addition.png",
             "content_link": "https://scratch.mit.edu/projects/912824655/"
         },
         {
@@ -151,7 +151,7 @@
             "original_points": 3,
             "type": "short answer",
             "question_group": 5,
-            "image_link": "images/marian notes.png",
+            "image_link": "images/marian_notes.png",
             "content_link": "https://drive.google.com/file/d/1Wml_odqZtZTh4WZ9dBAc_DS7iT8LCoVY/view"
         },
         {
@@ -200,7 +200,7 @@
             "original_points": 3,
             "type": "short answer",
             "question_group": 7,
-            "image_link": "images/coordinates explanation.png",
+            "image_link": "images/coordinates_explanation.png",
             "content_link": "https://scratch.mit.edu/projects/912809227/"
         },
         {
@@ -209,7 +209,7 @@
             "original_points": 3,
             "type": "short answer",
             "question_group": 8,
-            "image_link": "images/grid instructions.png",
+            "image_link": "images/grid_instructions.png",
             "content_link": "https://scratch.mit.edu/projects/895761796/"
         },
         {
