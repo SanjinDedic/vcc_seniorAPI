@@ -1,114 +1,30 @@
 {
     "teams": [
       {
-        "name": "ALBION 1",
-        "password": "123"
+        "name": "Danijela",
+        "password": "hqcdjt53"
       },
       {
-        "name": "ASCOT 1",
-        "password": "123"
+        "name": "Nathan",
+        "password": "Rw3DZs9x"
       },
       {
-        "name": "ASCOT 2",
-        "password": "123"
+        "name": "Craig",
+        "password": "QpPNJZ3j"
       },
       {
-        "name": "BRUNSWICK 1",
-        "password": "123"
+        "name": "Toan",
+        "password": "E85nwJ7H"
       },
       {
-        "name": "BRUNSWICK 2",
-        "password": "123"
+        "name": "Jen",
+        "password": "dMGuJyZt"
       },
       {
-        "name": "CAMELOT 1",
-        "password": "123"
-      },
-      {
-        "name": "CAMELOT 2",
-        "password": "123"
-      },
-      {
-        "name": "COOLAROO 1",
-        "password": "123"
-      },
-      {
-        "name": "DONCASTER 1",
-        "password": "123"
-      },
-      {
-        "name": "DONCASTER 2",
-        "password": "123"
-      },
-      {
-        "name": "ELSTERNWICK 1",
-        "password": "123"
-      },
-      {
-        "name": "GLEN 1",
-        "password": "123"
-      },
-      {
-        "name": "KEYSBOROUGH 1",
-        "password": "123"
-      },
-      {
-        "name": "KEYSBOROUGH 2",
-        "password": "123"
-      },
-      {
-        "name": "MONBULK 1",
-        "password": "123"
-      },
-      {
-        "name": "MONBULK 2",
-        "password": "123"
-      },
-      {
-        "name": "ORCHARD 1",
-        "password": "123"
-      },
-      {
-        "name": "ORCHARD 2",
-        "password": "123"
-      },
-      {
-        "name": "ROBERTS 1",
-        "password": "123"
-      },
-      {
-        "name": "SALTWATER 1",
-        "password": "123"
-      },
-      {
-        "name": "SALTWATER 2",
-        "password": "123"
-      },
-      {
-        "name": "SUNSHINE 1",
-        "password": "123"
-      },
-      {
-        "name": "SUNSHINE 2",
-        "password": "123"
-      },
-      {
-        "name": "TARNEIT 1",
-        "password": "123"
-      },
-      {
-        "name": "TARNEIT 2",
-        "password": "123"
-      },
-      {
-        "name": "WHEELERS 1",
-        "password": "123"
-      },
-      {
-        "name": "WHEELERS 2",
-        "password": "123"
+        "name": "Sanjin",
+        "password": "NYhARFVQ"
       }
-      
+ 
     ]
   }
   
