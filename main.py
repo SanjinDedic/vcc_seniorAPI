@@ -351,6 +351,11 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
                     DELETE FROM attempted_questions
                     WHERE team_name = ?
                 """, (team_name, ))
+
+                execute_db_query("""
+                    UPDATE manual_scores SET q1_score = 0, q2_score = 0,  q3_score = 0,  q4_score = 0 
+                    WHERE team_name = ?
+                """, (team_name, ))
             # Reset stats for all teams
             else:
                 execute_db_query("""
@@ -360,6 +365,10 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
 
                 execute_db_query("""
                     DELETE FROM attempted_questions
+                """)
+
+                execute_db_query("""
+                    UPDATE manual_scores SET q1_score = 0, q2_score = 0,  q3_score = 0,  q4_score = 0
                 """)
 
             if team_name:
@@ -415,7 +424,6 @@ async def update_manual_score(data: TeamsInput,a: Admin):
         return {"status": "failed", "message": "Admin credentials are wrong"}
     else:
         try:
-            
             for team in data.teams:
                 scores = team.scores
                 
