@@ -81,7 +81,11 @@ def execute_db_query(query, params=(), fetchone=False, db=None):
 
 
 def similar(s1, s2, threshold=0.6):
+    if s1.isalpha() and s2.isalpha():
+        s1 = s1.lower()
+        s2 = s2.lower()
     similarity_ratio = SequenceMatcher(None, s1, s2).ratio()
+    #if s1 and s2 are strings and not numeric
     return similarity_ratio >= threshold
 
 def random_color():
