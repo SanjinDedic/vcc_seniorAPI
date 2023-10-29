@@ -103,8 +103,27 @@ def get_attempts_count(team_name: str,id: str):
     return count[0][0]
 
 #TEMPORARILY DISABLED FOR 1 POINT 
-def check_bonus(question_id: int):
-    #execute_db_query("UPDATE questions SET current_points = current_points - 1 WHERE id = ?", (question_id,))
+def check_bonus(question_id: str):
+    try:
+        # Count the number of unique teams that have correctly answered this question before
+        query = """
+        SELECT COUNT(DISTINCT team_name) 
+        FROM attempted_questions 
+        WHERE question_id = ? AND solved = 1
+        """
+        result = execute_db_query(query, (question_id,), fetchone=True)
+        unique_teams_count = result[0]
+
+        # If less than 3 unique teams have answered correctly, return 1 (bonus)
+        if unique_teams_count < 3:
+            return 1
+
+    except Exception as e:
+        logging.error("Error occurred in check_bonus", exc_info=True)
+        # Return 0 in case of any errors
+        return 0
+
+    # Default return value of 0 if no bonus is applicable
     return 0
 
 def reset_question_points():
