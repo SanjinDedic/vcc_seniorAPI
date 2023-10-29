@@ -103,9 +103,9 @@ def get_attempts_count(team_name: str,id: str):
     return count[0][0]
 
 #TEMPORARILY DISABLED FOR 1 POINT 
-def decrement_question_points(question_id: int):
+def check_bonus(question_id: int):
     #execute_db_query("UPDATE questions SET current_points = current_points - 1 WHERE id = ?", (question_id,))
-    pass
+    return 0
 
 def reset_question_points():
     execute_db_query("UPDATE questions SET current_points = original_points")
@@ -244,7 +244,6 @@ async def submit_answer_mcqs(a: Answer):
         is_correct = a.answer == correct_ans
         if is_correct:
             update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
-            decrement_question_points(question_id=a.id)
             update_team(name=a.team_name, points=question_pts)
             return {"message": "Correct"}  
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
@@ -268,9 +267,9 @@ async def submit_answer_sa(a: Answer):
             return {"message": "No attempts left"}
         is_correct = a.answer == correct_ans or similar(correct_ans, a.answer)
         if is_correct:
+            question_pts += check_bonus(question_id=a.id)
             update_team(name=a.team_name, points=question_pts)
             update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
-            decrement_question_points(question_id=a.id)
             return {"message": "Correct"}
         update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
         if attempts_made < 2: # attempts was already incremented in update_attempted_questions
