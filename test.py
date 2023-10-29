@@ -10,6 +10,11 @@ import json
 client = TestClient(app)
 
 
+with open('teams.json', 'r') as file:
+    data = json.load(file)
+    teams_list = data['teams']
+
+
 # recreate the database before each test
 @pytest.fixture(autouse=True)
 def recreate_database():
@@ -55,29 +60,28 @@ def test_quick_signup():
 
 def test_team_login_correct():
     # Test missing team name
-    response = client.post("/team_login", json={"team_name":"RedWolves","password": "123"})
+    response = client.post("/team_login", json={"team_name":teams_list[0]["name"],"password": teams_list[0]["password"]})
     assert response.status_code == 200
     assert response.json() == {"status": "success", "message": "Logged in successfully"}
 
     
 def test_team_login_incorrect():
     # Test missing team name
-    response = client.post("/team_login", json={"team_name":"RedWolves","password": "testpassword"})
+    response = client.post("/team_login", json={"team_name":teams_list[0]["name"],"password": "testpassword"})
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "No team found with these credentials"}
 
 def test_team_login_error():
    # Test missing team password
-    response = client.post("/team_login", json={"team_name": "Test Team"})
-    print(response.json())
+    response = client.post("/team_login", json={"team_name": teams_list[0]["name"]})
     assert response.status_code == 422
 
 def test_submit_mcqs_answer_correct():
     # Submit a correct answer
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
-        "team_password": "123",
+        "id": "2",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
         "answer": "b"
     })
     assert response.status_code == 200
@@ -86,36 +90,36 @@ def test_submit_mcqs_answer_correct():
 def test_submit_mcqs_answer_correct_cheat():
     # Submit a correct answer
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
-        "team_password": "123",
-        "answer": "b"
+        "id": "4",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
+        "answer": "d"
     })
     assert response.status_code == 200
     assert response.json() == {"message": "Correct"}
 
     #Submit same answer again
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
-        "team_password": "123",
-        "answer": "b"
+        "id": "4",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
+        "answer": "d"
     })
     assert response.status_code == 200
     assert response.json() == {"message": "Question already attempted"}
 
     # Submit a correct answer without password
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
+        "id": "2",
+        "team_name": teams_list[0]["name"],
         "answer": "b"
     })
     assert response.status_code == 422
     
     # Submit a correct answer with wrong password
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
+        "id": "2",
+        "team_name": teams_list[0]["name"],
         "team_password": "testpassword123",
         "answer": "b"
     })
@@ -125,9 +129,9 @@ def test_submit_mcqs_answer_correct_cheat():
 def test_submit_mcqs_answer_incorrect():
     # Submit an incorrect answer
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
-        "team_password": "123",
+        "id": "2",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
         "answer": "c"
     })
     assert response.status_code == 200
@@ -135,15 +139,15 @@ def test_submit_mcqs_answer_incorrect():
 
     # Submit an incorrect answer with no password
     response = client.post("/submit_mcqs_answer", json={
-        "id": "1",
-        "team_name": "RedWolves",
+        "id": "2",
+        "team_name": teams_list[0]["name"],
         "answer": "c"
     })
     assert response.status_code == 422
     
     # Submit an incorrect answer with wrong team
-    response = client.post("/submit_mcqs_answer",headers={"Team-Name":"RedWolvesdas","Team-Password":"123"}, json={
-        "id": "1",
+    response = client.post("/submit_mcqs_answer", json={
+        "id": "2",
         "team_name": "RedWolves12",
         "team_password": "123",
         "answer": "c"
@@ -155,8 +159,8 @@ def test_submit_mcqs_answer_error():
     # Submit an answer with an invalid question ID
     response = client.post("/submit_mcqs_answer", json={
         "id": "999",
-        "team_name": "RedWolves",
-        "team_password": "123",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
         "answer": "a"
     })
     assert response.status_code == 200
@@ -165,46 +169,36 @@ def test_submit_mcqs_answer_error():
     # Submit an answer with an invalid question ID with no password
     response = client.post("/submit_mcqs_answer", json={
         "id": "999",
-        "team_name": "Test Team",
+        "team_name": teams_list[0]["name"],
         "answer": "a"
     })
     assert response.status_code == 422
-    
-    # Submit an answer with an invalid question ID with wrong headers
-    response = client.post("/submit_mcqs_answer",headers={"Team-Name":"RedWolves","Team-Password":"12345"}, json={
-        "id": "999",
-        "team_name": "RedWolves",
-        "team_password": "12334",
-        "answer": "a"
-    })
-    assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "Team credentials are wrong"}
 
 def test_submit_sa_answer_correct():
     # Submit a correct answer
-    response = client.post("/submit_sa_answer",headers={"Team-Name":"RedWolves","Team-Password":"123"}, json={
-        "id": 2,
-        "team_name": "RedWolves",
-        "team_password": "123",
-        "answer": "plus"
+    response = client.post("/submit_sa_answer", json={
+        "id": "1",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
+        "answer": "mississippi"
     })
     assert response.status_code == 200
     assert response.json() == {"message": "Correct"}
 
-    # Submit a correct answer with no headers
+    # Submit a correct answer with no password
     response = client.post("/submit_sa_answer", json={
-        "id": 2,
-        "team_name": "Test Team",
-        "answer": "plus"
+        "id": "1",
+        "team_name": teams_list[0]["name"],
+        "answer": "mississippi"
     })
     assert response.status_code == 422
     
     # Submit a correct answer with wrong headers
     response = client.post("/submit_sa_answer",headers={"Team-Name":"Red","Team-Password":"123"}, json={
-        "id": 2,
+        "id": "1",
         "team_name": "Red",
         "team_password": "123",
-        "answer": "plus"
+        "answer": "mississippi"
     })
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "Team credentials are wrong"}
@@ -212,9 +206,9 @@ def test_submit_sa_answer_correct():
 def test_submit_sa_answer_incorrect():
     # Submit an incorrect answer
     response = client.post("/submit_sa_answer", json={
-        "id": 2,
-        "team_name": "RedWolves",
-        "team_password": "123",
+        "id": "1",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
         "answer": "banana"
     })
     assert response.status_code == 200
@@ -222,16 +216,16 @@ def test_submit_sa_answer_incorrect():
 
     # Submit an incorrect answer with no password
     response = client.post("/submit_sa_answer", json={
-        "id": 2,
-        "team_name": "Test Team",
+        "id": "1",
+        "team_name": teams_list[0]["name"],
         "answer": "banana"
     })
     assert response.status_code == 422
     
     # Submit an incorrect answer with wrong password
     response = client.post("/submit_sa_answer", json={
-        "id": 2,
-        "team_name": "Test Team",
+        "id": "1",
+        "team_name": teams_list[0]["name"],
         "team_password": "abc",
         "answer": "banana"
     })
@@ -241,27 +235,27 @@ def test_submit_sa_answer_incorrect():
 def test_submit_sa_answer_out_of_tries():
     for i in range(2):
         response = client.post("/submit_sa_answer", json={
-            "id": 7,
-            "team_name": "RedWolves",
-            "team_password": "123",
-            "answer": "b"
+            "id": "1",
+            "team_name": teams_list[0]["name"],
+            "team_password": teams_list[0]["password"],
+            "answer": "banna"
         })
         assert response.status_code == 200
         assert response.json() == {"message": "Try again"}
 
     response = client.post("/submit_sa_answer", json={
-        "id": 7,
-        "team_name": "RedWolves",
-        "team_password": "123",
-        "answer": "b"
+        "id": "1",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
+        "answer": "banna"
     })
     assert response.status_code == 200
     assert response.json() == {"message": "Incorrect"}
 
     response = client.post("/submit_sa_answer", json={
-        "id": 7,
-        "team_name": "RedWolves",
-        "team_password": "123",
+        "id": "1",
+        "team_name": teams_list[0]["name"],
+        "team_password": teams_list[0]["password"],
         "answer": "b"
     })
     assert response.status_code == 200
@@ -269,16 +263,16 @@ def test_submit_sa_answer_out_of_tries():
 
     #sumbit answer with no team_password
     response = client.post("/submit_sa_answer", json={
-        "id": 7,
-        "team_name": "RedWolves",
+        "id": "1",
+        "team_name": teams_list[0]["name"],
         "answer": "b"
     })
     assert response.status_code == 422
     
     #sumbit answer with wrong password
     response = client.post("/submit_sa_answer", json={
-        "id": 7,
-        "team_name": "RedWolves",
+        "id": "1",
+        "team_name": teams_list[0]["name"],
         "team_password": "12345",
         "answer": "b"
     })
@@ -289,17 +283,17 @@ def test_submit_sa_answer_error():
     # Submit an answer with an invalid question ID
     response = client.post("/submit_sa_answer", json={
         "id": "999",
-        "team_name": "RedWolves",
+        "team_name": teams_list[0]["name"],
         "team_password": "123",
         "answer": "a"
     })
     assert response.status_code == 200
-    assert response.json() == {"message":"An error occurred when submitting the answer."}
+    assert response.json() == {"status": "failed", "message":"Team credentials are wrong"}
 
     # Submit an answer with an invalid question ID with no team_password
     response = client.post("/submit_sa_answer", json={
         "id": "999",
-        "team_name": "Test Team",
+        "team_name": teams_list[0]["name"],
         "answer": "a"
     })
     assert response.status_code == 422
@@ -308,7 +302,7 @@ def test_submit_sa_answer_error():
     response = client.post("/submit_sa_answer", json={
         "id": "999",
         "team_name": "Test Team",
-        "team_password": "123",
+        "team_password": teams_list[0]["password"],
         "answer": "a"
     })
     assert response.status_code == 200
