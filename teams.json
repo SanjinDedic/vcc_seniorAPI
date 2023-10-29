@@ -1,30 +1,160 @@
 {
-    "teams": [
+  "teams": [
       {
-        "name": "Danijela",
-        "password": "hqcdjt53"
+          "name": "Albion",
+          "password": "xWFv9SKy"
       },
       {
-        "name": "Nathan",
-        "password": "Rw3DZs9x"
+          "name": "ApolloParkways1",
+          "password": "H82fdJue"
       },
       {
-        "name": "Craig",
-        "password": "QpPNJZ3j"
+          "name": "ApolloParkways2",
+          "password": "Ke5pafim"
       },
       {
-        "name": "Toan",
-        "password": "E85nwJ7H"
+          "name": "AscotValeWest1",
+          "password": "3UxfZ0ek"
       },
       {
-        "name": "Jen",
-        "password": "dMGuJyZt"
+          "name": "AscotValeWest2",
+          "password": "jX36VkwW"
       },
       {
-        "name": "Sanjin",
-        "password": "NYhARFVQ"
+          "name": "Balcombe",
+          "password": "QPDoGjgk"
+      },
+      {
+          "name": "Bolinda",
+          "password": "t2wtVy5U"
+      },
+      {
+          "name": "BrunswickEast1",
+          "password": "OWYcWIVE"
+      },
+      {
+          "name": "BrunswickEast2",
+          "password": "AOTHJJnR"
+      },
+      {
+          "name": "Carnegie1",
+          "password": "dhgnKTXG"
+      },
+      {
+          "name": "Carnegie2",
+          "password": "73b1vFIS"
+      },
+      {
+          "name": "Dandenong",
+          "password": "GoRPI2MY"
+      },
+      {
+          "name": "DohertysCreek1",
+          "password": "CFp8CCOp"
+      },
+      {
+          "name": "DohertysCreek2",
+          "password": "qAwzEJec"
+      },
+      {
+          "name": "Elsternwick1",
+          "password": "RnmoviAB"
+      },
+      {
+          "name": "Elsternwick2",
+          "password": "Vdpqa35m"
+      },
+      {
+          "name": "Glendal1",
+          "password": "iem31ztk"
+      },
+      {
+          "name": "Glendal2",
+          "password": "fT3Zi1q5"
+      },
+      {
+          "name": "HarvestHome1",
+          "password": "Nv192T30"
+      },
+      {
+          "name": "HarvestHome2",
+          "password": "5fjkAF7y"
+      },
+      {
+          "name": "MerriCreek1",
+          "password": "A9cPiIO8"
+      },
+      {
+          "name": "MerriCreek2",
+          "password": "96bTTwQy"
+      },
+      {
+          "name": "Monbulk1",
+          "password": "BqZreJTN"
+      },
+      {
+          "name": "Monbulk2",
+          "password": "tzIxSg5t"
+      },
+      {
+          "name": "RobertsMcCubbin1",
+          "password": "kmDIHXPi"
+      },
+      {
+          "name": "RobertsMcCubbin2",
+          "password": "VffOugnP"
+      },
+      {
+          "name": "RobertsMcCubbin3",
+          "password": "TiTyn1N5"
+      },
+      {
+          "name": "Scotch1",
+          "password": "FkQBH9Qt"
+      },
+      {
+          "name": "Scotch2",
+          "password": "LksYX1mg"
+      },
+      {
+          "name": "Silverton1",
+          "password": "lVTieVEB"
+      },
+      {
+          "name": "Silverton2",
+          "password": "LYATVJjS"
+      },
+      {
+          "name": "StFinbars1",
+          "password": "GgWVwGGy"
+      },
+      {
+          "name": "StMarys1",
+          "password": "oL1H13q3"
+      },
+      {
+          "name": "StMarys2",
+          "password": "X2pH1Cmg"
+      },
+      {
+          "name": "StOliverPlunkett",
+          "password": "t6ixjNBt"
+      },
+      {
+          "name": "SunshineNorth",
+          "password": "m0kxIZNl"
+      },
+      {
+          "name": "TheLakes1",
+          "password": "xGqWLQ2F"
+      },
+      {
+          "name": "TheLakes2",
+          "password": "QvT2BaoJ"
+      },
+      {
+          "name": "Victory",
+          "password": "IrjVeDGz"
       }
- 
-    ]
-  }
-  
+  ]
+}
