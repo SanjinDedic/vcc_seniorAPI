@@ -34,10 +34,6 @@ class UserBehavior(HttpUser):
             "password": "QPDoGjgk"
         },
         {
-            "name": "Bolinda",
-            "password": "t2wtVy5U"
-        },
-        {
             "name": "BrunswickEast1",
             "password": "OWYcWIVE"
         },
@@ -98,12 +94,8 @@ class UserBehavior(HttpUser):
             "password": "96bTTwQy"
         },
         {
-            "name": "Monbulk1",
+            "name": "Monbulk",
             "password": "BqZreJTN"
-        },
-        {
-            "name": "Monbulk2",
-            "password": "tzIxSg5t"
         },
         {
             "name": "RobertsMcCubbin1",
@@ -175,18 +167,17 @@ class UserBehavior(HttpUser):
 
     @task(2)
     def get_manual_questions(self):
-        self.client.get("/get_manual_questions", json={"admin_password": "BOSSMAN"})
+        admin_password = "BOSSMAN"
+        url = f"/manual_questions/{admin_password}"
+        self.client.get(url)
 
     @task(4)
     def get_questions_for_teams(self):
         for team in self.team_data["teams"]:
             team_name = team["name"]
             team_password = team["password"]
-            payload = {
-                "team_name": team_name,
-                "team_password": team_password
-            }
-            self.client.get("/get_questions_for_teams", json=payload)
+            url = f"/questions/{team_name}/{team_password}"
+            self.client.get(url)
 
     @task(5)
     def submit_answer(self):

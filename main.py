@@ -450,7 +450,7 @@ async def update_manual_score(data: TeamsInput,a: Admin):
                 scores = team.scores
                 
                 # Check conditions for scores
-                if not 0 <= scores.q1_score <= 15:
+                if not 0 <= scores.q1_score <= 30:
                     return {"status": "failed", "message": "q1_score out of range for team: " + team.team_name}
                 if not 0 <= scores.q2_score <= 15:
                     return {"status": "failed", "message": "q2_score out of range for team: " + team.team_name}
