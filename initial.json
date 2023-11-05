@@ -21,11 +21,22 @@
             "content_link": "files/twin2.txt"
         },
         {
+            "title": "Bitcoin Billionaire",
+            "content": "the program below is a bitcoin exchange with real prices <br>If you select the buy option what value should you enter to guarantee that you will have 2000 dollars",
+            "answer":"-1000",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 3,
+            "image_link": "",
+            "content_link": "files/bitcoin.py"
+        },
+        {
+            "title": "Money Game",
             "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. Can you take a look at the CSV file and calculate which player ended up with the most money?<br> NOTE: every player started with 2000 play money",
             "answer": "d",
             "original_points": 100,
             "type": "mcqs",
-            "question_group": 3,
+            "question_group": 4,
             "option_a": "Jamie",
             "option_b": "Taylor",
             "option_c": "Zayn",
@@ -38,13 +49,34 @@
             "content_link": "files/transactions.csv"
         },
         {
+            "title": "Money Game",
             "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. Can you take a look at the CSV file and calculate to two decimal points how much money the winner ended up with?<br> NOTE: every player started with 2000 play money",
             "answer": "2715.02",
             "original_points": 100,
             "type": "short answer",
-            "question_group": 3,
+            "question_group": 4,
             "image_link": "",
             "content_link": "files/transactions.csv"
-        } 
+        },
+        {
+            "title": "One Link to Take You Home",
+            "content": "Only one of these 200 links will bring you back to vccfinal.com which link is it? <br>HINT: use Python Requests",
+            "answer": "https://bit.ly/LRlRBWh9miTYGIn10VAE",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 5,
+            "image_link": "",
+            "content_link": "files/bitlys.txt"
+        },
+        {
+            "title": "Collatz Imposter",
+            "content": "Learn about the collatz conjecture here: https://en.wikipedia.org/wiki/Collatz_conjecture <br>in the file below you will have Collatz sequences for the first 1000 numbers. The sequence for one number is wrong, which number is that?<br>1000 collatz conjectures, which one is fake. ",
+            "answer": "463",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 6,
+            "image_link": "",
+            "content_link": "files/collatz_sequences.txt"
+        }
     ]
 }
