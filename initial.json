@@ -32,7 +32,7 @@
         },
         {
             "title": "Money Game",
-            "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. Can you take a look at the CSV file and calculate which player ended up with the most money?<br> NOTE: every player started with 2000 play money",
+            "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. <br><b>Part 1:</b> Can you take a look at the CSV file and calculate which player ended up with the most money?<br> NOTE: every player started with 2000 play money",
             "answer": "d",
             "original_points": 100,
             "type": "mcqs",
@@ -50,7 +50,7 @@
         },
         {
             "title": "Money Game",
-            "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. Can you take a look at the CSV file and calculate to two decimal points how much money the winner ended up with?<br> NOTE: every player started with 2000 play money",
+            "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. <br><b>Part 2:</b>Can you now calculate to two decimal points how much money the winner ended up with?<br> NOTE: every player started with 2000 play money",
             "answer": "2715.02",
             "original_points": 100,
             "type": "short answer",
@@ -77,6 +77,86 @@
             "question_group": 6,
             "image_link": "",
             "content_link": "files/collatz_sequences.txt"
+        },
+        {
+            "title": "Dc0d3 n Xecut3",
+            "content": "You've intercepted a mysterious piece of encoded text that's believed to hold a secret message. The text is encoded using base64, a common method for representing binary data as ASCII characters. Your mission, should you choose to accept it, is to write a Python script that decodes this base64 text and executes it to reveal the secret message.<br>eW91cl9jb2RlID0gInByaW50KCdZb3UgY2FuXFwndCBmb29sIG1lJykiCmV4ZWMoeW91cl9jb2RlKQ==<br>FREE HINT: exec()",
+            "answer": "You can't fool me",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 7,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "Santa Wuz Hackd",
+            "content": "Santa's Delivery plans are in jeopardy! An imposter is trying to redirect one of the gifts on the list. Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash that should match the address and gift concatenated with a space in between. Your task is to:<br>Identify the Imposter: Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.<br>Save Christmas: Determine the original gift that the imposter tried to steal. To aid Santa, we know the true recipient has left their real name but changed the gift, <br>We also know that the original gift was a gift that a number of other children also received. <br><b>Part 1:</b> who hacked Santa, what is the name of the child who changed their gift",
+            "answer": "",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 8,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "Santa Wuz Hackd",
+            "content": "Santa's Delivery plans are in jeopardy! An imposter is trying to redirect one of the gifts on the list. Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash that should match the address and gift concatenated with a space in between. Your task is to:<br>Identify the Imposter: Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.<br>Save Christmas: Determine the original gift that the imposter tried to steal. To aid Santa, we know the true recipient has left their real name but changed the gift, <br>We also know that the original gift was a gift that a number of other children also received.<br><b>Part 2:</b> What was the original gift?<br>HINT: Its a gift that santa has delivered to more than one child",
+            "answer": "",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 8,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "ISS At 2 Billion Seconds since Epoch",
+            "content": "What will be the Longitude (to two decimal places) of the ISS be when the clock strikes 2 Billions Seconds Since Epoch?<br>You can find information about the ISS here: https://api.wheretheiss.at/<br>You can find information about Epoch time here: https://en.wikipedia.org/wiki/Unix_time",
+            "answer": "175.08",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 9,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "Harry Potter API",
+            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br>https://hp-api.onrender.com/api/characters<br>Now answer the following questions<br><b>Part 1:</b>  what is the total number of characters?",            
+            "answer": "402",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 10,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "Harry Potter API",
+            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br>https://hp-api.onrender.com/api/characters<br>Now answer the following questions<br><b>Part 2:</b>  How many characters are not Hogwarts students?",            
+            "answer": "301",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 10,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "Harry Potter API",
+            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br>https://hp-api.onrender.com/api/characters<br>Now answer the following questions<br><b>Part 3:</b>  What is the ratio among Hogwards staff in terms of house origin?<br>Griffindor:Slytherin:Ravenclaw:Hufflepuff (format example 2:3:2:7)",            
+            "answer": "4:3:1:1",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 10,
+            "image_link": "",
+            "content_link": ""
+        },
+        {
+            "title": "Letter Counter Algorithm",
+            "content": "If the numbers 1 to 5 are written out in words: one, two, three, four then there are 3+3+5+4 = 15 letters used in total.If all the numbers from 1 to 888 (eight hundred and eighty eight) inclusive were written out in words, how many letters would be used?<br>NOTE: Do not count spaces or hyphens. For example, <br>(one hundred and fifteen) contains 20 letters <br>(forty-two) contains 7 letters<br>The use of 'and' when writing out numbers is in compliance with British usage.",            
+            "answer": "18591",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 11,
+            "image_link": "",
+            "content_link": ""
         }
     ]
 }
