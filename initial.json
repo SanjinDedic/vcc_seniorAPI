@@ -11,11 +11,21 @@
             "content_link": "https://gutendex.com/books/{book_id}"
         },
         {
+            "title": "Twins But Not the Same",
+            "content": "You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message, enter the message below<br> <a href='files/twin1.txt'>files/twin1.txt</a>",
+            "answer":"yesvcc",
+            "original_points": 100,
+            "type": "short answer",
+            "question_group": 2,
+            "image_link": "",
+            "content_link": "files/twin2.txt"
+        },
+        {
             "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. Can you take a look at the CSV file and calculate which player ended up with the most money?<br> NOTE: every player started with 2000 play money",
             "answer": "d",
             "original_points": 100,
             "type": "mcqs",
-            "question_group": 2,
+            "question_group": 3,
             "option_a": "Jamie",
             "option_b": "Taylor",
             "option_c": "Zayn",
@@ -32,7 +42,7 @@
             "answer": "2715.02",
             "original_points": 100,
             "type": "short answer",
-            "question_group": 2,
+            "question_group": 3,
             "image_link": "",
             "content_link": "files/transactions.csv"
         } 
