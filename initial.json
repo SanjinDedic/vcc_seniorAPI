@@ -120,7 +120,7 @@
         },
         {
             "title": "Harry Potter API",
-            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br>https://hp-api.onrender.com/api/characters<br>Now answer the following questions<br><b>Part 1:</b>  what is the total number of characters?",            
+            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br><i>https://hp-api.onrender.com/api/characters</i><br>Now answer the following questions<br><b>Part 1:</b>  what is the total number of characters?",            
             "answer": "402",
             "original_points": 100,
             "type": "short answer",
@@ -130,7 +130,7 @@
         },
         {
             "title": "Harry Potter API",
-            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br>https://hp-api.onrender.com/api/characters<br>Now answer the following questions<br><b>Part 2:</b>  How many characters are not Hogwarts students?",            
+            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br><i>https://hp-api.onrender.com/api/characters</i><br>Now answer the following questions<br><b>Part 2:</b>  How many characters are not Hogwarts students?",            
             "answer": "301",
             "original_points": 100,
             "type": "short answer",
@@ -140,7 +140,7 @@
         },
         {
             "title": "Harry Potter API",
-            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br>https://hp-api.onrender.com/api/characters<br>Now answer the following questions<br><b>Part 3:</b>  What is the ratio among Hogwards staff in terms of house origin?<br>Griffindor:Slytherin:Ravenclaw:Hufflepuff (format example 2:3:2:7)",            
+            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br><i>https://hp-api.onrender.com/api/characters</i><br>Now answer the following questions<br><b>Part 3:</b>  What is the ratio among Hogwards staff in terms of house origin?<br>Griffindor:Slytherin:Ravenclaw:Hufflepuff (format example 2:3:2:7)",            
             "answer": "4:3:1:1",
             "original_points": 100,
             "type": "short answer",
