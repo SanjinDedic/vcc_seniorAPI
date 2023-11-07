@@ -157,6 +157,26 @@
             "question_group": 11,
             "image_link": "",
             "content_link": ""
+        },
+        {
+            "title": "The Ultimate Puzzle",
+            "content": "Your task is to write a function that will parse this JSON and reassemble the 2D lists into a complete image. Each array represents a 10X10 segment of the image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.<br>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image. The final output should be a single 2D array that represents the assembled image, ready for further processing or display.<br>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json'>files/blocks.json</a><br>What image do you see in the large puzzle?",            
+            "answer": "g",
+            "original_points": 300,
+            "type": "mcqs",
+            "question_group": 4,
+            "option_a": "Rick Sanchez",
+            "option_b": "Garfield",
+            "option_c": "Eric Cartman",
+            "option_d": "Donald Duck",
+            "option_e": "Homer Simpson",
+            "option_f": "SpongeBob SquarePants",
+            "option_g": "Buggs Bunny",
+            "option_h": "Buzz Lightyear",
+            "option_i": "Mickey Mouse",
+            "option_j": "Baymax",            
+            "image_link": "images/puzzle_code.png",
+            "content_link": ""
         }
     ]
 }
