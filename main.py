@@ -194,7 +194,7 @@ async def get_questions(team_name : str,team_password : str):
 
         for question in questions:
             # Extracting options from the fetched row (from option_a to option_j)
-            options = question[7:17]  # Adjusting indices based on your provided table's structure
+            options = question[7:18]  # Adjusting indices based on your provided table's structure
 
             # Filtering out null options
             valid_options = [opt for opt in options if opt is not None]
@@ -212,13 +212,14 @@ async def get_questions(team_name : str,team_password : str):
             # Constructing the question object
             transformed_question = {
                 'id': question[0],
-                'content': question[1],
-                'current_points': question[4],
-                'type': question[5],
-                'question_group': question[6],
+                'title':question[1],
+                'content': question[2],
+                'current_points': question[5],
+                'type': question[6],
+                'question_group': question[7],
                 'options': valid_options,
-                'image_link': question[17],
-                'content_link': question[18],
+                'image_link': question[18],
+                'content_link': question[19],
                 'attempt_count': attempt_count,
                 'solved': solved_status
             }
@@ -510,6 +511,7 @@ def create_database(data):
         questions_table = """
         CREATE TABLE "questions" (
             "id"	INTEGER,
+            "title"     TEXT,
             "content"	TEXT NOT NULL,
             "answer"	TEXT NOT NULL,
             "original_points"	INTEGER NOT NULL,
@@ -560,9 +562,10 @@ def create_database(data):
 
         for question in data['questions']:
             cursor.execute(
-                "INSERT INTO questions (content, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO questions (content, title, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
                     question['content'],
+                    question['title'],
                     question['answer'],
                     question['original_points'],
                     question['original_points'],
