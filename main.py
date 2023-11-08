@@ -191,7 +191,7 @@ async def get_questions(team_name : str,team_password : str):
     # Dictionary to store transformed questions
     transformed_questions = []
     if team_name in team_names:
-
+        team_score = execute_db_query("SELECT score FROM teams WHERE name = ? ",(team_name,))
         for question in questions:
             # Extracting options from the fetched row (from option_a to option_j)
             options = question[7:18]  # Adjusting indices based on your provided table's structure
@@ -221,7 +221,8 @@ async def get_questions(team_name : str,team_password : str):
                 'image_link': question[18],
                 'content_link': question[19],
                 'attempt_count': attempt_count,
-                'solved': solved_status
+                'solved': solved_status,
+                'score': team_score
             }
 
             transformed_questions.append(transformed_question)
