@@ -194,7 +194,7 @@ async def get_questions(team_name : str,team_password : str):
         team_score = execute_db_query("SELECT score FROM teams WHERE name = ? ",(team_name,))
         for question in questions:
             # Extracting options from the fetched row (from option_a to option_j)
-            options = question[7:18]  # Adjusting indices based on your provided table's structure
+            options = question[8:18]  # Adjusting indices based on your provided table's structure
 
             # Filtering out null options
             valid_options = [opt for opt in options if opt is not None]
