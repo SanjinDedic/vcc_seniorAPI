@@ -169,6 +169,35 @@
         "content_link": ""
       },
       {
+        "title": "API Question 1",
+        "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import requests\n\n# 1. Get the response from the API endpoint.\nresponse = requests.get(\"https://www.boredapi.com/api/activity\")\n\nprint(response.status_code)</code></pre><p>What will be printed if the API works as intended</p>",
+        "answer": "a",
+        "original_points": 100,
+        "type": "mcqs",
+        "question_group": 1,
+        "option_a": "200",
+        "option_b": "500",
+        "option_c": "401",
+        "option_d": "403",
+        "option_e": "301",
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "API Question 2",
+        "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import requests\n\n# 1. Get the response from the API endpoint.\n\nparticipants = 0\n\nwhile participants < 2:\n    response = requests.get(\"https://www.boredapi.com/api/activity\")\n    response_dict = response.json()\n    participants = response_dict[\"participants\"]\n\nprint(response_dict[\"activity\"])</code></pre><p>What will be printed based on the provided code?</p>",
+        "answer": "b",
+        "original_points": 100,
+        "type": "mcqs",
+        "question_group": 1,
+        "option_a": "It will print out a random activity from the Bored API website",
+        "option_b": "It will print out a random activity from the Bored API website if the number of participants is 2 or more",
+        "option_c": "It will print out a random activity from the Bored API website if the number of participants is less than 2",
+        "option_d": "It will print out a random activity from the Bored API website if the number of participants is equal to 3 or more",
+        "image_link": "",
+        "content_link": ""
+      },
+      {
         "title": "Most Downloaded Book",
         "content": "<p>Project Gutenberg stores classic books that are free to download in various formats. Each book has an ID.</p><p>Use the API endpoint below to find the most popular book with an ID between 1 and 100.</p><p><b>What is the <i>exact</i> title of that book?</b></p>",
         "answer": "Frankenstein; Or, The Modern Prometheus",
