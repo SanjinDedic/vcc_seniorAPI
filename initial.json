@@ -1,182 +1,182 @@
 {
     "questions": [
-        {
-            "title": "Most Downloaded Book",
-            "content": "Project Gutenberg stores classic books that are free to download in various formats. Each book has an ID. Use the API endpoint below to find the most popular book with an ID between 1 and 100. What is the exact title of that book?",
-            "answer": "Frankenstein; Or, The Modern Prometheus",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 1,
-            "image_link": "",
-            "content_link": "https://gutendex.com/books/{book_id}"
-        },
-        {
-            "title": "Twins But Not the Same",
-            "content": "You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message, enter the message below<br> <a href='files/twin1.txt'>files/twin1.txt</a>",
-            "answer":"yesvcc",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 2,
-            "image_link": "",
-            "content_link": "files/twin2.txt"
-        },
-        {
-            "title": "Bitcoin Billionaire",
-            "content": "the program below is a bitcoin exchange with real prices <br>If you select the buy option what value should you enter to guarantee that you will have 2000 dollars",
-            "answer":"-1000",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 3,
-            "image_link": "",
-            "content_link": "files/bitcoin.py"
-        },
-        {
-            "title": "Money Game",
-            "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. <br><b>Part 1:</b> Can you take a look at the CSV file and calculate which player ended up with the most money?<br> NOTE: every player started with 2000 play money",
-            "answer": "d",
-            "original_points": 100,
-            "type": "mcqs",
-            "question_group": 4,
-            "option_a": "Jamie",
-            "option_b": "Taylor",
-            "option_c": "Zayn",
-            "option_d": "Arabella",
-            "option_e": "Mehdi",
-            "option_f": "Carlos",
-            "option_g": "Helena",
-            "option_h": "Mia",
-            "image_link": "",
-            "content_link": "files/transactions.csv"
-        },
-        {
-            "title": "Money Game",
-            "content": "8 Friends play a Card Trading Sim which records only play money transfers from player to player. They played for months would like to know who won. <br><b>Part 2:</b>Can you now calculate to two decimal points how much money the winner ended up with?<br> NOTE: every player started with 2000 play money",
-            "answer": "2715.02",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 4,
-            "image_link": "",
-            "content_link": "files/transactions.csv"
-        },
-        {
-            "title": "One Link to Take You Home",
-            "content": "Only one of these 200 links will bring you back to vccfinal.com which link is it? <br>HINT: use Python Requests",
-            "answer": "https://bit.ly/LRlRBWh9miTYGIn10VAE",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 5,
-            "image_link": "",
-            "content_link": "files/bitlys.txt"
-        },
-        {
-            "title": "Collatz Imposter",
-            "content": "Learn about the collatz conjecture here: https://en.wikipedia.org/wiki/Collatz_conjecture <br>in the file below you will have Collatz sequences for the first 1000 numbers. The sequence for one number is wrong, which number is that?<br>1000 collatz conjectures, which one is fake. ",
-            "answer": "463",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 6,
-            "image_link": "",
-            "content_link": "files/collatz_sequences.txt"
-        },
-        {
-            "title": "Dc0d3 n Xecut3",
-            "content": "You've intercepted a mysterious piece of encoded text that's believed to hold a secret message. The text is encoded using base64, a common method for representing binary data as ASCII characters. Your mission, should you choose to accept it, is to write a Python script that decodes this base64 text and executes it to reveal the secret message.<br>eW91cl9jb2RlID0gInByaW50KCdZb3UgY2FuXFwndCBmb29sIG1lJykiCmV4ZWMoeW91cl9jb2RlKQ==<br>FREE HINT: exec()",
-            "answer": "You can't fool me",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 7,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "Santa Wuz Hackd",
-            "content": "Santa's Delivery plans are in jeopardy! An imposter is trying to redirect one of the gifts on the list. Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash that should match the address and gift concatenated with a space in between.<br> Here is Santas tampered gift list:<br>files/tampered_list.txt<br>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.<br>Save Christmas: Determine the original gift that the imposter tried to steal. To aid Santa, we know the true recipient has left their real name but changed the gift, <br>We also know that the original gift was a gift that a number of other children also received. <br><b>Part 1:</b> who hacked Santa, what is the name of the child who changed their gift",
-            "answer": "",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 8,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "Santa Wuz Hackd",
-            "content": "Santa's Delivery plans are in jeopardy! An imposter is trying to redirect one of the gifts on the list. Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash that should match the address and gift concatenated with a space in between. <br> Here is Santas tampered gift list:<br>files/tampered_list.txt<br>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.<br>Save Christmas: Determine the original gift that the imposter tried to steal. To aid Santa, we know the true recipient has left their real name but changed the gift, <br>We also know that the original gift was a gift that a number of other children also received.<br><b>Part 2:</b> What was the original gift?<br>HINT: Its a gift that santa has delivered to more than one child",
-            "answer": "",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 8,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "ISS At 2 Billion Seconds since Epoch",
-            "content": "What will be the Longitude (to two decimal places) of the ISS be when the clock strikes 2 Billions Seconds Since Epoch?<br>You can find information about the ISS here: https://api.wheretheiss.at/<br>You can find information about Epoch time here: https://en.wikipedia.org/wiki/Unix_time",
-            "answer": "175.08",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 9,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "Harry Potter API",
-            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br><i>https://hp-api.onrender.com/api/characters</i><br>Now answer the following questions<br><b>Part 1:</b>  what is the total number of characters?",            
-            "answer": "402",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 10,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "Harry Potter API",
-            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br><i>https://hp-api.onrender.com/api/characters</i><br>Now answer the following questions<br><b>Part 2:</b>  How many characters are not Hogwarts students?",            
-            "answer": "301",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 10,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "Harry Potter API",
-            "content": "The API endpoint below will give you a complete list of all the Harry Potter Characters <br><i>https://hp-api.onrender.com/api/characters</i><br>Now answer the following questions<br><b>Part 3:</b>  What is the ratio among Hogwards staff in terms of house origin?<br>Griffindor:Slytherin:Ravenclaw:Hufflepuff (format example 2:3:2:7)",            
-            "answer": "4:3:1:1",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 10,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "Letter Counter Algorithm",
-            "content": "If the numbers 1 to 5 are written out in words: one, two, three, four then there are 3+3+5+4 = 15 letters used in total.If all the numbers from 1 to 888 (eight hundred and eighty eight) inclusive were written out in words, how many letters would be used?<br>NOTE: Do not count spaces or hyphens. For example, <br>(one hundred and fifteen) contains 20 letters <br>(forty-two) contains 7 letters<br>The use of 'and' when writing out numbers is in compliance with British usage.",            
-            "answer": "18591",
-            "original_points": 100,
-            "type": "short answer",
-            "question_group": 11,
-            "image_link": "",
-            "content_link": ""
-        },
-        {
-            "title": "The Ultimate Puzzle",
-            "content": "Your task is to write a function that will parse this JSON and reassemble the 2D lists into a complete image. Each array represents a 10X10 segment of the image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.<br>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image. The final output should be a single 2D array that represents the assembled image, ready for further processing or display.<br>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json'>files/blocks.json</a><br>What image do you see in the large puzzle?",            
-            "answer": "g",
-            "original_points": 300,
-            "type": "mcqs",
-            "question_group": 12,
-            "option_a": "Rick Sanchez",
-            "option_b": "Garfield",
-            "option_c": "Eric Cartman",
-            "option_d": "Donald Duck",
-            "option_e": "Homer Simpson",
-            "option_f": "SpongeBob SquarePants",
-            "option_g": "Buggs Bunny",
-            "option_h": "Buzz Lightyear",
-            "option_i": "Mickey Mouse",
-            "option_j": "Baymax",            
-            "image_link": "images/puzzle_code.png",
-            "content_link": ""
-        }
+      {
+        "title": "Most Downloaded Book",
+        "content": "<p>Project Gutenberg stores classic books that are free to download in various formats. Each book has an ID.</p><p>Use the API endpoint below to find the most popular book with an ID between 1 and 100.</p><p><b>What is the <i>exact</i> title of that book?</b></p>",
+        "answer": "Frankenstein; Or, The Modern Prometheus",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 1,
+        "image_link": "",
+        "content_link": "https://gutendex.com/books/{book_id}"
+      },
+      {
+        "title": "Twins But Not the Same",
+        "content": "<p>You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message.</p><p><ul><li><a href='files/twin1.txt'>twin1.txt</a><li><a href='files/twin2.txt'>twin2.txt</a></ul></p><p><b>Enter the secret message below.</b></p> ",
+        "answer": "yesvcc",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 2,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Bitcoin Billionaire",
+        "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, what value should you enter to guarantee that you will have 2000 dollars?</p>",
+        "answer": "-1000",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 3,
+        "image_link": "",
+        "content_link": "files/bitcoin.py"
+      },
+      {
+        "title": "Money Game",
+        "content": "<p>Eight friends have been playing a Card Trading game for months. A CSV file records all play money transfers from player to player. Now they would like to know who ended up with the most play money.</p><p><b>Part 1:</b><br>Take a look at the CSV file, then calculate which player ended up with the most money.</p><p><i>NOTE: Every player started with 2000 play money.</i></p>",
+        "answer": "d",
+        "original_points": 100,
+        "type": "mcqs",
+        "question_group": 4,
+        "option_a": "Jamie",
+        "option_b": "Taylor",
+        "option_c": "Zayn",
+        "option_d": "Arabella",
+        "option_e": "Mehdi",
+        "option_f": "Carlos",
+        "option_g": "Helena",
+        "option_h": "Mia",
+        "image_link": "",
+        "content_link": "files/transactions.csv"
+      },
+      {
+        "title": "Money Game",
+        "content": "<p>Eight friends have been playing a Card Trading game for months. A CSV file records all play money transfers from player to player. Now they would like to know who ended up with the most play money.</p><p><b>Part 2:</b><br>Calculate <i>to two decimal places</i> how much money the winner ended up with.</p>",
+        "answer": "2715.02",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 4,
+        "image_link": "",
+        "content_link": "files/transactions.csv"
+      },
+      {
+        "title": "One Link to Take You Home",
+        "content": "<p>Only one of these 200 links will bring you back to vccfinal.com.</p><p><b>Which link is it?</b></p><p><i>HINT: Use Python requests.</i></p>",
+        "answer": "https://bit.ly/LRlRBWh9miTYGIn10VAE",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 5,
+        "image_link": "",
+        "content_link": "files/bitlys.txt"
+      },
+      {
+        "title": "Collatz Imposter",
+        "content": "<p>In the file below you have Collatz sequences for the first 1000 numbers.<p><p>The sequence for one number is wrong. <b>Which number is that?</b></p><p><i>Learn about the Collatz conjecture <a href=\"https://en.wikipedia.org/wiki/Collatz_conjecture\">here</a>.</i></p>",
+        "answer": "463",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 6,
+        "image_link": "",
+        "content_link": "files/collatz_sequences.txt"
+      },
+      {
+        "title": "Dc0d3 n Xecut3",
+        "content": "<p>You've intercepted a mysterious piece of encoded text that's believed to hold a secret message.</p><p>eW91cl9jb2RlID0gInByaW50KCdZb3UgY2FuXFwndCBmb29sIG1lJykiCmV4ZWMoeW91cl9jb2RlKQ==</p>The text is encoded using <b>base64</b>, a common method for representing binary data as ASCII characters.</p><p>Your mission, should you choose to accept it, is to write a Python script that decodes the base64 text and executes it to reveal the secret message.</p><p><i>FREE HINT:</i> exec()</p>",
+        "answer": "You can't fool me",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 7,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Santa Wuz Hackd",
+        "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 1:</b> we know the true recipient has left their real name but changed the gift. Who hacked Santa? <b>What is the name of the child who changed their gift?</b></p>",
+        "answer": "Abagail",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 8,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Santa Wuz Hackd",
+        "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 2:</b> What was the original gift?",
+        "answer": "Star Wars Lego Set",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 8,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "ISS At 2 Billion Seconds since Epoch",
+        "content": "<p>What will be the longitude <i>(to the nearest whole number)</i> of the ISS when the clock strikes two billion seconds since Epoch?</p><p>You can find live information about the ISS using an API explained <a href=\"https://wheretheiss.at/w/developer\">here</a>.</p><p>You can find information about Epoch time <a href=\"https://en.wikipedia.org/wiki/Unix_time\">here</a>.</p>",
+        "answer": "65",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 9,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Harry Potter API",
+        "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 1:</b> What is the total number of characters?</p>",
+        "answer": "402",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 10,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Harry Potter API",
+        "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 2:</b> How many characters are <i>not</i> Hogwarts students?</p>",
+        "answer": "301",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 10,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Harry Potter API",
+        "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 3:</b> What is the ratio among Hogwarts staff in terms of house origin?<br><br>Gryffindor:Slytherin:Ravenclaw:Hufflepuff (format example <b>2:3:2:7</b>)</p>",
+        "answer": "4:3:1:1",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 10,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "Letter Counter Algorithm",
+        "content": "<p>If the numbers 1 to 4 are written out in words: one, two, three, four then there are 3+3+5+4 = 15 letters used in total.</p><p>If all the numbers from 1 to 888 (eight hundred and eighty eight) inclusive were written out in words, <b>how many letters would be used?</b></p><p><i>NOTE: Do not count spaces or hyphens. For example,</p><p><ul><li><b>one hundred and fifteen</b> contains 20 letters</li><li><b>forty-two</b> contains 8 letters</li></ul></p><p>The use of 'and' when writing out numbers is in compliance with British usage.</i></p>",
+        "answer": "18591",
+        "original_points": 100,
+        "type": "short answer",
+        "question_group": 11,
+        "image_link": "",
+        "content_link": ""
+      },
+      {
+        "title": "The Ultimate Puzzle",
+        "content": "<p>Your task is to write a function that will interpret a JSON blob filled with arrays. Each array represents a 10x10 segment of an ASCII image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.</p><p>The final output should be a single 2D array that represents the assembled image, ready for further processing or display.</p><p>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image.</p><p>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json'>files/blocks.json</a></p><p><b>What image do you see in the large puzzle?</b></p>",
+        "answer": "g",
+        "original_points": 300,
+        "type": "mcqs",
+        "question_group": 12,
+        "option_a": "Rick Sanchez",
+        "option_b": "Garfield",
+        "option_c": "Eric Cartman",
+        "option_d": "Donald Duck",
+        "option_e": "Homer Simpson",
+        "option_f": "SpongeBob SquarePants",
+        "option_g": "Bugs Bunny",
+        "option_h": "Buzz Lightyear",
+        "option_i": "Mickey Mouse",
+        "option_j": "Baymax",
+        "image_link": "images/puzzle_code.png",
+        "content_link": ""
+      }
     ]
-}
+  }
