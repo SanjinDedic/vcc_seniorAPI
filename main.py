@@ -88,14 +88,6 @@ def similar(s1, s2, threshold=0.6):
     #if s1 and s2 are strings and not numeric
     return similarity_ratio >= threshold
 
-def random_color():
-    a = random.randint(130, 255)
-    b = random.randint(130, 255)
-    c = random.randint(0, 60)
-    rgb = [a, b, c]
-    random.shuffle(rgb)
-    return f"rgb({rgb[0]}, {rgb[1]}, {rgb[2]})"
-
 def get_question(id: str):
     result = execute_db_query("SELECT answer,current_points FROM questions WHERE id = ?", (id, ))
     if not result:
@@ -300,7 +292,7 @@ async def quick_signup(team: TeamSignUp,a: Admin):
             
             execute_db_query("INSERT INTO teams (name, password, score, color) VALUES (?, ?, ?, ?)", (team.name,team.password,0,team_color))
             
-            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.name,0,0,0,0,))
+            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.name,0,0,0,0,0))
 
             return {"status": "success", "message": "Team has been added"}
         
@@ -431,13 +423,13 @@ async def update_manual_score(data: TeamsInput,a: Admin):
             for team in data.teams:
                 scores = team.scores
                 # Check conditions for scores
-                if not 0 <= scores.q1_score <= 26:
+                if not 0 <= scores.q1_score <= 600:
                     return {"status": "failed", "message": "q1_score out of range for team: " + team.team_name}
-                if not 0 <= scores.q2_score <= 15:
+                if not 0 <= scores.q2_score <= 600:
                     return {"status": "failed", "message": "q2_score out of range for team: " + team.team_name}
-                if not 0 <= scores.q3_score <= 15:
+                if not 0 <= scores.q3_score <= 1000:
                     return {"status": "failed", "message": "q3_score out of range for team: " + team.team_name}
-                if not -100 <= scores.q4_score <= 100:
+                if not -10000 <= scores.q4_score <= 10000:
                     return {"status": "failed", "message": "q4_score out of range for team: " + team.team_name}
                 
             for team in data.teams:
@@ -589,8 +581,11 @@ def create_database(data):
         with open('teams.json', 'r') as file:
             data = json.load(file)
             teams_list = data['teams']
+        with open('colors.json', 'r') as file:
+            data = json.load(file)
+            color_list = data["colors"]*5
         for team in teams_list:
-            cursor.execute("INSERT INTO teams (name, password, score, color) VALUES (?,?,?,?)",(team["name"], team["password"], 0, random_color()))
+            cursor.execute("INSERT INTO teams (name, password, score, color) VALUES (?,?,?,?)",(team["name"], team["password"], 0, color_list.pop(0)))
 
         cursor.execute("""INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score)
         SELECT name, 0, 0, 0, 0 FROM teams
