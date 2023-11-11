@@ -1,741 +1,371 @@
 {
-
   "questions": [
-
     {
-
       "title": "Decimal Business",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\nx = 0.1\ny = 0.1\nz = 0.1\nprint((x + y + z) == 0.3)</code></pre></br><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">x = 0.1\ny = 0.1\nz = 0.1\nprint((x + y + z) == 0.3)</code></pre></br><p>Predict the output of this program:</p>",
       "answer": "b",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "True",
-
       "option_b": "False",
-
       "option_c": "0.3",
-
       "option_d": "None",
-
       "option_e": "0.29999999",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Functions Functioning and Stuff",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\ndef func(x, l=[]):\n    for i in range(x):\n        l.append(i*i)\n    return l\n\nprint(func(3))\nprint(func(3, ['a']))\nprint(func(3))</code></pre></br><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">def func(x, l=[]):\n    for i in range(x):\n        l.append(i*i)\n    return l\n\nprint(func(3))\nprint(func(3, ['a']))\nprint(func(3))</code></pre></br><p>Predict the output of this program:</p>",
       "answer": "a",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">[0, 1, 4]\n['a', 0, 1, 4]\n[0, 1, 4]</code></pre>",
-
       "option_b": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">[0, 1, 4]\n['a', 0, 1, 4]\n[0, 1, 4, 0, 1, 4]</code></pre>",
-
       "option_c": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">[0, 1, 4]\n['a', 0, 1, 4]\n[0, 1, 4, 0, 1, 4, 0, 1, 4]</code></pre>",
-
       "option_d": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">[0, 1, 4]\n[0, 1, 4]\n[0, 1, 4]</code></pre>",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Skippy Loops",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\nfor i in range(1, 5, 3):\n    print(i * '*')</code></pre><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">for i in range(1, 5, 3):\n    print(i * '*')</code></pre><p>Predict the output of this program:</p>",
       "answer": "d",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">****\n***\n**\n*</code></pre>",
-
       "option_b": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">***\n*******</code></pre>",
-
       "option_c": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">*\n**\n***\n****</code></pre>",
-
       "option_d": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">*\n****</code></pre>",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Nesting inside and out",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\nx = 5\ny = 10\nif x < y:\n    if x > 5:\n        print(\"Nested if\")\n    elif y > 5:\n        print(\"Nested elif\")\n    else:\n        print(\"Nested else\")\nelse:\n    print(\"Outer else\")</code></pre><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">x = 5\ny = 10\nif x < y:\n    if x > 5:\n        print(\"Nested if\")\n    elif y > 5:\n        print(\"Nested elif\")\n    else:\n        print(\"Nested else\")\nelse:\n    print(\"Outer else\")</code></pre><p>Predict the output of this program:</p>",
       "answer": "b",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "Nested if",
-
       "option_b": "Nested elif",
-
       "option_c": "Nested else",
-
       "option_d": "Outer else",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Tuple Addition",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\ntup = (1, 2, 3, 4)\nresult = tup[1] + tup[-1]\n\nprint(result)</code></pre><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">tup = (1, 2, 3, 4)\nresult = tup[1] + tup[-1]\n\nprint(result)</code></pre><p>Predict the output of this program:</p>",
       "answer": "b",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "34",
-
       "option_b": "6",
-
       "option_c": "(2, 4)",
-
       "option_d": "Error",
-
       "option_e": "24",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "It looks like Python but its really maths",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\nset_a = {1, 2, 3}\nset_b = {4, 5, 6}\n\nset_c = set_a | set_b\nprint(set_c)</code></pre><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">set_a = {1, 2, 3}\nset_b = {4, 5, 6}\n\nset_c = set_a | set_b\nprint(set_c)</code></pre><p>Predict the output of this program:</p>",
       "answer": "a",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "{1, 2, 3, 4, 5, 6}",
-
       "option_b": "{1, 2, 3}",
-
       "option_c": "{4, 5, 6}",
-
       "option_d": "{}",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Popping them Dictionaries",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the output of the following code snippet?\nd = {'a': 24, 'b': 25, 'c': 26}\nd['a'] = d.pop('b')\n\nprint(\"a\" in d)\nprint(d.get('b'))</code></pre><p>Predict the output of this program:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">d = {'a': 24, 'b': 25, 'c': 26}\nd['a'] = d.pop('b')\n\nprint(\"a\" in d)\nprint(d.get('b'))</code></pre><p>Predict the output of this program:</p>",
       "answer": "c",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">True\n25</code></pre>",
-
       "option_b": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">False\nNone</code></pre>",
-
       "option_c": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">True\nNone</code></pre>",
-
       "option_d": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">False\n25</code></pre>",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Turtles Go Places",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the initial direction of the turtle after executing this code?\nimport turtle\n\nscreen = turtle.Screen()\nt = turtle.Turtle()\n\nt.left(90)\n\n# What is the initial heading of the turtle after this operation?</code></pre><p>Predict the turtle's heading after the operation:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import turtle\n\nscreen = turtle.Screen()\nt = turtle.Turtle()\n\nt.left(90)\n\n# What is the initial heading of the turtle after this operation?</code></pre><p>Predict the turtle's heading after the operation:</p>",
       "answer": "a",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "North",
-
       "option_b": "South",
-
       "option_c": "East",
-
       "option_d": "West",
-
       "option_e": "Program will crash",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Which Polygon is it?",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># How many sides will the figure have that is drawn by this turtle code?\nimport turtle\n\nt = turtle.Turtle()\nfor i in range(8):\n    t.forward(100)\n    t.right(90)\n\n# What figure is drawn by the turtle?</code></pre><p>Predict the figure drawn by the turtle:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import turtle\n\nt = turtle.Turtle()\nfor i in range(8):\n    t.forward(100)\n    t.right(90)\n\n# What figure is drawn by the turtle?</code></pre><p>Predict the figure drawn by the turtle:</p>",
       "answer": "c",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "Octagon",
-
       "option_b": "Hexagon",
-
       "option_c": "Square",
-
       "option_d": "Circle",
-
       "option_e": "Pentagon",
-      
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "A Colourful Conundrum",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># What will be the color of the line drawn by the turtle after executing this code?\nimport turtle\n\nt = turtle.Turtle()\nt.color(\"blue\")\nt.forward(100)\nt.color(\"red\")\nt.backward(100)\n\n# What color is the line drawn by the turtle?</code></pre><p>Predict the color of the line:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import turtle\n\nt = turtle.Turtle()\nt.color(\"blue\")\nt.forward(100)\nt.color(\"red\")\nt.backward(100)\n\n# What color is the line drawn by the turtle?</code></pre><p>Predict the color of the line:</p>",
       "answer": "d",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "Blue",
-
       "option_b": "Red",
-
       "option_c": "No line is drawn",
-
       "option_d": "Half blue and half red",
-
       "option_e": "Purple",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "How Many Degrees",
-
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\"># After executing the code, what will be the position of the turtle?\nimport turtle\n\nt = turtle.Turtle()\nt.forward(100)\nt.left(120)\nt.forward(100)\nt.left(120)\nt.forward(100)\nt.left(120)\n\n# Where is the turtle positioned relative to its start position?</code></pre><p>Predict the turtle's position:</p>",
-
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import turtle\n\nt = turtle.Turtle()\nt.forward(100)\nt.left(120)\nt.forward(100)\nt.left(120)\nt.forward(100)\nt.left(120)\n\n# Where is the turtle positioned relative to its start position?</code></pre><p>Predict the turtle's position:</p>",
       "answer": "a",
-
       "original_points": 50,
-
       "type": "mcqs",
-
       "question_group": 1,
-
       "option_a": "It returns to the start position.",
-
       "option_b": "It is 100 units away from the start position.",
-
       "option_c": "It is at the top of an equilateral triangle.",
-
       "option_d": "It is outside the bounds of the screen.",
-
       "option_e": "The program will crash.",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "APIs have Good and Bad Numbers",
-
       "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import requests\n\n# 1. Get the response from the API endpoint.\nresponse = requests.get(\"https://www.boredapi.com/api/activity\")\n\nprint(response.status_code)</code></pre><p>What will be printed if the API works as intended</p>",
-
       "answer": "d",
-
       "original_points": 100,
-
       "type": "mcqs",
-
       "question_group": 2,
-
       "option_a": "403",
-
       "option_b": "500",
-
       "option_c": "401",
-
       "option_d": "200",
-
       "option_e": "301",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "APIs Cure Boredom",
-
       "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import requests\n\n# 1. Get the response from the API endpoint.\n\nparticipants = 0\n\nwhile participants < 2:\n    response = requests.get(\"https://www.boredapi.com/api/activity\")\n    response_dict = response.json()\n    participants = response_dict[\"participants\"]\n\nprint(response_dict[\"activity\"])</code></pre><p>What will be printed based on the provided code?</p>",
-
       "answer": "b",
-
       "original_points": 100,
-
       "type": "mcqs",
-
       "question_group": 2,
-
       "option_a": "It will print out a random activity from the Bored API website",
-
       "option_b": "It will print out a random activity from the Bored API website if the number of participants is 2 or more",
-
       "option_c": "It will print out a random activity from the Bored API website if the number of participants is less than 2",
-
       "option_d": "It will print out a random activity from the Bored API website if the number of participants is equal to 3 or more",
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Most Downloaded Book",
-
       "content": "<p>Project Gutenberg stores classic books that are free to download in various formats. Each book has an ID.</p><p>Use the API endpoint below to find the most popular book with an ID between 1 and 100.</p><p><b>What is the <i>exact</i> title of that book?</b></p>",
-
       "answer": "Frankenstein; Or, The Modern Prometheus",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 3,
-
       "image_link": "",
-
       "content_link": "https://gutendex.com/books/{book_id}"
-
     },
-
     {
-
       "title": "Twins But Not the Same",
-
       "content": "<p>You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message.</p><p><ul><li><a href='files/twin1.txt'>twin1.txt</a><li><a href='files/twin2.txt'>twin2.txt</a></ul></p><p><b>Enter the secret message below.</b></p> ",
-
       "answer": "yesvcc",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 4,
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Bitcoin Billionaire",
-
-      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, what value should you enter to guarantee that you will have 2000 dollars?</p>",
-
+      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, what value should you enter to guarantee that you will have 2000 dollars?</p><a href = 'https://replit.com/@vcchallenge/bitcoin#main.py'>REPL link</a>",
       "answer": "-1000",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 5,
-
       "image_link": "",
-
       "content_link": "files/bitcoin.py"
-
     },
-
     {
-
       "title": "Money Game",
-
       "content": "<p>Eight friends have been playing a Card Trading game for months. A CSV file records all play money transfers from player to player. Now they would like to know who ended up with the most play money.</p><p><b>Part 1:</b><br>Take a look at the CSV file, then calculate which player ended up with the most money.</p><p><i>NOTE: Every player started with 2000 play money.</i></p>",
-
       "answer": "d",
-
       "original_points": 100,
-
       "type": "mcqs",
-
       "question_group": 6,
-
       "option_a": "Jamie",
-
       "option_b": "Taylor",
-
       "option_c": "Zayn",
-
       "option_d": "Arabella",
-
       "option_e": "Mehdi",
-
       "option_f": "Carlos",
-
       "option_g": "Helena",
-
       "option_h": "Mia",
-
       "image_link": "",
-
       "content_link": "files/transactions.csv"
-
     },
-
     {
-
       "title": "Money Game",
-
       "content": "<p>Eight friends have been playing a Card Trading game for months. A CSV file records all play money transfers from player to player. Now they would like to know who ended up with the most play money.</p><p><b>Part 2:</b><br>Calculate <i>to two decimal places</i> how much money the winner ended up with.</p>",
-
       "answer": "2715.02",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 6,
-
       "image_link": "",
-
       "content_link": "files/transactions.csv"
-
     },
-
     {
-
       "title": "One Link to Take You Home",
-
       "content": "<p>Only one of these 200 links will bring you back to vccfinal.com.</p><p><b>Which link is it?</b></p><p><i>HINT: Use Python requests.</i></p>",
-
       "answer": "https://bit.ly/LRlRBWh9miTYGIn10VAE",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 7,
-
       "image_link": "",
-
       "content_link": "files/bitlys.txt"
-
     },
-
     {
-
       "title": "Collatz Imposter",
-
       "content": "<p>In the file below you have Collatz sequences for the first 1000 numbers.<p><p>The sequence for one number is wrong. <b>Which number is that?</b></p><p><i>Learn about the Collatz conjecture <a href=\"https://en.wikipedia.org/wiki/Collatz_conjecture\">here</a>.</i></p>",
-
       "answer": "463",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 8,
-
       "image_link": "",
-
       "content_link": "files/collatz_sequences.txt"
-
     },
-
     {
-
       "title": "Dc0d3 n Xecut3",
-
       "content": "<p>You've intercepted a mysterious piece of encoded text that's believed to hold a secret message.</p><p>eW91cl9jb2RlID0gInByaW50KCdZb3UgY2FuXFwndCBmb29sIG1lJykiCmV4ZWMoeW91cl9jb2RlKQ==</p>The text is encoded using <b>base64</b>, a common method for representing binary data as ASCII characters.</p><p>Your mission, should you choose to accept it, is to write a Python script that decodes the base64 text and executes it to reveal the secret message.</p><p><i>FREE HINT:</i> exec()</p>",
-
       "answer": "You can't fool me",
-
       "original_points": 100,
-
       "type": "short answer",
-
       "question_group": 9,
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
-      "title": "Santa Wuz Hackd",
-
-      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 1:</b> we know the true recipient has left their real name but changed the gift. Who hacked Santa? <b>What is the name of the child who changed their gift?</b></p>",
-
-      "answer": "Abagail",
-
-      "original_points": 100,
-
-      "type": "short answer",
-
-      "question_group": 10,
-
-      "image_link": "",
-
-      "content_link": ""
-
-    },
-
-    {
-
-      "title": "Santa Wuz Hackd",
-
-      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 2:</b> What was the original gift?",
-
-      "answer": "Star Wars Lego Set",
-
-      "original_points": 100,
-
-      "type": "short answer",
-
-      "question_group": 10,
-
-      "image_link": "",
-
-      "content_link": ""
-
-    },
-
-    {
-
       "title": "ISS At 2 Billion Seconds since Epoch",
-
       "content": "<p>What will be the longitude <i>(to the nearest whole number)</i> of the ISS when the clock strikes two billion seconds since Epoch?</p><p>You can find live information about the ISS using an API explained <a href=\"https://wheretheiss.at/w/developer\">here</a>.</p><p>You can find information about Epoch time <a href=\"https://en.wikipedia.org/wiki/Unix_time\">here</a>.</p>",
-
       "answer": "65",
-
       "original_points": 100,
-
       "type": "short answer",
-
-      "question_group": 11,
-
+      "question_group": 10,
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Harry Potter API",
-
       "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 1:</b> What is the total number of characters?</p>",
-
       "answer": "402",
-
       "original_points": 100,
-
       "type": "short answer",
-
-      "question_group": 12,
-
+      "question_group": 11,
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Harry Potter API",
-
       "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 2:</b> How many characters are <i>not</i> Hogwarts students?</p>",
-
       "answer": "301",
-
       "original_points": 100,
-
       "type": "short answer",
-
-      "question_group": 12,
-
+      "question_group": 11,
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
       "title": "Harry Potter API",
-
       "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 3:</b> What is the ratio among Hogwarts staff in terms of house origin?<br><br>Gryffindor:Slytherin:Ravenclaw:Hufflepuff (format example <b>2:3:2:7</b>)</p>",
-
       "answer": "4:3:1:1",
-
       "original_points": 100,
-
       "type": "short answer",
-
+      "question_group": 11,
+      "image_link": "",
+      "content_link": ""
+    },
+    {
+      "title": "Santa Wuz Hackd",
+      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 1:</b> we know the true recipient has left their real name but changed the gift. Who hacked Santa? <b>What is the name of the child who changed their gift?</b></p>",
+      "answer": "Abagail",
+      "original_points": 100,
+      "type": "short answer",
       "question_group": 12,
-
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
-      "title": "Letter Counter Algorithm",
-
-      "content": "<p>If the numbers 1 to 4 are written out in words: one, two, three, four then there are 3+3+5+4 = 15 letters used in total.</p><p>If all the numbers from 1 to 888 (eight hundred and eighty eight) inclusive were written out in words, <b>how many letters would be used?</b></p><p><i>NOTE: Do not count spaces or hyphens. For example,</p><p><ul><li><b>one hundred and fifteen</b> contains 20 letters</li><li><b>forty-two</b> contains 8 letters</li></ul></p><p>The use of 'and' when writing out numbers is in compliance with British usage.</i></p>",
-
-      "answer": "18591",
-
-      "original_points": 100,
-
+      "title": "Santa Wuz Hackd",
+      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 2:</b> What was the original gift (prior to the tampering)?<br>HINT: Its a gift that other children received this year",
+      "answer": "Bicycle",
+      "original_points": 200,
       "type": "short answer",
-
-      "question_group": 13,
-
+      "question_group": 12,
       "image_link": "",
-
       "content_link": ""
-
     },
-
     {
-
-      "title": "The Ultimate Puzzle",
-
-      "content": "<p>Your task is to write a function that will interpret a JSON blob filled with arrays. Each array represents a 10x10 segment of an ASCII image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.</p><p>The final output should be a single 2D array that represents the assembled image, ready for further processing or display.</p><p>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image.</p><p>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json'>files/blocks.json</a></p><p><b>What image do you see in the large puzzle?</b></p>",
-
-      "answer": "g",
-
-      "original_points": 300,
-
-      "type": "mcqs",
-
-      "question_group": 14,
-
-      "option_a": "Rick Sanchez",
-
-      "option_b": "Garfield",
-
-      "option_c": "Eric Cartman",
-
-      "option_d": "Donald Duck",
-
-      "option_e": "Homer Simpson",
-
-      "option_f": "SpongeBob SquarePants",
-
-      "option_g": "Bugs Bunny",
-
-      "option_h": "Buzz Lightyear",
-
-      "option_i": "Mickey Mouse",
-
-      "option_j": "Baymax",
-
-      "image_link": "images/puzzle_code.png",
-
+      "title": "Letter Counter Algorithm",
+      "content": "<p>If the numbers 1 to 4 are written out in words: one, two, three, four then there are 3+3+5+4 = 15 letters used in total.</p><p>If all the numbers from 1 to 888 (eight hundred and eighty eight) inclusive were written out in words, <b>how many letters would be used?</b></p><p><i>NOTE: Do not count spaces or hyphens. For example,</p><p><ul><li><b>one hundred and fifteen</b> contains 20 letters</li><li><b>forty-two</b> contains 8 letters</li></ul></p><p>The use of 'and' when writing out numbers is in compliance with British usage.</i></p>",
+      "answer": "18591",
+      "original_points": 250,
+      "type": "short answer",
+      "question_group": 13,
+      "image_link": "",
       "content_link": ""
-
+    },
+    {
+      "title": "The Ultimate Puzzle",
+      "content": "<p>Your task is to write a function that will interpret a JSON blob filled with arrays. Each array represents a 10x10 segment of an ASCII image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.</p><p>The final output should be a single 2D array that represents the assembled image, ready for further processing or display.</p><p>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image.</p><p>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json'>files/blocks.json</a></p><p><b>What image do you see in the large puzzle?</b></p>",
+      "answer": "g",
+      "original_points": 250,
+      "type": "mcqs",
+      "question_group": 14,
+      "option_a": "Rick Sanchez",
+      "option_b": "Garfield",
+      "option_c": "Eric Cartman",
+      "option_d": "Donald Duck",
+      "option_e": "Homer Simpson",
+      "option_f": "SpongeBob SquarePants",
+      "option_g": "Bugs Bunny",
+      "option_h": "Buzz Lightyear",
+      "option_i": "Mickey Mouse",
+      "option_j": "Baymax",
+      "image_link": "images/puzzle_code.png",
+      "content_link": ""
     }
-
   ]
-
 }
