@@ -201,7 +201,7 @@
     },
     {
       "title": "Twins But Not the Same",
-      "content": "<p>You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message.</p><p><ul><li><a href='files/twin1.txt'>twin1.txt</a><li><a href='files/twin2.txt'>twin2.txt</a></ul></p><p><b>Enter the secret message below.</b></p> ",
+      "content": "<p>You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message.</p><p><ul><li><a href='files/twin1.txt'>twin1.txt</a><li><a href='files/twin2.txt'>twin2.txt</a></ul></p><p><b>Enter the secret message below. </b></p>HINT: 6 letters in total ",
       "answer": "yesvcc",
       "original_points": 100,
       "type": "short answer",
@@ -211,12 +211,12 @@
     },
     {
       "title": "Bitcoin Billionaire",
-      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, what value should you enter to guarantee that you will have 2000 dollars?</p><a href = 'https://replit.com/@vcchallenge/bitcoin#main.py'>REPL link</a>",
+      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $2000?</p><a href = 'https://replit.com/@vcchallenge/bitcoin#main.py'>REPL link</a>",
       "answer": "-1000",
       "original_points": 100,
       "type": "short answer",
       "question_group": 15,
-      "image_link": "",
+      "image_link": "images/your_input.png",
       "content_link": "files/bitcoin.py"
     },
     {
@@ -324,7 +324,7 @@
       "original_points": 100,
       "type": "short answer",
       "question_group": 22,
-      "image_link": "",
+      "image_link": "images/gift_hash.png",
       "content_link": ""
     },
     {
@@ -334,7 +334,7 @@
       "original_points": 200,
       "type": "short answer",
       "question_group": 22,
-      "image_link": "",
+      "image_link": "images/gift_hash.png",
       "content_link": ""
     },
     {
