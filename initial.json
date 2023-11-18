@@ -326,12 +326,12 @@
       "content_link": ""
     },
     {
-      "title": "ISS At 2 Billion Seconds since Epoch",
-      "content": "<p>What will be the longitude <i>(to the nearest whole number)</i> of the ISS when the clock strikes two billion seconds since Epoch?</p><p>You can find live information about the ISS using an API explained <a href=\"https://wheretheiss.at/w/developer\">here</a>.</p><p>You can find information about Epoch time <a href=\"https://en.wikipedia.org/wiki/Unix_time\">here</a>.</p><br>HINT AVAILABLE",
-      "answer": "-168.5",
+      "title": "Finding Python's RGB Value",
+      "content": "<p>The API endpoint <a href='https://wakatime.com/api/v1/program_languages'>https://wakatime.com/api/v1/program_languages</a> lists 756 Programming languages, each with a unique colour. Your task is to find the exact RGB value associated with the Python language.</p><p>An example colour representation for pink is: rgb(255, 192, 203).</p><p><b>Question:</b> What is the RGB value for Python?</p><p>HINT AVAILABLE</p>",
+      "answer": "rgb(53, 114, 165)",
       "original_points": 100,
       "type": "short answer",
-      "question_group": 20,
+      "question_group": 16,
       "image_link": "",
       "content_link": ""
     },
