@@ -33,7 +33,7 @@
     {
       "title": "A Colourful Conundrum",
       "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import turtle\n\nt = turtle.Turtle()\nt.color(\"blue\")\nt.forward(100)\nt.color(\"red\")\nt.backward(100)\n\n# What color is the line drawn by the turtle?</code></pre><p>Predict the color of the line:</p>",
-      "answer": "d",
+      "answer": "b",
       "original_points": 50,
       "type": "mcqs",
       "question_group": 3,
@@ -119,6 +119,22 @@
       "content_link": ""
     },
     {
+      "title": "Python Scope is Interesting",
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">a = \"\"\n\ndef my_function():\n    a = \"I exist!\"\n\nb= \"\"\n\nfor i in range(10):\n    b = \"me too\"\n\nprint(a, b)\n</code></pre></br><p>Predict the output of this program:</p>",
+      "answer": "b",
+      "original_points": 50,
+      "type": "mcqs",
+      "question_group": 9,
+      "option_a": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">I exist! me too</code></pre>",
+      "option_b": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">me too</code></pre>",
+      "option_c": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">I exist!</code></pre>",
+      "option_d": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">Variable does not exist error</code></pre>",
+      "option_e": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">Indentation error</code></pre>",
+      "option_f": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">'Nothing is printed'</code></pre>",
+      "image_link": "",
+      "content_link": ""
+    },
+    {
       "title": "Functions Functioning and Stuff",
       "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">def func(x, l=[]):\n    for i in range(x):\n        l.append(i*i)\n    return l\n\nprint(func(3))</code></pre></br><p>Predict the output of this program:</p>",
       "answer": "a",
@@ -190,8 +206,8 @@
       "content_link": ""
     },
     {
-      "title": "APIs Guessing Name Origins",
-      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import requests\n\n# Making an API call to guess the nationality based on a name\n\nurl = 'https://api.nationalize.io/?name=Bob'\n\nresponse = requests.get(url)\n\ndata = response.json()\n\n# Attempt to print the 'count' value from the response\nprint(data[\"count\"])</code></pre><p>Based on the code provided, what is the value printed?</p>",
+      "title": "APIs store data about random stuff (like name origins)",
+      "content": "<pre class=\"line-numbers code-block\" oncopy=\"preventCopy(event)\"><code class=\"language-python\">import requests\n\n# Making an API call to guess the nationality based on a name\n\nurl = 'https://api.nationalize.io/?name=Bob'\n\nresponse = requests.get(url)\n\ndata = response.json()\n\n# Attempt to print the 'count' value from the response\nprint(data[\"count\"])</code></pre><p>The code should reveal how many entries of 'Bob' in the API database, and the numbers is?</p>",
       "answer": "e",
       "original_points": 75,
       "type": "mcqs",
@@ -243,7 +259,7 @@
     },
     {
       "title": "Bitcoin Billionaire",
-      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $2000?</p><a href = 'https://replit.com/@vcchallenge/bitcoin#main.py'>REPL link</a><br>HINT AVAILABLE",
+      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $2000?</p><a href = 'https://replit.com/@SanjinDedic/btcBillionaire#main.py'>REPL link</a><br>HINT AVAILABLE",
       "answer": "-1000",
       "original_points": 100,
       "type": "short answer",
