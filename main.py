@@ -287,14 +287,15 @@ async def quick_signup(team: TeamSignUp,a: Admin):
         return {"status": "failed", "message": "Admin credentials are wrong"}
     else:
         try:
-            team_color = random_color()
+            team_color = "rgb(222,156,223)"
             existing_team = execute_db_query("SELECT * FROM teams WHERE name = ? AND password = ?", (team.name,team.password,), fetchone=True)
             if existing_team is not None:
                 return {"status":"failed", "message": "Team already exists"}
             
             execute_db_query("INSERT INTO teams (name, password, score, color) VALUES (?, ?, ?, ?)", (team.name,team.password,0,team_color))
             
-            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.name,0,0,0,0,0))
+            
+            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.name,0,0,0,0))
 
             return {"status": "success", "message": "Team has been added"}
         
