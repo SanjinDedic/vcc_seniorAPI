@@ -249,7 +249,7 @@
     },
     {
       "title": "Twins But Not the Same",
-      "content": "<p>You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message.</p><p><ul><li><a href='files/twin1.txt'>twin1.txt</a><li><a href='files/twin2.txt'>twin2.txt</a></ul></p><p><b>Enter the secret message below. </b></p>HINT: 6 letters in total ",
+      "content": "<p>You have in hand two copies of Romeo And Juliet They are 99.99% identical and yet the difference between them will yield a secret message.</p><p><ul><li><a href='files/twin1.txt' target = '_blank'>twin1.txt</a><li><a href='files/twin2.txt' target = '_blank'>twin2.txt</a></ul></p><p><b>Enter the secret message below. </b></p>HINT: 6 letters in total ",
       "answer": "yesvcc",
       "original_points": 100,
       "type": "short answer",
@@ -259,7 +259,7 @@
     },
     {
       "title": "Bitcoin Billionaire",
-      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $2000?</p><a href = 'https://replit.com/@SanjinDedic/btcBillionaire#main.py'>REPL link</a><br>HINT AVAILABLE",
+      "content": "<p>The program below is a bitcoin exchange with real prices.</p><p>If you select the <b>buy</b> option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $2000?</p><a href = 'https://replit.com/@SanjinDedic/btcBillionaire#main.py' target = '_blank'>REPL link</a><br>HINT AVAILABLE",
       "answer": "-1000",
       "original_points": 100,
       "type": "short answer",
@@ -307,7 +307,7 @@
     },
     {
       "title": "Collatz Imposter",
-      "content": "<p>In the file below you have Collatz sequences for the first 1000 numbers.<p><p>The sequence for one number is wrong. <b>Which number is that?</b></p><p><i>Learn about the Collatz conjecture <a href=\"https://en.wikipedia.org/wiki/Collatz_conjecture\">here</a>.</i></p><br>HINT AVAILABLE",
+      "content": "<p>In the file below you have Collatz sequences for the first 1000 numbers.<p><p>The sequence for one number is wrong. <b>Which number is that?</b></p><p><i>Learn about the Collatz conjecture <a href=\"https://en.wikipedia.org/wiki/Collatz_conjecture\" target = '_blank'>here</a>.</i></p><br>HINT AVAILABLE",
       "answer": "463",
       "original_points": 100,
       "type": "short answer",
@@ -327,7 +327,7 @@
     },
     {
       "title": "Finding Python's RGB Value",
-      "content": "<p>The API endpoint <a href='https://wakatime.com/api/v1/program_languages'>https://wakatime.com/api/v1/program_languages</a> lists 756 Programming languages, each with a unique colour. Your task is to find the exact RGB value associated with the Python language.</p><p>An example colour representation for pink is: rgb(255, 192, 203).</p><p><b>Question:</b> What is the RGB value for Python?</p><p>HINT AVAILABLE</p>",
+      "content": "<p>The API endpoint <a href='https://wakatime.com/api/v1/program_languages' target = '_blank'>https://wakatime.com/api/v1/program_languages</a> lists 756 Programming languages, each with a unique colour. Your task is to find the exact RGB value associated with the Python language.</p><p>An example colour representation for pink is: rgb(255, 192, 203).</p><p><b>Question:</b> What is the RGB value for Python?</p><p>HINT AVAILABLE</p>",
       "answer": "rgb(53, 114, 165)",
       "original_points": 100,
       "type": "short answer",
@@ -337,7 +337,7 @@
     },
     {
       "title": "Harry Potter API",
-      "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 1:</b> What is the total number of characters?</p><br>HINT AVAILABLE",
+      "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br><a href = 'https://hp-api.onrender.com/api/characters' target = '_blank'>https://hp-api.onrender.com/api/characters</a></p><p>Now answer the following questions.</p><p><b>Part 1:</b> What is the total number of characters?</p><br>HINT AVAILABLE",
       "answer": "402",
       "original_points": 100,
       "type": "short answer",
@@ -347,7 +347,7 @@
     },
     {
       "title": "Harry Potter API",
-      "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 2:</b> How many characters are <i>not</i> Hogwarts students?</p>",
+      "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br><a href = 'https://hp-api.onrender.com/api/characters' target = '_blank'>https://hp-api.onrender.com/api/characters</a></p><p>Now answer the following questions.</p><p><b>Part 2:</b> How many characters are <i>not</i> Hogwarts students?</p>",
       "answer": "301",
       "original_points": 100,
       "type": "short answer",
@@ -357,7 +357,7 @@
     },
     {
       "title": "Harry Potter API",
-      "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br>https://hp-api.onrender.com/api/characters</p><p>Now answer the following questions.</p><p><b>Part 3:</b> What is the ratio among Hogwarts staff in terms of house origin?<br><br>Gryffindor:Slytherin:Ravenclaw:Hufflepuff (format example <b>2:3:2:7</b>)</p>",
+      "content": "<p>This API endpoint below will give you a complete list of all the characters from the Harry Potter series.<br><a href = 'https://hp-api.onrender.com/api/characters' target = '_blank'>https://hp-api.onrender.com/api/characters</a></p><p>Now answer the following questions.</p><p><b>Part 3:</b> What is the ratio among Hogwarts staff in terms of house origin?<br><br>Gryffindor:Slytherin:Ravenclaw:Hufflepuff (format example <b>2:3:2:7</b>)</p>",
       "answer": "4:3:1:1",
       "original_points": 100,
       "type": "short answer",
@@ -367,7 +367,7 @@
     },
     {
       "title": "Santa Wuz Hackd",
-      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 1:</b> we know the true recipient has left their real name but changed the gift. Who hacked Santa? <b>What is the name of the child who changed their gift?</b></p><br>HINT AVAILABLE",
+      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\" target = '_blank'>tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 1:</b> we know the true recipient has left their real name but changed the gift. Who hacked Santa? <b>What is the name of the child who changed their gift?</b></p><br>HINT AVAILABLE",
       "answer": "Abagail",
       "original_points": 100,
       "type": "short answer",
@@ -377,7 +377,7 @@
     },
     {
       "title": "Santa Wuz Hackd",
-      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\">tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 2:</b> What was the original gift (prior to the tampering)?<br>HINT: Its a gift that other children received this year",
+      "content": "<p>Santa's Delivery plans are in jeopardy! An imposter is trying to change one of the gifts on Santa's list.</p><p>Each entry on Santa's List contains a child's name, their address, a designated gift, and an MD5 hash. The hash should match the address and gift concatenated with a space in between.</p><p>Here is Santas tampered gift list: <a href=\"files/tampered_gift_list.txt\" target = '_blank'>tampered_gift_list.txt</a></p><p>Your task is to identify which list entry was tampered with. Among the 500 entries, find the one where the MD5 hash does not match the combined address and gift. This entry has been tampered with and points to the imposter.</p><p><b>Part 2:</b> What was the original gift (prior to the tampering)?<br>HINT: Its a gift that other children received this year",
       "answer": "Bicycle",
       "original_points": 200,
       "type": "short answer",
@@ -397,7 +397,7 @@
     },
     {
       "title": "The Ultimate Puzzle",
-      "content": "<p>Your task is to write a function that will interpret a JSON blob filled with arrays. Each array represents a 10x10 segment of an ASCII image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.</p><p>The final output should be a single 2D array that represents the assembled image, ready for further processing or display.</p><p>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image.</p><p>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json'>files/blocks.json</a></p><p><b>What image do you see in the large puzzle?</b></p>",
+      "content": "<p>Your task is to write a function that will interpret a JSON blob filled with arrays. Each array represents a 10x10 segment of an ASCII image, and the coordinates in the keys indicate the segment's placement on the final image grid. The challenge is to correctly position each piece according to its coordinates and then display the image as a whole.</p><p>The final output should be a single 2D array that represents the assembled image, ready for further processing or display.</p><p>Keep in mind that the coordinates are given in the format (row, column), where (0, 0) would be the top-left corner of the image.</p><p>Here is a practice JSON blob which should be reassembled to spell VCC: <a href='files/vcc.json'  target = '_blank'>files/vcc.json</a><br>Here is the large puzzle: <a href='files/blocks.json' target = '_blank'>files/blocks.json</a></p><p><b>What image do you see in the large puzzle?</b></p>",
       "answer": "g",
       "original_points": 250,
       "type": "mcqs",
