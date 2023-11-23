@@ -297,8 +297,8 @@
     },
     {
       "title": "One Link to Take You Home",
-      "content": "<p>Only one of these 200 links will bring you back to vccfinal.com.</p><p><b>Which link is it?</b></p><p><i>HINT: Use Python requests.</i></p>",
-      "answer": "https://bit.ly/LRlRBWh9miTYGIn10VAE",
+      "content": "<p>Only one of these 50 links will bring you back to vccfinal.com.</p><p><b>Which link is it?</b></p><p><i>HINT: Use Python requests.</i></p>",
+      "answer": "https://bit.ly/25jLdyPQhNQv7Wol657R",
       "original_points": 100,
       "type": "short answer",
       "question_group": 17,
