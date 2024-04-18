@@ -4,13 +4,21 @@ import random
 import sqlite3
 from datetime import datetime
 from difflib import SequenceMatcher
-from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends,Body
+from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends ,Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import json
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import jwt, JWTError
+from datetime import datetime, timedelta
+
 
 CURRENT_DB="initial.db"
+SECRET_KEY = "VCC2023LOGIN"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 class TeamSignUp(BaseModel):
     name: str
@@ -19,8 +27,6 @@ class TeamSignUp(BaseModel):
 class Answer(BaseModel):
     id: str
     answer: str
-    team_name: str
-    team_password: str
 
 class Admin(BaseModel):
     admin_password: str
@@ -115,6 +121,23 @@ def update_attempted_questions(name: str, question_id: str, solved: bool):
         params=(name, question_id, datetime.now(), solved)
     )
 
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    expire = datetime.now() + expires_delta if expires_delta else datetime.now() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        team_name: str = payload.get("sub")
+        if team_name is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return team_name
+
 @app.get("/get_comp_table")
 async def get_comp_table():
     status = execute_db_query(f"""
@@ -171,11 +194,9 @@ async def manual_questions(admin_password:str):
         
         return teams
 
-@app.get("/questions/{team_name}/{team_password}")
-async def get_questions(team_name : str,team_password : str):
-    if not team_name or not team_password:
-        return False
-    result = execute_db_query("SELECT * FROM teams WHERE name = ? and password = ?",(team_name,team_password,))
+@app.get("/questions")
+async def get_questions(team_name: str = Depends(get_current_user)):
+    result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
         return {"status": "failed", "message": "Team credentials are wrong"}
     
@@ -226,51 +247,48 @@ async def get_questions(team_name : str,team_password : str):
         return {"questions": "Error"}
 
 @app.post("/submit_mcqs_answer")
-async def submit_answer_mcqs(a: Answer):
-    if not a.team_name or not a.team_password:
-        return False
-    result = execute_db_query("SELECT * FROM teams WHERE name = ? and password = ?",(a.team_name,a.team_password,))
+async def submit_answer_mcqs(a: Answer, team_name: str = Depends(get_current_user)):
+    result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
         return {"status": "failed", "message": "Team credentials are wrong"}
     
     #check if team and question in attempted_questions table if not return error
-    existing = execute_db_query("SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (a.team_name, a.id,), fetchone=True)
+    existing = execute_db_query("SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (team_name, a.id,), fetchone=True)
     if existing:
         return {"message": "Question already attempted"}
     try:
         correct_ans, question_pts = get_question(id=a.id)
         is_correct = a.answer == correct_ans
         if is_correct:
-            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
-            update_team(name=a.team_name, points=question_pts)
+            update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
+            update_team(name=team_name, points=question_pts)
             decrement_question_points(question_id=a.id)
             return {"message": "Correct"}  
-        update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
+        update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
         return {"message": "Incorrect"}
     
     except Exception as e:
         return {"message":"An error occurred when submitting the answer."}
 
 @app.post("/submit_sa_answer")
-async def submit_answer_sa(a: Answer):
-    if not a.team_name or not a.team_password:
-        return False
-    result = execute_db_query("SELECT * FROM teams WHERE name = ? and password = ?",(a.team_name,a.team_password,))
+async def submit_answer_sa(a: Answer, team_name: str = Depends(get_current_user)):
+    result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
         return {"status": "failed", "message": "Team credentials are wrong"}
     
     try:
         correct_ans, question_pts = get_question(id=a.id)
-        attempts_made = get_attempts_count(team_name=a.team_name,id=a.id)
+        attempts_made = get_attempts_count(team_name=team_name,id=a.id)
         if attempts_made >= 3:
             return {"message": "No attempts left"}
         is_correct = a.answer == correct_ans or similar(correct_ans, a.answer)
         if is_correct:
-            update_team(name=a.team_name, points=question_pts)
-            update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
+            update_team(name=team_name, points=question_pts)
+            update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
             decrement_question_points(question_id=a.id)
             return {"message": "Correct"}
-        update_attempted_questions(name=a.team_name, question_id=a.id, solved=is_correct)
+        
+        update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
         if attempts_made < 2: # attempts was already incremented in update_attempted_questions
             return {"message": "Try again"}
         else:
@@ -396,8 +414,12 @@ async def team_login(user: Team):
     try:
         result = execute_db_query("SELECT password FROM teams WHERE name=?",(user.team_name,))
         if result and result[0][0]==user.password:
-
-            return {"status": "success", "message": "Logged in successfully"}
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token = create_access_token(
+                data={"sub": Team.team_name}, 
+                expires_delta=access_token_expires
+            )
+            return {"access_token": access_token, "token_type": "bearer"}
         else:
             return {"status": "failed", "message": "No team found with these credentials"}
             
