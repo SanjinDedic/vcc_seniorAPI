@@ -13,8 +13,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
 
-
-CURRENT_DB="initial.db"
+CURRENT_DIR = os.path.dirname(__file__)
+CURRENT_DB = os.path.join(CURRENT_DIR, "initial.db")
 SECRET_KEY = "VCC2023LOGIN"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
@@ -120,6 +120,11 @@ def update_attempted_questions(name: str, question_id: str, solved: bool):
         f"INSERT INTO attempted_questions VALUES (?, ?, ?, ?)",
         params=(name, question_id, datetime.now(), solved)
     )
+
+def initial_reset():
+    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
+        initial_data = json.load(f)
+    create_database(initial_data)
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -343,7 +348,7 @@ async def set_json(filename: str,a: Admin):
         return {"status": "failed", "message": "Admin credentials are wrong"}
     else:
         if filename:
-            CURRENT_DB=f"{filename[:-5]}.db"
+            CURRENT_DB=os.path.join(CURRENT_DIR, f"{filename[:-5]}.db")
             return {"status": "success", "message": "Database updated!"}
         else:
             return {"status": "failed", "message": "Wrong file selected!"}
@@ -485,7 +490,7 @@ async def upload_database(admin_password:str,file: UploadFile = File(...)):
                     
                 file_location = os.path.join("json", file.filename)
                 if os.path.exists(file_location):
-                    CURRENT_DB = f"{file.filename[0:-5]}.db"
+                    CURRENT_DB = os.path.join(CURRENT_DIR, f"{file.filename[0:-5]}.db")
                     return {"status": "error", "message": f"File '{file.filename}' already uploaded!"}
                 
                 content = file.file.read()
@@ -494,7 +499,7 @@ async def upload_database(admin_password:str,file: UploadFile = File(...)):
                     file_object.write(content)
                     
                 data = json.loads(content)
-                CURRENT_DB = f"{file.filename[0:-5]}.db"
+                CURRENT_DB = os.path.join(CURRENT_DIR, f"{file.filename[0:-5]}.db")
                 
                 # Call create_database function
                 create_database(data)
@@ -507,7 +512,7 @@ async def upload_database(admin_password:str,file: UploadFile = File(...)):
 
 
 def create_database(data):
-    db_file_path = f"{CURRENT_DB}"
+    db_file_path = os.path.join(CURRENT_DIR, f"{CURRENT_DB}")
 
     # Delete the database file if it already exists
     if os.path.exists(db_file_path):
@@ -603,10 +608,14 @@ def create_database(data):
                     question.get('content_link', None)
                 )
             )
-        with open('teams.json', 'r') as file:
+        teams_json_path = os.path.join(CURRENT_DIR, 'teams.json')
+        colors_json_path = os.path.join(CURRENT_DIR, 'colors.json')
+
+        with open(teams_json_path, 'r') as file:
             data = json.load(file)
             teams_list = data['teams']
-        with open('colors.json', 'r') as file:
+
+        with open(colors_json_path, 'r') as file:
             data = json.load(file)
             color_list = data["colors"]*5
         for team in teams_list:
