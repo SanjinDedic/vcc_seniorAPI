@@ -1,4 +1,6 @@
 from fastapi.testclient import TestClient
+import os,sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from main import app
 
 client = TestClient(app)
@@ -29,12 +31,12 @@ def test_submit_answer_mcqs_incorrect():
 
 def test_submit_sa_answer_correct():
     
-    response = client.post("/submit_sa_answer", json={"id": "22", "answer": "Bicyle"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/submit_sa_answer", json={"id": "18", "answer": "yesvcc"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"message": "Correct"}
 
 def test_submit_sa_answer_mcqs_incorrect():
 
-    response = client.post("/submit_sa_answer", json={"id": "23", "answer": "b"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/submit_sa_answer", json={"id": "22", "answer": "b"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"message": "Incorrect"}
+    assert response.json() == {"message": "Try again"}
