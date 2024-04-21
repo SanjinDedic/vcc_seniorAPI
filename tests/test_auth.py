@@ -1,0 +1,24 @@
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
+
+
+def test_admin_login():
+    response = client.post("/admin_login", json={"admin_password": "BOSSMAN"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "success"}
+
+    response = client.post("/admin_login", json={"admin_password": "WRONGPASS"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Admin credentials are wrong"}
+
+
+def test_team_login():
+    response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "ighEMkOP"})
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+
+    response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "wrongpass"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "No team found with these credentials"}

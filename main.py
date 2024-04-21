@@ -20,9 +20,6 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
-class TeamSignUp(BaseModel):
-    name: str
-    password: str
 
 class Answer(BaseModel):
     id: str
@@ -303,7 +300,7 @@ async def submit_answer_sa(a: Answer, team_name: str = Depends(get_current_user)
         
 
 @app.post("/team_signup/")
-async def quick_signup(team: TeamSignUp,a: Admin):
+async def quick_signup(team: Team,a: Admin):
     if not a.admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
     if a.admin_password != "BOSSMAN":
@@ -311,14 +308,14 @@ async def quick_signup(team: TeamSignUp,a: Admin):
     else:
         try:
             team_color = "rgb(222,156,223)"
-            existing_team = execute_db_query("SELECT * FROM teams WHERE name = ? AND password = ?", (team.name,team.password,), fetchone=True)
+            existing_team = execute_db_query("SELECT * FROM teams WHERE name = ? AND password = ?", (team.team_name,team.password,), fetchone=True)
             if existing_team is not None:
                 return {"status":"failed", "message": "Team already exists"}
             
-            execute_db_query("INSERT INTO teams (name, password, score, color) VALUES (?, ?, ?, ?)", (team.name,team.password,0,team_color))
+            execute_db_query("INSERT INTO teams (name, password, score, color) VALUES (?, ?, ?, ?)", (team.team_name,team.password,0,team_color))
             
             
-            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.name,0,0,0,0))
+            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.team_name,0,0,0,0))
 
             return {"status": "success", "message": "Team has been added"}
         
@@ -421,7 +418,7 @@ async def team_login(user: Team):
         if result and result[0][0]==user.password:
             access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
             access_token = create_access_token(
-                data={"sub": Team.team_name}, 
+                data={"sub": user.team_name}, 
                 expires_delta=access_token_expires
             )
             return {"access_token": access_token, "token_type": "bearer"}
