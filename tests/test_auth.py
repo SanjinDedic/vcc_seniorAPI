@@ -15,6 +15,9 @@ def test_admin_login():
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "Admin credentials are wrong"}
 
+    response = client.post("/admin_login", json={"adminpassword": "WRONGPASS"})
+    assert response.status_code == 422
+    
 
 def test_team_login():
     response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "ighEMkOP"})
@@ -24,3 +27,7 @@ def test_team_login():
     response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "wrongpass"})
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "No team found with these credentials"}
+
+    response = client.post("/team_login", json={"team": "BrunswickSC1", "password": "wrongpass"})
+    assert response.status_code == 422
+    
