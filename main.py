@@ -298,6 +298,22 @@ async def submit_answer_sa(a: Answer, team_name: str = Depends(get_current_user)
     except Exception as e:
         return {"message":"An error occurred when submitting the answer."}
         
+@app.post("/team_login")
+async def team_login(user: Team):
+    try:
+        result = execute_db_query("SELECT password FROM teams WHERE name=?",(user.team_name,))
+        if result and result[0][0]==user.password:
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token = create_access_token(
+                data={"sub": user.team_name}, 
+                expires_delta=access_token_expires
+            )
+            return {"access_token": access_token, "token_type": "bearer"}
+        else:
+            return {"status": "failed", "message": "No team found with these credentials"}
+            
+    except Exception as e:
+         return {"status": "failed", "message": "Server error"}
 
 @app.post("/team_signup/")
 async def quick_signup(team: Team,a: Admin):
@@ -335,7 +351,7 @@ async def list_json_files(admin_password:str):
         except Exception as e:
             return {"status": "error", "message": str(e)}
 
-   
+
 @app.post("/set_json/")
 async def set_json(filename: str,a: Admin):
     global CURRENT_DB
@@ -407,26 +423,10 @@ async def reset_questions_score(a: Admin):
             return {"status": "failed", "message": "Admin credentials are wrong"}
         else:
             reset_question_points()
-            return {"status": "success", "message": "Questions scores have been reset. "}
+            return {"status": "success", "message": "Questions scores have been reset."}
     except Exception as e:
         return {"status": "failed", "message": "Cannot reset due to an error"}
     
-@app.post("/team_login")
-async def team_login(user: Team):
-    try:
-        result = execute_db_query("SELECT password FROM teams WHERE name=?",(user.team_name,))
-        if result and result[0][0]==user.password:
-            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-            access_token = create_access_token(
-                data={"sub": user.team_name}, 
-                expires_delta=access_token_expires
-            )
-            return {"access_token": access_token, "token_type": "bearer"}
-        else:
-            return {"status": "failed", "message": "No team found with these credentials"}
-            
-    except Exception as e:
-         return {"status": "failed", "message": "Server error"}
 
 @app.post("/admin_login")
 async def admin_login(a: Admin):
@@ -472,7 +472,7 @@ async def update_manual_score(data: TeamsInput,a: Admin):
 
 
 @app.post("/upload/{admin_password}")
-async def upload_database(admin_password:str,file: UploadFile = File(...)):
+async def upload_database(admin_password:str,file: UploadFile = File(None)):
     global CURRENT_DB
     if not admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
