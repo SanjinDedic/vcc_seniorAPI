@@ -628,6 +628,10 @@ def create_database(data):
         logging.error("An error occurred when creating the database", exc_info=True)
         raise e
 
+## Test endpoint with a custom message
+@app.get("/version_test")
+async def version_test():
+    return {"message": "2024 1.0.0"}
 
 if __name__ == "__main__":
     with open('initial.json', 'r') as f:
