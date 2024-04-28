@@ -624,4 +624,4 @@ def create_database(data):
 ## Test endpoint with a custom message
 @router.get("/version_test")
 async def version_test():
-    return {"message": "2024 1.0.3"}
+    return {"message": "2024 1.0.5"}
