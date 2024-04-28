@@ -631,7 +631,7 @@ def create_database(data):
 ## Test endpoint with a custom message
 @app.get("/version_test")
 async def version_test():
-    return {"message": "2024 1.0.1"}
+    return {"message": "2024 1.0.2"}
 
 if __name__ == "__main__":
     with open('initial.json', 'r') as f:
