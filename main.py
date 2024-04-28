@@ -4,18 +4,23 @@ import random
 import sqlite3
 from datetime import datetime
 from difflib import SequenceMatcher
-from fastapi import APIRouter, UploadFile, Request, HTTPException, status, File, Query, Depends, Body
+from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends ,Body
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 from pydantic import BaseModel
 from typing import List
 import json
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 CURRENT_DIR = os.path.dirname(__file__)
 CURRENT_DB = os.path.join(CURRENT_DIR, "initial.db")
-SECRET_KEY = "VCC2023LOGIN"
+SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
@@ -45,7 +50,15 @@ class TeamScores(BaseModel):
 class TeamsInput(BaseModel):
     teams: List[TeamScores]
 
-router = APIRouter()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
+        initial_data = json.load(f)
+    create_database(initial_data)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://localhost",
@@ -55,6 +68,13 @@ origins = [
     "http://172.21.80.1"
 ]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Database function
 def execute_db_query(query, params=(), fetchone=False, db=None):
@@ -111,10 +131,6 @@ def update_attempted_questions(name: str, question_id: str, solved: bool):
         params=(name, question_id, datetime.now(), solved)
     )
 
-def initial_reset():
-    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
-        initial_data = json.load(f)
-    create_database(initial_data)
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -133,7 +149,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Invalid token")
     return team_name
 
-@router.get("/get_comp_table")
+
+@app.get("/get_comp_table")
 async def get_comp_table():
     status = execute_db_query(f"""
         SELECT 
@@ -165,7 +182,7 @@ async def get_comp_table():
     
     return {"teams": teams}
 
-@router.get("/manual_questions/{admin_password}")
+@app.get("/manual_questions/{admin_password}")
 async def manual_questions(admin_password:str):
     if not admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
@@ -189,7 +206,7 @@ async def manual_questions(admin_password:str):
         
         return teams
 
-@router.get("/questions")
+@app.get("/questions")
 async def get_questions(team_name: str = Depends(get_current_user)):
     result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
@@ -241,7 +258,7 @@ async def get_questions(team_name: str = Depends(get_current_user)):
     else:
         return {"questions": "Error"}
 
-@router.post("/submit_mcqs_answer")
+@app.post("/submit_mcqs_answer")
 async def submit_answer_mcqs(a: Answer, team_name: str = Depends(get_current_user)):
     result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
@@ -265,7 +282,7 @@ async def submit_answer_mcqs(a: Answer, team_name: str = Depends(get_current_use
     except Exception as e:
         return {"message":"An error occurred when submitting the answer."}
 
-@router.post("/submit_sa_answer")
+@app.post("/submit_sa_answer")
 async def submit_answer_sa(a: Answer, team_name: str = Depends(get_current_user)):
     result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
@@ -291,7 +308,7 @@ async def submit_answer_sa(a: Answer, team_name: str = Depends(get_current_user)
     except Exception as e:
         return {"message":"An error occurred when submitting the answer."}
         
-@router.post("/team_login")
+@app.post("/team_login")
 async def team_login(user: Team):
     try:
         result = execute_db_query("SELECT password FROM teams WHERE name=?",(user.team_name,))
@@ -308,7 +325,7 @@ async def team_login(user: Team):
     except Exception as e:
          return {"status": "failed", "message": "Server error"}
 
-@router.post("/team_signup/")
+@app.post("/team_signup/")
 async def quick_signup(team: Team,a: Admin):
     if not a.admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
@@ -331,7 +348,7 @@ async def quick_signup(team: Team,a: Admin):
         except Exception as e:   
             return {"status":"failed", "message": "Error occured"}
         
-@router.get("/json-files/{admin_password}")
+@app.get("/json-files/{admin_password}")
 async def list_json_files(admin_password:str):
     if not admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
@@ -345,7 +362,7 @@ async def list_json_files(admin_password:str):
             return {"status": "error", "message": str(e)}
 
 
-@router.post("/set_json/")
+@app.post("/set_json/")
 async def set_json(filename: str,a: Admin):
     global CURRENT_DB
     if not a.admin_password:
@@ -359,7 +376,7 @@ async def set_json(filename: str,a: Admin):
         else:
             return {"status": "failed", "message": "Wrong file selected!"}
 
-@router.post("/reset_rankings/")
+@app.post("/reset_rankings/")
 async def reset_team_data(team_name: str = Query(None, description="The name of the team to reset. If not provided, all teams will be reset."),a: Admin = Body(..., embed=True)):
     try:
         if not a.admin_password:
@@ -407,7 +424,7 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
     except Exception as e:
         return {"status": "failed", "message": "Cannot reset due to an error"}
 
-@router.post("/reset_questions_score/")
+@app.post("/reset_questions_score/")
 async def reset_questions_score(a: Admin):
     try:
         if not a.admin_password:
@@ -421,7 +438,7 @@ async def reset_questions_score(a: Admin):
         return {"status": "failed", "message": "Cannot reset due to an error"}
     
 
-@router.post("/admin_login")
+@app.post("/admin_login")
 async def admin_login(a: Admin):
     if not a.admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
@@ -432,7 +449,7 @@ async def admin_login(a: Admin):
 
 
 
-@router.post("/update_manual_score/")
+@app.post("/update_manual_score/")
 async def update_manual_score(data: TeamsInput,a: Admin):
     if not a.admin_password:
         return {"status": "failed", "message": "Admin credentials are wrong"}
@@ -464,7 +481,7 @@ async def update_manual_score(data: TeamsInput,a: Admin):
             return {"status": "failed"}
 
 
-@router.post("/upload/{admin_password}")
+@app.post("/upload/{admin_password}")
 async def upload_database(admin_password:str,file: UploadFile = File(None)):
     global CURRENT_DB
     if not admin_password:
@@ -621,7 +638,3 @@ def create_database(data):
         logging.error("An error occurred when creating the database", exc_info=True)
         raise e
 
-## Test endpoint with a custom message
-@router.get("/version_test")
-async def version_test():
-    return {"message": "2024 1.0.6"}
