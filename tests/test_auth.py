@@ -9,7 +9,7 @@ client = TestClient(app)
 def test_admin_login():
     response = client.post("/admin_login", json={"admin_password": "BOSSMAN"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success"}
+    assert "access_token" in response.json()
 
     response = client.post("/admin_login", json={"admin_password": "WRONGPASS"})
     assert response.status_code == 200
@@ -30,4 +30,8 @@ def test_team_login():
 
     response = client.post("/team_login", json={"team": "BrunswickSC1", "password": "wrongpass"})
     assert response.status_code == 422
+
+    response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": ""})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Team credentials are empty"}
     

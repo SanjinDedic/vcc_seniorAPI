@@ -1,32 +1,16 @@
-import logging
 import os
-import random
-import sqlite3
-from datetime import datetime
 from difflib import SequenceMatcher
 from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends ,Body
-from database import lifespan, execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database
+from database import execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database
 from models import Answer, Admin, Team, Score, TeamScores, TeamsInput
-from auth import create_access_token, get_current_user, verify_password
+from auth import create_access_token, get_current_user, verify_password, get_password_hash
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from pydantic import BaseModel
-from typing import List
 import json
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
+from config import ADMIN_PASSWORD, ACCESS_TOKEN_EXPIRE_MINUTES,CURRENT_DIR,CURRENT_DB
 
-
-load_dotenv()
-
-CURRENT_DIR = os.path.dirname(__file__)
-CURRENT_DB = os.path.join(CURRENT_DIR, "initial.db")
-SECRET_KEY = os.getenv('SECRET_KEY')
-ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 
@@ -103,30 +87,26 @@ async def get_comp_table():
     
     return {"teams": teams}
 
-@app.get("/manual_questions/{admin_password}")
-async def manual_questions(admin_password:str):
-    if not admin_password:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    if admin_password != ADMIN_PASSWORD:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    else:
+@app.get("/manual_questions")
+async def manual_questions(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
+    rows = execute_db_query(f"""
+    SELECT team_name, q1_score, q2_score, q3_score, q4_score
+    FROM manual_scores """)
     
-        rows = execute_db_query(f"""
-        SELECT team_name, q1_score, q2_score, q3_score, q4_score
-        FROM manual_scores """)
-        
-        teams = [
-            {
-                "team_name": row[0],
-                "q1_score": row[1],
-                "q2_score": row[2],
-                "q3_score": row[3],
-                "q4_score": row[4]
-            } for row in rows
-        ]
-        
-        return teams
-
+    teams = [
+        {
+            "team_name": row[0],
+            "q1_score": row[1],
+            "q2_score": row[2],
+            "q3_score": row[3],
+            "q4_score": row[4]
+        } for row in rows
+    ]
+    
+    return teams
+    
 @app.get("/questions")
 async def get_questions(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "student":
@@ -240,13 +220,15 @@ async def submit_answer_sa(a: Answer, current_user: dict = Depends(get_current_u
         
 @app.post("/team_login")
 async def team_login(user: Team):
+    if not user.team_name or  not user.password:
+        return {"status":"failed", "message": "Team credentials are empty"}
     try:
         print("Trying to execute database query...")
-        result = execute_db_query("SELECT password_hash FROM teams WHERE name=?",(user.team_name,))
+        result = execute_db_query("SELECT password_hash FROM teams WHERE name=?",(user.team_name,), fetchone=True)
         print("Database query executed.")
-        if result:
+        if result is not None:
             print("Result found.")
-            hashed_password = result[0][0]
+            hashed_password = result[0]
             if verify_password(user.password, hashed_password):
                 print("Password verified.")
                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -263,122 +245,106 @@ async def team_login(user: Team):
         return {"status": "failed", "message": "Server error"}
             
 
-@app.post("/team_signup/")
-async def quick_signup(team: Team,a: Admin):
-    if not a.admin_password:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    if a.admin_password != ADMIN_PASSWORD:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    else:
-        try:
-            team_color = "rgb(222,156,223)"
-            existing_team = execute_db_query("SELECT * FROM teams WHERE name = ? AND password = ?", (team.team_name,team.password,), fetchone=True)
-            if existing_team is not None:
+@app.post("/team_signup")
+async def quick_signup(team: Team):
+    if not team.team_name or  not team.password:
+        return {"status":"failed", "message": "Team credentials are empty"}
+    try:
+        team_color = "rgb(222,156,223)"
+        existing_team = execute_db_query("SELECT password_hash FROM teams WHERE name = ?", (team.team_name,), fetchone=True)
+        if existing_team is not None:
+            hashed_password = existing_team[0]
+            if verify_password(team.password, hashed_password):
                 return {"status":"failed", "message": "Team already exists"}
             
-            execute_db_query("INSERT INTO teams (name, password, score, color) VALUES (?, ?, ?, ?)", (team.team_name,team.password,0,team_color))
-            
-            
-            execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.team_name,0,0,0,0))
+        team_hashed_password = get_password_hash(team.password)
 
-            return {"status": "success", "message": "Team has been added"}
+        execute_db_query("INSERT INTO teams (name, password_hash, score, color) VALUES (?, ?, ?, ?)", (team.team_name,team_hashed_password,0,team_color))
         
-        except Exception as e:   
-            return {"status":"failed", "message": "Error occured"}
         
-@app.get("/json-files/{admin_password}")
-async def list_json_files(admin_password:str):
-    if not admin_password:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    if admin_password != ADMIN_PASSWORD:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    else:
-        try:
-            files = [f for f in os.listdir("json") if os.path.isfile(os.path.join("json", f)) and f.endswith(".json")]
-            return {"status": "success", "files": files}
-        except Exception as e:
-            return {"status": "error", "message": str(e)}
+        execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.team_name,0,0,0,0))
 
+        return {"status": "success", "message": "Team has been added"}
+    
+    except Exception as e:   
+        return {"status":"failed", "message": f"Error occured {e}"}
+        
+@app.get("/json-files")
+async def list_json_files(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
+    try:
+        files = [f for f in os.listdir("json") if os.path.isfile(os.path.join("json", f)) and f.endswith(".json")]
+        return {"status": "success", "files": files}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 @app.post("/set_json/")
-async def set_json(filename: str,a: Admin):
+async def set_json(filename: str,current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
     global CURRENT_DB
-    if not a.admin_password:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    if a.admin_password != ADMIN_PASSWORD:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
+
+    if filename:
+        CURRENT_DB=os.path.join(CURRENT_DIR, f"{filename[:-5]}.db")
+        return {"status": "success", "message": "Database updated!"}
     else:
-        if filename:
-            CURRENT_DB=os.path.join(CURRENT_DIR, f"{filename[:-5]}.db")
-            return {"status": "success", "message": "Database updated!"}
-        else:
-            return {"status": "failed", "message": "Wrong file selected!"}
+        return {"status": "failed", "message": "Wrong file selected!"}
 
 @app.post("/reset_rankings/")
 async def reset_team_data(team_name: str = Query(None, description="The name of the team to reset. If not provided, all teams will be reset."), current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Forbidden")
     try:
-        if not a.admin_password:
-            return {"status": "failed", "message": "Admin credentials are wrong"}
-        if a.admin_password != ADMIN_PASSWORD:
-            return {"status": "failed", "message": "Admin credentials are wrong"}
+        if team_name:
+            execute_db_query("""
+                UPDATE teams 
+                SET score = 0 
+                WHERE name = ?
+            """, (team_name, ))
+
+            execute_db_query("""
+                DELETE FROM attempted_questions
+                WHERE team_name = ?
+            """, (team_name, ))
+
+            execute_db_query("""
+                UPDATE manual_scores SET q1_score = 0, q2_score = 0,  q3_score = 0,  q4_score = 0 
+                WHERE team_name = ?
+            """, (team_name, ))
+        # Reset stats for all teams
         else:
-            # Reset stats for a specific team
-            if team_name:
-                execute_db_query("""
-                    UPDATE teams 
-                    SET score = 0 
-                    WHERE name = ?
-                """, (team_name, ))
+            execute_db_query("""
+                UPDATE teams 
+                SET score = 0 
+            """)
 
-                execute_db_query("""
-                    DELETE FROM attempted_questions
-                    WHERE team_name = ?
-                """, (team_name, ))
+            execute_db_query("""
+                DELETE FROM attempted_questions
+            """)
 
-                execute_db_query("""
-                    UPDATE manual_scores SET q1_score = 0, q2_score = 0,  q3_score = 0,  q4_score = 0 
-                    WHERE team_name = ?
-                """, (team_name, ))
-            # Reset stats for all teams
-            else:
-                execute_db_query("""
-                    UPDATE teams 
-                    SET score = 0 
-                """)
+            execute_db_query("""
+                UPDATE manual_scores SET q1_score = 0, q2_score = 0,  q3_score = 0,  q4_score = 0
+            """)
 
-                execute_db_query("""
-                    DELETE FROM attempted_questions
-                """)
-
-                execute_db_query("""
-                    UPDATE manual_scores SET q1_score = 0, q2_score = 0,  q3_score = 0,  q4_score = 0
-                """)
-
-            if team_name:
-                return {"status": "success", "message": f"Data for team '{team_name}' has been reset."}
-            else:
-                return {"status": "success", "message": "Data for all teams has been reset."}
+        if team_name:
+            return {"status": "success", "message": f"Data for team '{team_name}' has been reset."}
+        else:
+            return {"status": "success", "message": "Data for all teams has been reset."}
 
     except Exception as e:
         return {"status": "failed", "message": "Cannot reset due to an error"}
 
-@app.post("/reset_questions_score/")
+@app.post("/reset_questions_score")
 async def reset_questions_score(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "admin":
+    if current_user["role"] != "admin" :
         raise HTTPException(status_code=403, detail="Forbidden")
     try:
-        if not a.admin_password:
-            return {"status": "failed", "message": "Admin credentials are wrong"}
-        if a.admin_password != ADMIN_PASSWORD:
-            return {"status": "failed", "message": "Admin credentials are wrong"}
-        else:
-            reset_question_points()
-            return {"status": "success", "message": "Questions scores have been reset."}
+        reset_question_points()
+        return {"status": "success", "message": "Questions scores have been reset."}
     except Exception as e:
         return {"status": "failed", "message": "Cannot reset due to an error"}
-    
+
 
 @app.post("/admin_login")
 async def admin_login(a: Admin):
@@ -387,11 +353,16 @@ async def admin_login(a: Admin):
     if a.admin_password != ADMIN_PASSWORD:
         return {"status": "failed", "message": "Admin credentials are wrong"}
     else:
-        return {"status": "success"}
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": "admin", "role": "admin"}, 
+            expires_delta=access_token_expires
+        )
+        return {"access_token": access_token, "token_type": "bearer"}
 
 
 
-@app.post("/update_manual_score/")
+@app.post("/update_manual_score")
 async def update_manual_score(data: TeamsInput, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Forbidden")
@@ -420,40 +391,39 @@ async def update_manual_score(data: TeamsInput, current_user: dict = Depends(get
         return {"status": "failed"}
 
 
-@app.post("/upload/{admin_password}")
-async def upload_database(admin_password: str, file: UploadFile = File(None), current_user: dict = Depends(get_current_user)):
+@app.post("/upload")
+async def upload_database(file: UploadFile = File(None), current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Forbidden")
     global CURRENT_DB
-    if not admin_password:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    if admin_password != ADMIN_PASSWORD:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    else:
-        if file:
-            try:
-                # Ensure it's a JSON file
-                if not file.filename.endswith(".json"):
-                    return {"status": "error", "message": f"Wrong json format or file uploaded!"}
-                    
-                file_location = os.path.join("json", file.filename)
-                if os.path.exists(file_location):
-                    CURRENT_DB = os.path.join(CURRENT_DIR, f"{file.filename[0:-5]}.db")
-                    return {"status": "error", "message": f"File '{file.filename}' already uploaded!"}
+    
+    if file:
+        try:
+            # Ensure it's a JSON file
+            if not file.filename.endswith(".json"):
+                return {"status": "error", "message": f"Wrong json format or file uploaded!"}
                 
-                content = file.file.read()
-                
-                with open(file_location, "wb+") as file_object:
-                    file_object.write(content)
-                    
-                data = json.loads(content)
+            file_location = os.path.join(CURRENT_DIR,"json", file.filename)
+            if os.path.exists(file_location):
                 CURRENT_DB = os.path.join(CURRENT_DIR, f"{file.filename[0:-5]}.db")
+                return {"status": "error", "message": f"File '{file.filename}' already uploaded!"}
+            
+            content = file.file.read()
+            
+            with open(file_location, "wb+") as file_object:
+                file_object.write(content)
                 
-                # Call create_database function
-                create_database(data)
+            data = json.loads(content)
+            CURRENT_DB = os.path.join(CURRENT_DIR, f"{file.filename[0:-5]}.db")
+            
+            # Call create_database function
+            teams_json_path = os.path.join(CURRENT_DIR, "teams.json")
+            colors_json_path = os.path.join(CURRENT_DIR, "colors.json")
+            create_database(data, teams_json_path, colors_json_path)
+            
 
-                return {"status": "success", "message": f"Database {file.filename}.db created successfully!"}
-            except Exception as e:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-        else:
-            return {"status": "failed", "message": "File Not uploaded"}
+            return {"status": "success", "message": f"Database {file.filename}.db created successfully!"}
+        except Exception as e:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    else:
+        return {"status": "failed", "message": "File Not uploaded"}

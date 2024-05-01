@@ -1,21 +1,13 @@
 import sqlite3
 import os
 import logging
-from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 import json
 from passlib.context import CryptContext
 from datetime import datetime
+from config import CURRENT_DB,CURRENT_DIR
 
-CURRENT_DB = "initial.db"  # Update this based on your current database file
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    with open("initial.json", 'r') as f:  # Update the path to your initial data file
-        initial_data = json.load(f)
-    create_database(initial_data)
-    yield
 
 def execute_db_query(query, params=(), fetchone=False, db=None):
     if db is None:
@@ -61,7 +53,7 @@ def update_attempted_questions(name: str, question_id: str, solved: bool):
     )
 
 def create_database(data, teams_json_path, colors_json_path):
-    db_file_path = CURRENT_DB  # Update this based on your current database file path
+    db_file_path = os.path.join(CURRENT_DIR, f"{CURRENT_DB}")  # Update this based on your current database file path
 
     # Delete the database file if it already exists
     if os.path.exists(db_file_path):
@@ -165,6 +157,7 @@ def create_database(data, teams_json_path, colors_json_path):
         with open(colors_json_path, 'r') as file:
             data = json.load(file)
             color_list = data["colors"] * 5
+
         for team in teams_list:
             hashed_password = pwd_context.hash(team["password"])
             cursor.execute("INSERT INTO teams (name, password_hash, score, color) VALUES (?, ?, ?, ?)",

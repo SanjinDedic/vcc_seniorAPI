@@ -5,13 +5,16 @@ from main import app
 
 client = TestClient(app)
 
+
+
 def test_get_token():
+    global VALID_TOKEN
     login_response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "ighEMkOP"})
     assert login_response.status_code == 200
     token = login_response.json()["access_token"]
-    return token
+    VALID_TOKEN = token
 
-VALID_TOKEN = test_get_token()
+
 
 def test_get_comp_table():
     
