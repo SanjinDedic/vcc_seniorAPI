@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Deploy to EC2
       env:
@@ -22,7 +22,7 @@ jobs:
         echo "$KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no $USERNAME@$HOST '
-          cd ~/main_application/vcc_seniorAPI
+          cd ~/main_application/agent_games
           git pull origin main
-          sudo systemctl restart all_things.service
+          pm2 restart Agent_Games
         '
