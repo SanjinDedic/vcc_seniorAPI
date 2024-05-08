@@ -24,5 +24,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no $USERNAME@$HOST '
           cd ~/main_application/agent_games
           git pull origin main
-          pm2 restart Agent_Games
+          pm2 restart VCC_BACKEND
+          pm2 save
         '
