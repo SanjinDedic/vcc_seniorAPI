@@ -54,6 +54,9 @@ def similar(s1, s2, threshold=0.6):
     #if s1 and s2 are strings and not numeric
     return similarity_ratio >= threshold
 
+@app.get("/version")
+async def version():
+    return {"version": "0.0.1"}
 
 @app.get("/get_comp_table")
 async def get_comp_table():
