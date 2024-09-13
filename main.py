@@ -2,7 +2,7 @@ import os
 from difflib import SequenceMatcher
 from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends ,Body
 from database import execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database
-from models import Answer, Admin, Team, Score, TeamScores, TeamsInput
+from models import Answer, Admin, Team, Score, TeamScores, TeamsInput, ResponseModel
 from auth import create_access_token, get_current_user, verify_password, get_password_hash
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -54,11 +54,11 @@ def similar(s1, s2, threshold=0.6):
     #if s1 and s2 are strings and not numeric
     return similarity_ratio >= threshold
 
-@app.get("/version")
+@app.get("/version", response_model=ResponseModel)
 async def version():
-    return {"version": "0.0.1"}
+    return ResponseModel(status="success", message="Version retrieved successfully", data="0.0.1")
 
-@app.get("/get_comp_table")
+@app.get("/get_comp_table", response_model=ResponseModel)
 async def get_comp_table():
     status = execute_db_query(f"""
         SELECT 
@@ -88,12 +88,12 @@ async def get_comp_table():
         } for row in status
     ]
     
-    return {"teams": teams}
+    return ResponseModel(status="success", message="Teams retrieved successfully", data=teams)
 
-@app.get("/manual_questions")
+@app.get("/manual_questions", response_model=ResponseModel)
 async def manual_questions(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Admincredentials are wrong")
     rows = execute_db_query(f"""
     SELECT team_name, q1_score, q2_score, q3_score, q4_score
     FROM manual_scores """)
@@ -108,16 +108,16 @@ async def manual_questions(current_user: dict = Depends(get_current_user)):
         } for row in rows
     ]
     
-    return teams
+    return ResponseModel(status="success", message="Manual Questions retrieved successfully", data=teams)
     
-@app.get("/questions")
+@app.get("/questions", response_model=ResponseModel)
 async def get_questions(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "student":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Student credentials are wrong")
     team_name = current_user["team_name"]
     result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
-        return {"status": "failed", "message": "Team credentials are wrong"}
+        return ResponseModel(status="failed", message="Team credentials are wrong")
     
     questions = execute_db_query("SELECT * FROM questions")
     teams = execute_db_query("SELECT name FROM teams")
@@ -161,23 +161,23 @@ async def get_questions(current_user: dict = Depends(get_current_user)):
 
             transformed_questions.append(transformed_question)
 
-        return {"questions": transformed_questions}
+        return ResponseModel(status="success", message="Questions retrieved successfully", data=transformed_questions)
     else:
-        return {"questions": "Error"}
+        return ResponseModel(status="failed", message="Team credentials are wrong")
 
-@app.post("/submit_mcqs_answer")
+@app.post("/submit_mcqs_answer", response_model=ResponseModel)
 async def submit_answer_mcqs(a: Answer, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "student":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Student credentials are wrong")  
     team_name = current_user["team_name"]
     result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
-        return {"status": "failed", "message": "Team credentials are wrong"}
+        return ResponseModel(status="failed", message="Team credentials are wrong")
     
     #check if team and question in attempted_questions table if not return error
     existing = execute_db_query("SELECT * FROM attempted_questions WHERE team_name = ? AND question_id = ?", (team_name, a.id,), fetchone=True)
     if existing:
-        return {"message": "Question already attempted"}
+        return ResponseModel(status="failed", message="Question already attempted")
     try:
         correct_ans, question_pts = get_question(id=a.id)
         is_correct = a.answer == correct_ans
@@ -185,46 +185,47 @@ async def submit_answer_mcqs(a: Answer, current_user: dict = Depends(get_current
             update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
             update_team(name=team_name, points=question_pts)
             decrement_question_points(question_id=a.id)
-            return {"message": "Correct"}  
+            return ResponseModel(status="success", message="Submission was successful", data="Correct")  
         update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
-        return {"message": "Incorrect"}
+        return ResponseModel(status="success", message="Submission was successful", data="Incorrect")
     
     except Exception as e:
-        return {"message":"An error occurred when submitting the answer."}
+        return ResponseModel(status="failed", message="An error occurred while submitting the answer:"+ str(e))
 
-@app.post("/submit_sa_answer")
+
+@app.post("/submit_sa_answer", response_model=ResponseModel)
 async def submit_answer_sa(a: Answer, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "student":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Student credentials are wrong")
     team_name = current_user["team_name"]
     result = execute_db_query("SELECT * FROM teams WHERE name = ?",(team_name,))
     if not result:
-        return {"status": "failed", "message": "Team credentials are wrong"}
+        return ResponseModel(status="failed", message="Team credentials are wrong")
     
     try:
         correct_ans, question_pts = get_question(id=a.id)
         attempts_made = get_attempts_count(team_name=team_name,id=a.id)
         if attempts_made >= 3:
-            return {"message": "No attempts left"}
+            return ResponseModel(status="success", message="Submission was successful", data="No attempts left")
         is_correct = a.answer == correct_ans or similar(correct_ans, a.answer)
         if is_correct:
             update_team(name=team_name, points=question_pts)
             update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
             decrement_question_points(question_id=a.id)
-            return {"message": "Correct"}
+            return ResponseModel(status="success", message="Submission was successful", data="Correct")
         
         update_attempted_questions(name=team_name, question_id=a.id, solved=is_correct)
         if attempts_made < 2: # attempts was already incremented in update_attempted_questions
-            return {"message": "Try again"}
+            return ResponseModel(status="success", message="Submission was successful", data="Try again")
         else:
-            return {"message": "Incorrect"}
+            return ResponseModel(status="success", message="Submission was successful", data="Incorrect")
     except Exception as e:
-        return {"message":"An error occurred when submitting the answer."}
+        return ResponseModel(status="failed", message="An error occurred while submitting the answer:"+ str(e))
         
-@app.post("/team_login")
+@app.post("/team_login", response_model=ResponseModel)
 async def team_login(user: Team):
     if not user.team_name or  not user.password:
-        return {"status":"failed", "message": "Team credentials are empty"}
+        return ResponseModel(status="failed", message="Team name and password are required")
     try:
         print("Trying to execute database query...")
         result = execute_db_query("SELECT password_hash FROM teams WHERE name=?",(user.team_name,), fetchone=True)
@@ -240,25 +241,25 @@ async def team_login(user: Team):
                     expires_delta=access_token_expires
                 )
                 print("Access token created.")
-                return {"access_token": access_token, "token_type": "bearer"}
+                return ResponseModel(status="success", message="Login successful", data=access_token)
         print("No team found with the provided credentials.")
-        return {"status": "failed", "message": "No team found with these credentials"}
+        return ResponseModel(status="failed", message="No team found with these credentials")
     except Exception as e:
         print("An exception occurred:", str(e))
-        return {"status": "failed", "message": "Server error"}
+        return ResponseModel(status="failed", message=str(e))
             
 
-@app.post("/team_signup")
+@app.post("/team_signup", response_model=ResponseModel)
 async def quick_signup(team: Team):
     if not team.team_name or  not team.password:
-        return {"status":"failed", "message": "Team credentials are empty"}
+        return ResponseModel(status="failed", message="Team credentials are empty")
     try:
         team_color = "rgb(222,156,223)"
         existing_team = execute_db_query("SELECT password_hash FROM teams WHERE name = ?", (team.team_name,), fetchone=True)
         if existing_team is not None:
             hashed_password = existing_team[0]
             if verify_password(team.password, hashed_password):
-                return {"status":"failed", "message": "Team already exists"}
+                return ResponseModel(status="failed", message="Team already exists")
             
         team_hashed_password = get_password_hash(team.password)
 
@@ -267,37 +268,37 @@ async def quick_signup(team: Team):
         
         execute_db_query("INSERT INTO manual_scores (team_name, q1_score, q2_score, q3_score, q4_score) VALUES (?, ?, ?, ?, ?)",(team.team_name,0,0,0,0))
 
-        return {"status": "success", "message": "Team has been added"}
+        return ResponseModel(status="success", message="Team has been added")
     
     except Exception as e:   
-        return {"status":"failed", "message": f"Error occured {e}"}
+        return ResponseModel(status="failed", message=str(e))
         
-@app.get("/json-files")
+@app.get("/json-files", response_model=ResponseModel)
 async def list_json_files(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Only admins can reset team data.")
     try:
         files = [f for f in os.listdir("json") if os.path.isfile(os.path.join("json", f)) and f.endswith(".json")]
-        return {"status": "success", "files": files}
+        return ResponseModel(status="success", message="Files retrieved successfully", data=files)
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        return ResponseModel(status="failed", message=str(e))
 
-@app.post("/set_json/")
+@app.post("/set_json", response_model=ResponseModel)
 async def set_json(filename: str,current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Only admins can reset team data.")
     global CURRENT_DB
 
     if filename:
         CURRENT_DB=os.path.join(CURRENT_DIR, f"{filename[:-5]}.db")
-        return {"status": "success", "message": "Database updated!"}
+        return ResponseModel(status="success", message="File set successfully")
     else:
-        return {"status": "failed", "message": "Wrong file selected!"}
+        return ResponseModel(status="failed", message="No filename provided")
 
-@app.post("/reset_rankings/")
+@app.post("/reset_rankings", response_model=ResponseModel)
 async def reset_team_data(team_name: str = Query(None, description="The name of the team to reset. If not provided, all teams will be reset."), current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Only admins can reset team data.")
     try:
         if team_name:
             execute_db_query("""
@@ -331,56 +332,56 @@ async def reset_team_data(team_name: str = Query(None, description="The name of 
             """)
 
         if team_name:
-            return {"status": "success", "message": f"Data for team '{team_name}' has been reset."}
+            return ResponseModel(status="success", message=f"Data for team '{team_name}' has been reset.")
         else:
-            return {"status": "success", "message": "Data for all teams has been reset."}
+            return ResponseModel(status="success", message="Data for all teams has been reset.")
 
     except Exception as e:
-        return {"status": "failed", "message": "Cannot reset due to an error"}
+        return ResponseModel(status="failed", message="Error occured: "+str(e))
 
-@app.post("/reset_questions_score")
+@app.post("/reset_questions_score", response_model=ResponseModel)
 async def reset_questions_score(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin" :
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Only admins can reset team data.")
     try:
         reset_question_points()
-        return {"status": "success", "message": "Questions scores have been reset."}
+        return ResponseModel(status="success", message="Questions scores have been reset")
     except Exception as e:
-        return {"status": "failed", "message": "Cannot reset due to an error"}
+        return ResponseModel(status="failed", message="Error occured: "+str(e))
 
 
-@app.post("/admin_login")
+@app.post("/admin_login", response_model=ResponseModel)
 async def admin_login(a: Admin):
-    if not a.admin_password:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
-    if a.admin_password != ADMIN_PASSWORD:
-        return {"status": "failed", "message": "Admin credentials are wrong"}
+    if not a.password:
+        return ResponseModel(status="failed", message="Admin credentials are wrong")
+    if a.password != ADMIN_PASSWORD:
+        return ResponseModel(status="failed", message="Admin credentials are wrong")
     else:
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
             data={"sub": "admin", "role": "admin"}, 
             expires_delta=access_token_expires
         )
-        return {"access_token": access_token, "token_type": "bearer"}
+        return ResponseModel(status="success", message="Login successful", data=access_token)
 
 
 
-@app.post("/update_manual_score")
+@app.post("/update_manual_score", response_model=ResponseModel)
 async def update_manual_score(data: TeamsInput, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Only admins can reset team data.")
     try:
         for team in data.teams:
             scores = team.scores
             # Check conditions for scores
             if not 0 <= scores.q1_score <= 600:
-                return {"status": "failed", "message": "q1_score out of range for team: " + team.team_name}
+                return ResponseModel(status="failed", message="q1_score out of range for team: " + team.team_name)
             if not 0 <= scores.q2_score <= 600:
-                return {"status": "failed", "message": "q2_score out of range for team: " + team.team_name}
+                return ResponseModel(status="failed", message="q2_score out of range for team: " + team.team_name)
             if not 0 <= scores.q3_score <= 1000:
-                return {"status": "failed", "message": "q3_score out of range for team: " + team.team_name}
+                return ResponseModel(status="failed", message="q3_score out of range for team: " + team.team_name)
             if not -10000 <= scores.q4_score <= 10000:
-                return {"status": "failed", "message": "q4_score out of range for team: " + team.team_name}
+                return ResponseModel(status="failed", message="q4_score out of range for team: " + team.team_name)
             
         for team in data.teams:
             team_name = team.team_name
@@ -389,27 +390,27 @@ async def update_manual_score(data: TeamsInput, current_user: dict = Depends(get
                         SET q1_score = ?, q2_score = ?, q3_score = ?, q4_score = ?
                         WHERE team_name = ?""", (scores.q1_score, scores.q2_score, scores.q3_score, scores.q4_score, team_name,))
         
-        return {"status": "success"}
+        return ResponseModel(status="success", message="Manual scores have been updated.")
     except Exception as e:
-        return {"status": "failed"}
+        return ResponseModel(status="failed", message=str(e))
 
 
-@app.post("/upload")
+@app.post("/upload", response_model=ResponseModel)
 async def upload_database(file: UploadFile = File(None), current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Forbidden")
+        return ResponseModel(status="failed", message="Only admins can reset team data.")
     global CURRENT_DB
     
     if file:
         try:
             # Ensure it's a JSON file
             if not file.filename.endswith(".json"):
-                return {"status": "error", "message": f"Wrong json format or file uploaded!"}
+                return ResponseModel(status="failed", message="Wrong file type")
                 
             file_location = os.path.join(CURRENT_DIR,"json", file.filename)
             if os.path.exists(file_location):
                 CURRENT_DB = os.path.join(CURRENT_DIR, f"{file.filename[0:-5]}.db")
-                return {"status": "error", "message": f"File '{file.filename}' already uploaded!"}
+                return ResponseModel(status="failed", message=f"File '{file.filename}' already uploaded!")
             
             content = file.file.read()
             
@@ -425,8 +426,8 @@ async def upload_database(file: UploadFile = File(None), current_user: dict = De
             create_database(data, teams_json_path, colors_json_path)
             
 
-            return {"status": "success", "message": f"Database {file.filename}.db created successfully!"}
+            return ResponseModel(status="success", message=f"Database {file.filename}.db created successfully!")
         except Exception as e:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+            ResponseModel(status="failed", message="Error occured: "+str(e))
     else:
-        return {"status": "failed", "message": "File Not uploaded"}
+        return ResponseModel(status="failed", message="No file provided")
