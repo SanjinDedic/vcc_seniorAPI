@@ -1,12 +1,13 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional, Any
 
 class Answer(BaseModel):
     id: str
     answer: str
 
 class Admin(BaseModel):
-    admin_password: str
+    name: str
+    password: str
 
 class Team(BaseModel):
     team_name: str
@@ -24,3 +25,8 @@ class TeamScores(BaseModel):
 
 class TeamsInput(BaseModel):
     teams: List[TeamScores]
+
+class ResponseModel(BaseModel):
+    status: str
+    message: str
+    data: Optional[Any] = None
