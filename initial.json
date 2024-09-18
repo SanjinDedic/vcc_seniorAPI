@@ -157,6 +157,16 @@
       "option_h": "could",
       "image_link": "",
       "content_link": "book.txt"
+    },
+    {
+      "title": "Bitcoin Trillionaire",
+      "content": "The program below is a simplified bitcoin exchange simulator.\n\nIf you select the **buy** option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $1,000,000,000,000 (one trillion dollars) or more?\n\n[REPL link](https://replit.com/@YourUsername/btcTrillionaire#main.py)\n\n**HINT AVAILABLE**",
+      "answer": "inf",
+      "original_points": 150,
+      "type": "short answer",
+      "question_group": 11,
+      "image_link": "images/your_input.png",
+      "content_link": "files/bitcoin_trillionaire.py"
     }
   ]
 }
