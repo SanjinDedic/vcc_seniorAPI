@@ -314,6 +314,16 @@
       "option_h": "",
       "image_link": "",
       "content_link": ""
+    },
+    {
+      "title": "Brightest Color in RGB Patch (SEE IF YOU CAN SHOW THE IMAGE IN THE QUESTION)",
+      "content": "An image `color_patch.png` has been generated using the following code:\n\n```python\nimport numpy as np\nfrom PIL import Image\n\ndef generate_color_patch(width=20, height=20):\n    np.random.seed(42)  # Seed the random number generator for reproducibility\n    # Create a 3D array of random RGB values\n    rgb_array = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)\n    \n    # Create an image from the array\n    img = Image.fromarray(rgb_array, 'RGB')\n    \n    # Save the image\n    img.save('color_patch.png')\n    \n    print(\"Image saved as 'color_patch.png'\")\n\n# Generate the color patch\ngenerate_color_patch()\n```\n\n**Task:** Determine the brightest color in `color_patch.png`. The brightness of a color is defined as the maximum value among its R, G, and B components. Provide your answer as three integers separated by commas (R,G,B) representing the brightest color found in the image.\n\n**Hint Available**",
+      "answer": "243, 255, 235",
+      "original_points": 200,
+      "type": "short answer",
+      "question_group": 21,
+      "image_link": "",
+      "content_link": "/files/color_patch.png"
     }
   ]
 }
