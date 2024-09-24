@@ -318,6 +318,21 @@
       "question_group": 21,
       "image_link": "",
       "content_link": "/files/color_patch.png"
+    },
+    {
+      "title": "Counting Text Files in a Zip Archive",
+      "content": "You are provided with a zip file containing over 200 subfolders and more than 50 text files. Your task is to determine:\n\n1. How many text files are in the zip file?\n2. How many of these text files are not empty?\n\nYou can use any method, such as writing a program or manual inspection, to find the answers.\n\n*Hint:* You might find [this tutorial](https://www.tutorialspoint.com/file-searching-using-python) helpful.",
+      "answer": "c",
+      "original_points": 200,
+      "type": "mcqs",
+      "question_group": 21,
+      "option_a": "Total text files: 250\nNon-empty text files: 200",
+      "option_b": "Total text files: 50\nNon-empty text files: 25",
+      "option_c": "Total text files: 60\nNon-empty text files: 42",
+      "option_d": "Total text files: 72\nNon-empty text files: 60",
+      "option_e": "Total text files: 100\nNon-empty text files: 50",
+      "image_link": "",
+      "content_link": "/files/archive.zip"
     }
   ]
 }
