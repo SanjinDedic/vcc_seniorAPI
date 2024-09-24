@@ -7,31 +7,33 @@ client = TestClient(app)
 
 
 def test_admin_login():
-    response = client.post("/admin_login", json={"admin_password": "BOSSMAN"})
+    response = client.post("/admin_login", json={"name": "Administrator", "password": "BOSSMAN"})
     assert response.status_code == 200
-    assert "access_token" in response.json()
+    assert response.json()["status"] == "success"
+    assert "data" in response.json()
 
-    response = client.post("/admin_login", json={"admin_password": "WRONGPASS"})
+    response = client.post("/admin_login", json={"name": "Administrator", "password": "WRONGPASS"})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "Admin credentials are wrong"}
+    assert response.json() == {"status": "failed", "message": "Admin credentials are wrong","data": None}
 
-    response = client.post("/admin_login", json={"adminpassword": "WRONGPASS"})
+    response = client.post("/admin_login", json={"name": "Administrator", "adminpassword": "WRONGPASS"})
     assert response.status_code == 422
     
 
 def test_team_login():
     response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "ighEMkOP"})
     assert response.status_code == 200
-    assert "access_token" in response.json()
+    assert response.json()["status"] == "success"
+    assert "data" in response.json()
 
     response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "wrongpass"})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "No team found with these credentials"}
+    assert response.json() == {"status": "failed", "message": "No team found with these credentials","data": None}
 
     response = client.post("/team_login", json={"team": "BrunswickSC1", "password": "wrongpass"})
     assert response.status_code == 422
 
     response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": ""})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "Team credentials are empty"}
+    assert response.json() == {"status": "failed", "message": "Team name and password are required","data": None}
     

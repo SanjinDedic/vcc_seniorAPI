@@ -25,35 +25,35 @@ def test_reset_database():
 
 def test_get_token():
     global VALID_TOKEN
-    login_response = client.post("/admin_login", json={"admin_password": "BOSSMAN"})
+    login_response = client.post("/admin_login", json={"name": "Administrator", "password": "BOSSMAN"})
     assert login_response.status_code == 200
-    token = login_response.json()["access_token"]
+    token = login_response.json()["data"]
     VALID_TOKEN = token
 
 def test_team_signup_success():
     response = client.post("/team_signup", json={"team_name": "NewTeam", "password": "newpass123"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": "Team has been added"}
+    assert response.json() == {"status": "success", "message": "Team has been added", "data": None}
 
 def test_team_signup_failed_wrong_password():
     response = client.post("/team_signup", json={"team_name": "AnotherTeam", "password": ""})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "Team credentials are empty"}
+    assert response.json() == {"status": "failed", "message": "Team credentials are empty", "data": None}
 
 def test_team_signup_failed_existing_team():
     response = client.post("/team_signup", json={"team_name": "NewTeam", "password": "newpass123"})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "Team already exists"}
+    assert response.json() == {"status": "failed", "message": "Team already exists", "data": None}
 
 def test_reset_rankings_specific_team_success():
     response = client.post("/reset_rankings/?team_name=BrunswickSC1", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": "Data for team 'BrunswickSC1' has been reset."}
+    assert response.json() == {"status": "success", "message": "Data for team 'BrunswickSC1' has been reset.", "data": None}
 
 def test_reset_rankings_all_teams_success():
     response = client.post("/reset_rankings/", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": "Data for all teams has been reset."}
+    assert response.json() == {"status": "success", "message": "Data for all teams has been reset.", "data": None}
 
 def test_reset_rankings_failed_wrong_admin_password():
     response = client.post("/reset_rankings/", json={
@@ -68,7 +68,7 @@ def test_reset_rankings_failed_no_admin_password():
 def test_reset_questions_score_success():
     response = client.post("/reset_questions_score", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": "Questions scores have been reset."}
+    assert response.json() == {"status": "success", "message": "Questions scores have been reset", "data": None}
 
 def test_reset_questions_score_failed_wrong_admin_password():
     response = client.post("/reset_questions_score", headers={"Authorization": "Bearer WRONG_TOKEN"})
@@ -90,7 +90,7 @@ def test_list_json_files_wrong_password():
 def test_set_json_success():
     response = client.post("/set_json/?filename=initial.json", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": "Database updated!"}
+    assert response.json() == {"status": "success", "message": "File set successfully", "data": None}
 
 def test_set_json_wrong_password():
     response = client.post("/set_json/?filename=initial.json", headers={"Authorization": "Bearer WRONG_TOKEN"})
@@ -99,13 +99,13 @@ def test_set_json_wrong_password():
 def test_set_json_no_filename():
     response = client.post("/set_json/?filename=", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "Wrong file selected!"}
+    assert response.json() == {"status": "failed", "message": "No filename provided", "data": None}
 
 def test_manual_questions_success():
     
         response = client.get("/manual_questions", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
         assert response.status_code == 200
-        assert "team_name" in response.json()[0]
+        assert "team_name" in response.json()["data"][0]
     
 
 def test_manual_questions_wrong_password():
@@ -122,7 +122,7 @@ def test_update_manual_score_success():
             {"team_name": "BrunswickSC1", "scores": {"q1_score": 100, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
         ]}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
         assert response.status_code == 200
-        assert response.json() == {"status": "success"}
+        assert response.json() == {"status": "success", "message":"Manual scores have been updated.", "data": None}
 
 def test_update_manual_score_failed_wrong_admin_password():
     response = client.post("/update_manual_score", json={"teams": [
@@ -145,7 +145,7 @@ def test_upload_database_success():
             files={"file": (os.path.basename(file_path), f, "application/json")},
             headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": f"Database {os.path.basename(file_path)}.db created successfully!"}
+    assert response.json() == {"status": "success", "message": f"Database {os.path.basename(file_path)}.db created successfully!", "data": None}
 
 def test_upload_database_wrong_password():
     response = client.post("/upload", files={"file": ("dummy.json", "dummy content", "application/json")}, headers={"Authorization": "Bearer WRONG_TOKEN"})
@@ -158,7 +158,7 @@ def test_upload_database_wrong_file_format():
         headers={"Authorization": f"Bearer {VALID_TOKEN}"}
     )
     assert response.status_code == 200
-    assert response.json() == {"status": "error", "message": "Wrong json format or file uploaded!"}
+    assert response.json() == {"status": "failed", "message": "Wrong file type", "data": None}
 
 def test_upload_database_file_already_exists():
     file_path = 'initial.json'
@@ -176,4 +176,4 @@ def test_upload_database_file_already_exists():
 def test_upload_database_no_file():
     response = client.post("/upload",headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "failed", "message": "File Not uploaded"}
+    assert response.json() == {"status": "failed", "message": "No file provided", "data": None}
