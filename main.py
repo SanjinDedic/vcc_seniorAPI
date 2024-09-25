@@ -278,7 +278,8 @@ async def list_json_files(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
         return ResponseModel(status="failed", message="Only admins can reset team data.")
     try:
-        files = [f for f in os.listdir("json") if os.path.isfile(os.path.join("json", f)) and f.endswith(".json")]
+        json_dir = os.path.join(CURRENT_DIR, "json")
+        files = [f for f in os.listdir(json_dir) if os.path.isfile(os.path.join(json_dir, f)) and f.endswith(".json")]
         return ResponseModel(status="success", message="Files retrieved successfully", data=files)
     except Exception as e:
         return ResponseModel(status="failed", message=str(e))
