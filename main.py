@@ -1,7 +1,7 @@
 import os
 from difflib import SequenceMatcher
 from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends ,Body
-from database import execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database
+from database import execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database, update_questions
 from models import Answer, Admin, Team, Score, TeamScores, TeamsInput, ResponseModel
 from auth import create_access_token, get_current_user, verify_password, get_password_hash
 from fastapi.middleware.cors import CORSMiddleware
@@ -463,7 +463,10 @@ async def update_json(new_json: dict = Body(...), current_user: dict = Depends(g
         # Save the new JSON data
         with open(CURRENT_DIR + "/initial.json", 'w') as f:
             json.dump(new_json, f, indent=4)
-
+        
+        updated = update_questions(new_json)
+        if not updated:
+            return ResponseModel(status="failed", message="Failed to update JSON data.")
         return ResponseModel(status="success", message="JSON data updated successfully.")
     except Exception as e:
         return ResponseModel(status="failed", message=f"An error occurred: {str(e)}")
