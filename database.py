@@ -52,6 +52,38 @@ def update_attempted_questions(name: str, question_id: str, solved: bool):
         params=(name, question_id, datetime.now(), solved)
     )
 
+def update_questions(data):
+    try:
+        execute_db_query('DELETE FROM questions')
+        
+        for question in data['questions']:
+            execute_db_query(
+                    "INSERT INTO questions (content, title, answer, original_points, current_points, type, question_group, option_a, option_b, option_c, option_d, option_e, option_f, option_g, option_h, option_i, option_j, image_link, content_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        question['content'],
+                        question['title'],
+                        question['answer'],
+                        question['original_points'],
+                        question['original_points'],
+                        question['type'],
+                        question['question_group'],
+                        question.get('option_a', None),
+                        question.get('option_b', None),
+                        question.get('option_c', None),
+                        question.get('option_d', None),
+                        question.get('option_e', None),
+                        question.get('option_f', None),
+                        question.get('option_g', None),
+                        question.get('option_h', None),
+                        question.get('option_i', None),
+                        question.get('option_j', None),
+                        question.get('image_link', None),
+                        question.get('content_link', None)
+                    )
+                )
+        return True
+    except Exception as e:
+        return False
 def create_database(data, teams_json_path, colors_json_path):
     db_file_path = os.path.join(CURRENT_DIR, f"{CURRENT_DB}")  # Update this based on your current database file path
 

@@ -1,7 +1,7 @@
 import os
 from difflib import SequenceMatcher
 from fastapi import FastAPI,UploadFile, Request, HTTPException, status, File, Query, Depends ,Body
-from database import execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database
+from database import execute_db_query, get_question, get_attempts_count, decrement_question_points, reset_question_points, update_team, update_attempted_questions, create_database, update_questions
 from models import Answer, Admin, Team, Score, TeamScores, TeamsInput, ResponseModel
 from auth import create_access_token, get_current_user, verify_password, get_password_hash
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 import json
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
-from config import ADMIN_PASSWORD, ACCESS_TOKEN_EXPIRE_MINUTES,CURRENT_DIR,CURRENT_DB
+from config import ADMIN_PASSWORD, ACCESS_TOKEN_EXPIRE_MINUTES,CURRENT_DIR,CURRENT_DB,BACKUP_DIR
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
@@ -432,3 +432,42 @@ async def upload_database(file: UploadFile = File(None), current_user: dict = De
             ResponseModel(status="failed", message="Error occured: "+str(e))
     else:
         return ResponseModel(status="failed", message="No file provided")
+
+
+@app.get("/current_json", response_model=ResponseModel)
+async def get_current_json(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can access this endpoint.")
+    try:
+        with open(CURRENT_DIR + "/initial.json", 'r') as f:
+            json_data = json.load(f)
+        return ResponseModel(status="success", message="Current JSON data retrieved.", data=json_data)
+    except FileNotFoundError:
+        return ResponseModel(status="failed", message="Current JSON file not found.")
+    except Exception as e:
+        return ResponseModel(status="failed", message=f"An error occurred: {str(e)}")
+    
+
+@app.post("/update_json", response_model=ResponseModel)
+async def update_json(new_json: dict = Body(...), current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can access this endpoint.")
+    try:
+        # Backup the current JSON with a timestamp
+        if os.path.exists(CURRENT_DIR + "/initial.json"):
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            backup_filename = f"backup_{timestamp}.json"
+            backup_path = os.path.join(BACKUP_DIR, backup_filename)
+            os.rename(CURRENT_DIR + "/initial.json", backup_path)
+
+        # Save the new JSON data
+        with open(CURRENT_DIR + "/initial.json", 'w') as f:
+            json.dump(new_json, f, indent=4)
+        
+        updated = update_questions(new_json)
+        if not updated:
+            return ResponseModel(status="failed", message="Failed to update JSON data.")
+        return ResponseModel(status="success", message="JSON data updated successfully.")
+    except Exception as e:
+        return ResponseModel(status="failed", message=f"An error occurred: {str(e)}")
+    
