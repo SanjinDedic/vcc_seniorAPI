@@ -2,7 +2,7 @@
   "questions": [
     {
       "title": "Turtle Polygon",
-      "content": "\n```python\nimport turtle\n\nt = turtle.Turtle()\n\nfor i in range(6):\n    t.forward(100)\n    t.right(60)\n\n# What shape will be drawn by this turtle program?\n```\n\nPredict the shape drawn by the turtle:",
+      "content": "\n```python\nimport turtle\n\nt = turtle.Turtle()\n\nfor i in range(6):\n    t.backward(100)\n    t.right(60)\n\n# What shape will be drawn by this turtle program?\n```\n\nPredict the shape drawn by the turtle:",
       "answer": "b",
       "original_points": 50,
       "type": "mcqs",
@@ -48,7 +48,7 @@
       "content_link": ""
     },
     {
-      "title": "String and Integer Operations with Error (UPDATE OPTIONS DISPLAY TO MD)",
+      "title": "One crashes the party",
       "content": "Consider the following Python code:\n\n```python\nx = '10'\ny = 5\nz = 2\n\nprint('A' + x * y)\nprint('B' + str(int(x) + y))\nprint('C' + x * z)\nprint('D' + str(z * int(x)))\nprint('E' + x + y)\nprint('F' + z * x)\n```\nWhich of these print statements will cause a TypeError: can only concatenate str (not \"int\") to str?",
       "answer": "e",
       "original_points": 50,
@@ -64,7 +64,7 @@
       "content_link": ""
     },
     {
-      "title": "I have fruits in my Dictionary (UPDATE OPTIONS DISPLAY TO MD)",
+      "title": "Just looking up fruits in my Dictionary",
       "content": "\n```python\nfruit_basket = {'apple': 3, 'banana': 2, 'orange': 4, 'pear': 1}\n\nfruit_basket['banana'] += 2\nfruit_basket.pop('pear')\n\nprint(fruit_basket)\n```\n\nWhat will be the output of this program?",
       "answer": "c",
       "original_points": 50,
@@ -74,12 +74,14 @@
       "option_b": "```python\n{'apple': 3, 'banana': 4, 'orange': 4, 'pear': 1}\n```",
       "option_c": "```python\n{'apple': 3, 'banana': 4, 'orange': 4}\n```",
       "option_d": "```python\n{'apple': 3, 'banana': 2, 'orange': 4, 'pear': 1}\n```",
-      "option_e": "```python\n{'apple': 3, 'orange': 4}",
+      "option_e": "```python\n{'apple': 3, 'orange': 4}\n```",
+      "option_f": "```python\n{'apple': 3, 'banana': 4, 'orange': 4, 'pear': None}\n```",
+      "option_g": "```python\nKeyError: 'pear'\n```",
       "image_link": "",
       "content_link": ""
     },
     {
-      "title": "Stringing me along (UPDATE OPTIONS DISPLAY TO MD)",
+      "title": "Stringing me along",
       "content": "\n```python\ntext = \"Python programming is fun and educational\"\n\nwords = text.lower().split()\n\nlong_words = [word for word in words if len(word) > 5]\n\nprint(long_words)\n```\n\nWhat will be the output of this program?",
       "answer": "b",
       "original_points": 50,
@@ -90,6 +92,8 @@
       "option_c": "```python\n['python', 'programming', 'fun', 'educational']\n```",
       "option_d": "```python\n['programming', 'educational']\n```",
       "option_e": "```python\n['python', 'programming', 'is', 'fun', 'and', 'educational']\n```",
+      "option_f": "```python\n['PYTHON', 'PROGRAMMING', 'EDUCATIONAL']\n```",
+      "option_g": "```python\n[]\n```",
       "image_link": "",
       "content_link": ""
     },
@@ -110,20 +114,20 @@
       "content_link": ""
     },
     {
-      "title": "Python Lambda Functions",
-      "content": "```python\nadd = lambda x, y: x + y\nprint(add(3, 5))\n```\n\nWhat is the output of this program?",
-      "answer": "a",
+      "title": "Elf Height Converter",
+      "content": "```python\ndef elf_height_converter(conversion_factor):\n    return lambda in_: round(in_ * conversion_factor, 1)\n\nelf_to_human = elf_height_converter(1.5)\nelf_to_dwarf = elf_height_converter(0.8)\n\nprint(f\"An elf who is 40 in tall would be {elf_to_human(40)} in tall as a human.\")\nprint(f\"An elf who is 40 in tall would be {elf_to_dwarf(40)} in tall as a dwarf.\")\n```\n\nWhat is the output of this program?\n\nRead more about Python lambda functions here: [Python Lambda Functions](https://www.w3schools.com/python/python_lambda.asp)",
+      "answer": "c",
       "original_points": 50,
       "type": "mcqs",
       "question_group": 8,
-      "option_a": "8",
-      "option_b": "3, 5",
-      "option_c": "add(3, 5)",
-      "option_d": "lambda x, y: x + y",
-      "option_e": "3 + 5",
-      "option_f": "An error occurs.",
-      "option_g": "3",
-      "option_h": "5",
+      "option_a": "An elf who is 40 in tall would be 60 in tall as a human.\nAn elf who is 40 in tall would be 32 in tall as a dwarf.",
+      "option_b": "An elf who is 40 in tall would be 60.0 in tall as a human.\nAn elf who is 40 in tall would be 32.0 in tall as a dwarf.",
+      "option_c": "An elf who is 40 in tall would be 60.0 in tall as a human.\nAn elf who is 40 in tall would be 32.0 in tall as a dwarf.",
+      "option_d": "An elf who is 40 in tall would be 60 in tall as a human.\nAn elf who is 40 in tall would be 32 in tall as a dwarf.",
+      "option_e": "An error occurs because lambda functions can't be used inside other functions.",
+      "option_f": "An elf who is 40 in tall would be 1.5 in tall as a human.\nAn elf who is 40 in tall would be 0.8 in tall as a dwarf.",
+      "option_g": "An elf who is 40 in tall would be 40 in tall as a human.\nAn elf who is 40 in tall would be 40 in tall as a dwarf.",
+      "option_h": "elf_to_human(40)\nelf_to_dwarf(40)",
       "image_link": "",
       "content_link": ""
     },
@@ -172,11 +176,11 @@
       "option_e": "Suggests a trending hashtag for the user to use",
       "image_link": "",
       "content_link": ""
-    }, 
+    },
     {
       "title": "Dynamic Programming Challenge",
-      "content": "Given a set of coin denominations [1, 5, 10, 25, 50] and a target amount of 7654 cents, write a Python function to find the minimum number of coins needed to make up that amount. What is this minimum number?\n\nHint: This is the coin change problem, which can be solved using dynamic programming or a greedy algorithm (which may not always give the optimal solution for all denomination sets, but works for this specific set).",
-      "answer": "159",
+      "content": "Given a set of coin denominations [1, 5, 10, 25, 50] and a target amount of 7654 cents, write a Python function to find the minimum number of coins needed to make up that amount. What is this minimum number?\n\nHint: Greed has something to do with the  best method of soloving this problem.",
+      "answer": "157",
       "original_points": 100,
       "type": "short answer",
       "question_group": 12,
@@ -203,7 +207,7 @@
     },
     {
       "title": "Bitcoin Trillionaire",
-      "content": "The program below is a simplified bitcoin exchange simulator.\n\nIf you select the **buy** option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $1,000,000,000,000 (one trillion dollars) or more?\n\n[REPL link](https://replit.com/@YourUsername/btcTrillionaire#main.py)\n\n**HINT AVAILABLE**",
+      "content": "The program below is a simplified bitcoin exchange simulator.\n\nIf you select the **buy** option, you will be asked to enter a $ value of how much bitcoin to buy. What input can you enter to guarantee a balance of $1,000,000,000,000 (one trillion dollars) or more?",
       "answer": "inf",
       "original_points": 150,
       "type": "short answer",
@@ -212,34 +216,34 @@
       "content_link": "/files/bitcoin_trillionaire.py"
     },
     {
-      "title": "Employees with High Salaries",
-      "content": "From the 'employees.json' file, determine how many employees have a salary above $85,000. Provide the number of such employees.",
-      "answer": "124",
+      "title": "Babies with High Allowances",
+      "content": "From the 'boss_baby_corp.json' file, determine how many babies have an allowance above 85 baby bucks per week. Provide the number of such babies.",
+      "answer": "11",
       "original_points": 100,
       "type": "short answer",
       "question_group": 15,
       "image_link": "",
-      "content_link": "/files/employee_data.json"
-    }, 
-    {
-      "title": "The Rich Ones",
-      "content": "Write down the first names in alphabetic order separated by commas of the highest earning person in each department. You can find the data in 'employees.json'.",
-      "answer": "Alexander, Bella, Emma, Henry, Sebastian",
-      "original_points": 100,
-      "type": "short answer",
-      "question_group": 15,
-      "image_link": "",
-      "content_link": "/files/employee_data.json"
+      "content_link": "/files/boss_baby_corp.json"
     },
     {
-      "title": "Which Department is the Richest?",
-      "content": "Using the 'employees.json' file, calculate the average salary for each department. List the departments in order from highest average salary to lowest, separated by commas.",
-      "answer": "Sales, IT, Operations, Marketing, HR",
+      "title": "The Baby Buck Moguls",
+      "content": "Write down the first names in alphabetical order, separated by commas, of the highest baby buck-earning baby in each department. You can find the data in 'boss_baby_corp.json'.",
+      "answer": "Biscuit, Formula, Sleepy, Teddy, Triplets",
       "original_points": 100,
       "type": "short answer",
       "question_group": 15,
       "image_link": "",
-      "content_link": "/files/employee_data.json"
+      "content_link": "/files/boss_baby_corp.json"
+    },
+    {
+      "title": "Which Department has the Most Baby Bucks?",
+      "content": "Using the 'boss_baby_corp.json' file, calculate the average baby buck allowance for each department. List the departments in order from highest average allowance to lowest, separated by commas.",
+      "answer": "Playtime Strategy, Diaper Research, Formula Development, Pacifier Innovation, Nap Operations",
+      "original_points": 100,
+      "type": "short answer",
+      "question_group": 15,
+      "image_link": "",
+      "content_link": "/files/boss_baby_corp.json"
     },
     {
       "title": "Top Money Sender",
@@ -253,7 +257,7 @@
     },
     {
       "title": "Most Transactions Between Players",
-      "content": "Using the CSV file of play money transfers among eight friends, identify all pairs of players who had the highest number of transactions between them (regardless of direction). **Part 2:** Provide the names of the players with the most transactions (in alphabetical order so for example: Alice and Bob).", 
+      "content": "Using the CSV file of play money transfers among eight friends, identify all pairs of players who had the highest number of transactions between them (regardless of direction). Then provide the names of the 2 players with the most transactions (in alphabetical order so for example: Alice and Bob).",
       "answer": "Helena and Zayn",
       "original_points": 100,
       "type": "short answer",
@@ -280,38 +284,25 @@
       "content_link": ""
     },
     {
-      "title": "Python Decorators",
-      "content": "```python\ndef my_decorator(func):\n    def wrapper():\n        print('Something is happening before the function is called.')\n        func()\n        print('Something is happening after the function is called.')\n    return wrapper\n\ndef say_hello():\n    print('Hello!')\n\nsay_hello = my_decorator(say_hello)\nsay_hello()\n```\n\nWhat is the output of this program?",
+      "title": "Python Decorators: The Russian Doll Function",
+      "content": "```python\ndef babushka_doll(matryoshka):\n    def wrapper():\n        print('Opening the outer doll...')\n        matryoshka()\n        print('Closing the outer doll...')\n    return wrapper\n\ndef tiny_doll():\n    print('Surprise! Tiny doll found!')\n\ntiny_doll = babushka_doll(tiny_doll)\ntiny_doll()\n```\n\nWhat is the output of this Russian doll function?",
       "answer": "b",
       "original_points": 50,
       "type": "mcqs",
       "question_group": 18,
-      "option_a": "Hello!",
-      "option_b": "Something is happening before the function is called.\nHello!\nSomething is happening after the function is called.",
-      "option_c": "Something is happening before the function is called.\nSomething is happening after the function is called.",
-      "option_d": "An error occurs.",
-      "option_e": "None",
+      "option_a": "Surprise! Tiny doll found!",
+      "option_b": "Opening the outer doll...\nSurprise! Tiny doll found!\nClosing the outer doll...",
+      "option_c": "Opening the outer doll...\nClosing the outer doll...",
+      "option_d": "An error occurs: too many nested dolls!",
+      "option_e": "None (The dolls are too tightly nested to open)",
+      "option_f": "Opening the outer doll...\nOpening the middle doll...\nSurprise! Tiny doll found!\nClosing the middle doll...\nClosing the outer doll...",
+      "option_g": "Surprise! Tiny doll found!\nOpening the outer doll...\nClosing the outer doll...",
       "image_link": "",
       "content_link": ""
     },
     {
-      "title": "Python Generators",
-      "content": "```python\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n\nfor num in fibonacci(5):\n    print(num)\n```\n\nWhat is the output of this program?",
-      "answer": "a",
-      "original_points": 50,
-      "type": "mcqs",
-      "question_group": 19,
-      "option_a": "0\n1\n1\n2\n3",
-      "option_b": "0\n1\n1\n2\n3\n5",
-      "option_c": "0\n1\n2\n3\n5",
-      "option_d": "0\n1\n1\n3\n5",
-      "option_e": "0\n1\n2\n3",
-      "image_link": "",
-      "content_link": ""
-    },
-    {
-      "title": "Brightest Color in RGB Patch (SEE IF YOU CAN SHOW THE IMAGE IN THE QUESTION)",
-      "content": "An image `color_patch.png` has been generated using the following code:\n\n```python\nimport numpy as np\nfrom PIL import Image\n\ndef generate_color_patch(width=20, height=20):\n    np.random.seed(42)  # Seed the random number generator for reproducibility\n    # Create a 3D array of random RGB values\n    rgb_array = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)\n    \n    # Create an image from the array\n    img = Image.fromarray(rgb_array, 'RGB')\n    \n    # Save the image\n    img.save('color_patch.png')\n    \n    print(\"Image saved as 'color_patch.png'\")\n\n# Generate the color patch\ngenerate_color_patch()\n```\n\n**Task:** Determine the brightest color in `color_patch.png`. The brightness of a color is defined as the maximum value among its R, G, and B components. Provide your answer as three integers separated by commas (R,G,B) representing the brightest color found in the image.\n\n**Hint Available**",
+      "title": "400 colours but one shines the most",
+      "content": "An image `color_patch.png` has been generated using the following code:\n\n```python\nimport numpy as np\nfrom PIL import Image\n\ndef generate_color_patch(width=20, height=20):\n    np.random.seed(42)  # Seed the random number generator for reproducibility\n    # Create a 3D array of random RGB values\n    rgb_array = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)\n    \n    # Create an image from the array\n    img = Image.fromarray(rgb_array, 'RGB')\n    \n    # Save the image\n    img.save('color_patch.png')\n    \n    print(\"Image saved as 'color_patch.png'\")\n\n# Generate the color patch\ngenerate_color_patch()\n```\n\nHere's the generated color patch:\n\n![Color Patch](/files/color_patch.png)\n\n**Task:** Determine the brightest color in the above color patch. The brightness of a color is defined as the maximum value among its R, G, and B components. Provide your answer as three integers separated by commas (R,G,B) representing the brightest color found in the image.\n\n**Hint Available**",
       "answer": "243, 255, 235",
       "original_points": 200,
       "type": "short answer",
@@ -333,6 +324,61 @@
       "option_e": "Total text files: 100\nNon-empty text files: 50",
       "image_link": "",
       "content_link": "/files/archive.zip"
+    },
+    {
+      "title": "The Light Bulb Sequence",
+      "content": "You have a row of 5 light bulbs, all initially turned off. Every day for 10 days, you perform the following operation:\n- For each bulb (from left to right), if the current day number plus the bulb's position (1-5) is divisible by 3, toggle that bulb's state.\n\nQuestion: What is the state of each light bulb (on or off) after 10 days? \n\n*(ANSWER FORMAT: On, Off, On, Off, On)*",
+      "answer": "Off, On, On, Off, On",
+      "original_points": 100,
+      "type": "short answer",
+      "question_group": 23,
+      "image_link": "",
+      "content_link": ""
+    },
+    {
+      "title": "The Semi-Perfect Shuffle",
+      "content": "You have 9 cards numbered 1 to 9, in order. You perform a \"semi-perfect shuffle\" where you split the deck into two unequal halves (4 on the left and 5 on the right) and then interleave them perfectly, with the right half (bottom) going first. For example, after one shuffle, the order would be: 5, 1, 6, 2, 7, 3, 8, 4, 9.\n\nQuestion: How many shuffles does it take to return the cards to their original order?\n\nYou can approach this problem through logical reasoning or by implementing your own simulation. Explain your method and show your work.",
+      "answer": "6",
+      "original_points": 100,
+      "type": "short answer",
+      "question_group": 24,
+      "image_link": "",
+      "content_link": ""
+    },
+    {
+      "title": "The Prisoner's Escape",
+      "content": "In a prison, there are 8 prisoners (numbered 0-7) and 8 doors (numbered 0-7). Each door leads to freedom for a specific prisoner. The doors are randomly shuffled each day. The escape attempt follows these rules:\n\n1. Each prisoner is allowed to open up to 5 doors.\n2. If all prisoners find their exit door, they all escape. If even one fails, they all stay in prison.\n3. If a prisoner's number matches their exit door number, that door becomes permanently locked, reducing the available doors for the subsequent prisoners.\n4. The prisoners attempt to escape in order, from prisoner 0 to prisoner 7.\n\nYour task is to implement the `prisoner_strategy` function to maximize the probability of all prisoners escaping.\n\nQuestion: What is the approximate probability of all prisoners escaping with your implemented strategy?\n\nImplement your strategy in the provided Python code and run the simulation to find the probability.\n\n```python\nimport random\n\ndef prisoner_strategy(prisoner_number, available_doors):\n    \"\"\"\n    Implement the strategy for a single prisoner trying to escape.\n    \n    :param prisoner_number: The number of the current prisoner (0-7)\n    :param available_doors: A set of door numbers that are still available\n    :return: A list of door numbers the prisoner will try (max 5)\n    \"\"\"\n    # TODO: Implement your strategy here\n    # Remember: \n    # - You can try up to 5 doors\n    # - available_doors is a set of integers representing available door numbers\n    # - Return a list of door numbers to try (must be a subset of available_doors)\n    pass\n\ndef simulate_prison_escape(simulations=100000):\n    success_count = 0\n\n    for _ in range(simulations):\n        exit_doors = list(range(8))\n        random.shuffle(exit_doors)\n        available_doors = set(range(8))\n        all_prisoners_succeeded = True\n\n        for prisoner_number in range(8):\n            doors_to_try = prisoner_strategy(prisoner_number, available_doors)\n            \n            if len(doors_to_try) > 5 or not set(doors_to_try).issubset(available_doors):\n                raise ValueError(\"Invalid strategy: too many doors or unavailable doors selected\")\n\n            if exit_doors[prisoner_number] in doors_to_try:\n                if exit_doors[prisoner_number] == prisoner_number:\n                    available_doors.discard(prisoner_number)\n            else:\n                all_prisoners_succeeded = False\n                break\n\n        if all_prisoners_succeeded:\n            success_count += 1\n\n    probability = success_count / simulations\n    print(f\"The approximate probability of all prisoners escaping is: {probability}\")\n\nsimulate_prison_escape()\n```",
+      "answer": "c",
+      "original_points": 100,
+      "type": "mcqs",
+      "question_group": 25,
+      "option_a": "About 0.1%",
+      "option_b": "About 1%",
+      "option_c": "About 6%",
+      "option_d": "About 11%",
+      "option_e": "About 16%",
+      "option_f": "About 19%",
+      "option_g": "About 23%",
+      "option_h": "About 38%",
+      "image_link": "",
+      "content_link": ""
+    },
+    {
+      "title": "The Dice Reroll Dilemma",
+      "content": "You're playing a game where you roll three six-sided dice. After seeing the result, you have an option to reroll 1,2 or all 3 dice. \nYou win if your final sum is higher than the sum of three dice rolled by the house.\n\nConsider two strategies:\nA) Keep your current roll if the total is more than 10, reroll all dice otherwise.\nB) Keep the highest die rolled and reroll the other two.\n\nQuestion: Which strategy gives you a better chance of winning? By approximately how much?\n\nYou can use the provided Python starter code to implement and test these strategies, or work it out mathematically. Can you think of an even better strategy?\n\n```python\nimport random\n\ndef play_dice_game(strategy, n_games=10000):\n    wins = 0\n    for _ in range(n_games):\n        dice = [random.randint(1, 6) for _ in range(3)]\n        if strategy(dice):\n            wins += 1\n    return wins\n\ndef strategy_reroll_if_not_above_10(dice):\n    # Implement the strategy\n    pass\n\ndef strategy_keep_highest(dice):\n    # Implement the strategy\n    pass\n\n# Example usage\nn_games = 10000\nstrategy_a_wins = play_dice_game(strategy_reroll_if_not_above_10, n_games)\nstrategy_b_wins = play_dice_game(strategy_keep_highest, n_games)\n\nprint(f\"Strategy A wins: {strategy_a_wins/n_games:.2%}\")\nprint(f\"Strategy B wins: {strategy_b_wins/n_games:.2%}\")\n```",
+      "answer": "b",
+      "original_points": 100,
+      "type": "mcqs",
+      "question_group": 26,
+      "option_a": "Strategy A is better by about 2%",
+      "option_b": "Strategy B is better by about 2%",
+      "option_c": "Strategy A is better by about 5%",
+      "option_d": "Strategy B is better by about 5%",
+      "option_e": "Strategy A is better by about 9%",
+      "option_f": "Strategy B is better by about 9%",
+      "option_g": "Both strategies are approximately equal",
+      "image_link": "",
+      "content_link": ""
     }
   ]
 }
