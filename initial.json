@@ -287,14 +287,14 @@
       "content_link": "/files/bitcoin_trillionaire.py"
     },
     {
-      "title":"400 colours but one shines the most",
-      "content":"An image `color_patch.png` has been provided. This image contains a 20x20 grid of randomly colored pixels.\n\n![Color Patch](/files/color_patch.png)\n\nYour task is to determine the brightest color in the above color patch. The brightness of a color is defined as the maximum value among its R, G, and B components. Provide your answer as three integers separated by commas (R,G,B) representing the brightest color found in the image.\n\nTo complete this task, you'll need to analyze the RGB values of each pixel in the image. You will need to search the web for information on how to get RGB values for individual pixels using Python",
-      "answer":"243,255,235",
-      "original_points":100,
-      "type":"short answer",
-      "question_group":18,
-      "image_link":"",
-      "content_link":"/files/color_patch.png"
+      "title": "400 colours but one shines the most",
+      "content": "An image `color_patch.png` has been provided. This image contains a 20x20 grid of randomly colored pixels.\n\n![Color Patch](/files/color_patch.png)\n\nYour task is to determine the brightest color in the above color patch. The brightness of a color is defined as the maximum value among its R, G, and B components. Provide your answer as three integers separated by commas (R,G,B) representing the brightest color found in the image.\n\nTo complete this task, you'll need to analyze the RGB values of each pixel in the image. You will need to search the web for information on how to get RGB values for individual pixels using Python",
+      "answer": "243,255,235",
+      "original_points": 100,
+      "type": "short answer",
+      "question_group": 18,
+      "image_link": "",
+      "content_link": "/files/color_patch.png"
     },
     {
       "title": "Counting Text Files in a Zip Archive",
