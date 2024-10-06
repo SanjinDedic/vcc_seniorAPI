@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def test_get_token():
     global VALID_TOKEN
-    login_response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "ighEMkOP"})
+    login_response = client.post("/team_login", json={"team_name": "SanjinX", "password": "652093"})
     assert login_response.status_code == 200
     token = login_response.json()["data"]
     VALID_TOKEN = token
