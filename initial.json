@@ -199,7 +199,7 @@
       "content_link": ""
     },
     {
-      "title": "Dynamic Programming Challenge",
+      "title": "The Coin Conundrum",
       "content": "Given a set of coin denominations [1, 5, 10, 25, 50] and a target amount of 7654 cents, write a Python program to find the minimum number of coins needed to make up that amount. What is this minimum number?\n\nHint: Greed has something to do with the  best method of solving this problem.",
       "answer": "157",
       "original_points": 100,
@@ -258,7 +258,7 @@
     },
     {
       "title": "Top Money Sender",
-      "content": "From the CSV file recording play money transfers among eight friends, determine which player sent the highest total amount of money. **Part 2:** Calculate *to two decimal places* the total amount of money that this player sent. (ANSWER FORMAT: 'Bob sent 100.52')",
+      "content": "From the CSV file recording play money transfers among eight friends, determine which player sent the highest total amount of money. Then, calculate *to two decimal places* the total amount of money that this player sent. (ANSWER FORMAT: 'Bob sent 100.52')",
       "answer": "Helena sent 6302.87",
       "original_points": 100,
       "type": "short answer",
