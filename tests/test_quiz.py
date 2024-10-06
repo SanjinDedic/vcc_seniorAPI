@@ -51,7 +51,7 @@ def test_submit_answer_mcqs_already_attempted():
 
 def test_submit_sa_answer_correct():
     
-    response = client.post("/submit_sa_answer", json={"id": "12", "answer": "159"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/submit_sa_answer", json={"id": "13", "answer": "157"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"status":"success", "message":"Submission was successful", "data":"Correct"}
 
