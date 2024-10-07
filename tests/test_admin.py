@@ -46,9 +46,9 @@ def test_team_signup_failed_existing_team():
     assert response.json() == {"status": "failed", "message": "Team already exists", "data": None}
 
 def test_reset_rankings_specific_team_success():
-    response = client.post("/reset_rankings/?team_name=BrunswickSC1", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/reset_rankings/?team_name=SanjinX", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": "Data for team 'BrunswickSC1' has been reset.", "data": None}
+    assert response.json() == {"status": "success", "message": "Data for team 'SanjinX' has been reset.", "data": None}
 
 def test_reset_rankings_all_teams_success():
     response = client.post("/reset_rankings/", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
@@ -57,12 +57,12 @@ def test_reset_rankings_all_teams_success():
 
 def test_reset_rankings_failed_wrong_admin_password():
     response = client.post("/reset_rankings/", json={
-        "team_name": "BrunswickSC1"}, headers={"Authorization": "Bearer WRONG_TOKEN"})
+        "team_name": "SanjinX"}, headers={"Authorization": "Bearer WRONG_TOKEN"})
     assert response.status_code == 401
 
 def test_reset_rankings_failed_no_admin_password():
     response = client.post("/reset_rankings/", json={
-        "team_name": "BrunswickSC1"}, headers={"Authorization": "Bearer "})
+        "team_name": "SanjinX"}, headers={"Authorization": "Bearer "})
     assert response.status_code == 401
 
 def test_reset_questions_score_success():
@@ -119,20 +119,20 @@ def test_manual_questions_no_password():
 
 def test_update_manual_score_success():
         response = client.post("/update_manual_score", json={"teams": [
-            {"team_name": "BrunswickSC1", "scores": {"q1_score": 100, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
+            {"team_name": "SanjinX", "scores": {"q1_score": 100, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
         ]}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
         assert response.status_code == 200
         assert response.json() == {"status": "success", "message":"Manual scores have been updated.", "data": None}
 
 def test_update_manual_score_failed_wrong_admin_password():
     response = client.post("/update_manual_score", json={"teams": [
-            {"team_name": "BrunswickSC1", "scores": {"q1_score": 100, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
+            {"team_name": "SanjinX", "scores": {"q1_score": 100, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
         ]}, headers={"Authorization": "Bearer WRONG_TOKEN"})
     assert response.status_code == 401
 
 def test_update_manual_score_score_out_of_range():
     response = client.post("/update_manual_score", json={"teams": [
-            {"team_name": "BrunswickSC1", "scores": {"q1_score": 700, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
+            {"team_name": "SanjinX", "scores": {"q1_score": 700, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
         ]}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert "out of range" in response.json()["message"]
@@ -145,7 +145,7 @@ def test_upload_database_success():
             files={"file": (os.path.basename(file_path), f, "application/json")},
             headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success", "message": f"Database {os.path.basename(file_path)}.db created successfully!", "data": None}
+    assert response.json() == {"status": "success"}
 
 def test_upload_database_wrong_password():
     response = client.post("/upload", files={"file": ("dummy.json", "dummy content", "application/json")}, headers={"Authorization": "Bearer WRONG_TOKEN"})

@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def test_get_token():
     global VALID_TOKEN
-    login_response = client.post("/team_login", json={"team_name": "BrunswickSC1", "password": "ighEMkOP"})
+    login_response = client.post("/team_login", json={"team_name": "SanjinX", "password": "652093"})
     assert login_response.status_code == 200
     token = login_response.json()["data"]
     VALID_TOKEN = token
@@ -51,7 +51,7 @@ def test_submit_answer_mcqs_already_attempted():
 
 def test_submit_sa_answer_correct():
     
-    response = client.post("/submit_sa_answer", json={"id": "12", "answer": "159"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/submit_sa_answer", json={"id": "13", "answer": "157"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"status":"success", "message":"Submission was successful", "data":"Correct"}
 
