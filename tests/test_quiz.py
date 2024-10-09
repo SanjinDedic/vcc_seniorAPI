@@ -51,20 +51,20 @@ def test_submit_answer_mcqs_already_attempted():
 
 def test_submit_sa_answer_correct():
     
-    response = client.post("/submit_sa_answer", json={"id": "13", "answer": "157"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/submit_sa_answer", json={"id": "12", "answer": "159"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"status":"success", "message":"Submission was successful", "data":"Correct"}
 
 def test_submit_sa_answer_mcqs_tryagain():
 
-    response = client.post("/submit_sa_answer", json={"id": "22", "answer": "b"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response = client.post("/submit_sa_answer", json={"id": "14", "answer": "bad"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"status":"success", "message":"Submission was successful", "data":"Try again"}
 
 def test_submit_sa_answer_mcqs_incorrect():
 
-    response_again = client.post("/submit_sa_answer", json={"id": "22", "answer": "b"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
-    response_inc = client.post("/submit_sa_answer", json={"id": "22", "answer": "b"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response_again = client.post("/submit_sa_answer", json={"id": "14", "answer": "new"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    response_inc = client.post("/submit_sa_answer", json={"id": "14", "answer": "check"}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     
     assert response_again.status_code == 200
     assert response_again.json() == {"status":"success", "message":"Submission was successful", "data":"Try again"}

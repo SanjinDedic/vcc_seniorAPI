@@ -145,7 +145,7 @@ def test_upload_database_success():
             files={"file": (os.path.basename(file_path), f, "application/json")},
             headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
-    assert response.json() == {"status": "success"}
+    assert response.json() == {"status": "success", "message":"Database initial_test.json.db created successfully!", "data": None}
 
 def test_upload_database_wrong_password():
     response = client.post("/upload", files={"file": ("dummy.json", "dummy content", "application/json")}, headers={"Authorization": "Bearer WRONG_TOKEN"})
