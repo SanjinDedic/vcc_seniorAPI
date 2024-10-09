@@ -122,7 +122,7 @@
       "type": "mcqs",
       "question_group": 8,
       "option_a": "An elf who is 40 in tall would be 60 in tall as a human.\nAn elf who is 40 in tall would be 32 in tall as a dwarf.",
-      "option_b": "An elf who is 40 in tall would be 60.0 in tall as a human.\nAn elf who is 40 in tall would be 32.0 in tall as a dwarf.",
+      "option_b": "An elf who is 40 in tall would be 80.0 in tall as a human.\nAn elf who is 40 in tall would be 32.0 in tall as a dwarf.",
       "option_c": "An elf who is 40 in tall would be 60.0 in tall as a human.\nAn elf who is 40 in tall would be 32.0 in tall as a dwarf.",
       "option_d": "An elf who is 40 in tall would be 60 in tall as a human.\nAn elf who is 40 in tall would be 32 in tall as a dwarf.",
       "option_e": "An error occurs because lambda functions can't be used inside other functions.",
@@ -229,7 +229,7 @@
     {
       "title": "Babies with High Allowances",
       "content": "From the 'boss_baby_corp.json' file, determine how many babies have an allowance above 85 baby bucks per week. Provide the number of such babies.",
-      "answer": "29",
+      "answer": "31",
       "original_points": 100,
       "type": "short answer",
       "question_group": 15,
@@ -239,7 +239,7 @@
     {
       "title": "The Baby Buck Moguls",
       "content": "Write down the first names in alphabetical order, separated by commas, of the highest baby buck-earning baby in each department. You can find the data in 'boss_baby_corp.json'.",
-      "answer": "Deborah, Jeffrey, Joseph, Melissa, Ronald",
+      "answer": "Elizabeth, Emma, Matthew, Mega, Triplets",
       "original_points": 100,
       "type": "short answer",
       "question_group": 15,
@@ -249,7 +249,7 @@
     {
       "title": "Which Department has the Most Baby Bucks?",
       "content": "Using the 'boss_baby_corp.json' file, calculate the average baby buck allowance for each department. List the top 3 departments in order from highest average allowance to lowest, separated by commas.",
-      "answer": "Playtime Strategy, Formula Development, Diaper Research",
+      "answer": "Playtime Strategy, Diaper Research, Formula Development",
       "original_points": 100,
       "type": "short answer",
       "question_group": 15,
@@ -314,7 +314,7 @@
     {
       "title": "The Light Bulb Sequence",
       "content": "You have a row of 5 light bulbs, all initially turned off. Every day for 10 days, you perform the following operation:\n- For each bulb (from left to right), if the current day number plus the bulb's position (1-5) is divisible by 3, toggle that bulb's state.\n\nQuestion: What is the state of each light bulb (on or off) after 10 days? \n\n*(ANSWER FORMAT: On, Off, On, Off, On)*",
-      "answer": "Off, On, On, Off, On",
+      "answer": "On, Off, On, On, Off",
       "original_points": 100,
       "type": "short answer",
       "question_group": 20,
