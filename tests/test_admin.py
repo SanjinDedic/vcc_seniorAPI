@@ -8,7 +8,6 @@ from unittest.mock import patch, mock_open
 import json
 from database import create_database
 from config import CURRENT_DIR
-from asgi_lifespan import LifespanManager
 
 client = TestClient(app)
 
