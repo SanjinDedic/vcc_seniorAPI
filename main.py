@@ -93,7 +93,7 @@ async def get_comp_table():
 @app.get("/manual_questions", response_model=ResponseModel)
 async def manual_questions(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        return ResponseModel(status="failed", message="Admincredentials are wrong")
+        return ResponseModel(status="failed", message="Only admins can see this data.")
     rows = execute_db_query(f"""
     SELECT team_name, q1_score, q2_score, q3_score, q4_score
     FROM manual_scores """)
@@ -437,7 +437,7 @@ async def upload_database(file: UploadFile = File(None), current_user: dict = De
 @app.get("/current_json", response_model=ResponseModel)
 async def get_current_json(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Only admins can access this endpoint.")
+        return ResponseModel(status="failed", message="Only admins can access this endpoint.")
     try:
         with open(CURRENT_DIR + "/initial.json", 'r') as f:
             json_data = json.load(f)
@@ -451,7 +451,7 @@ async def get_current_json(current_user: dict = Depends(get_current_user)):
 @app.post("/update_json", response_model=ResponseModel)
 async def update_json(new_json: dict = Body(...), current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "admin":
-        raise HTTPException(status_code=403, detail="Only admins can access this endpoint.")
+        return ResponseModel(status="failed", message="Only admins can access this endpoint.")
     try:
         # Backup the current JSON with a timestamp
         if os.path.exists(CURRENT_DIR + "/initial.json"):

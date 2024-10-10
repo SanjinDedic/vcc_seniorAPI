@@ -12,6 +12,10 @@ def test_admin_login():
     assert response.json()["status"] == "success"
     assert "data" in response.json()
 
+    response = client.post("/admin_login", json={"name": "Administrator", "password": ""})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Admin credentials are wrong","data": None}
+
     response = client.post("/admin_login", json={"name": "Administrator", "password": "WRONGPASS"})
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "Admin credentials are wrong","data": None}

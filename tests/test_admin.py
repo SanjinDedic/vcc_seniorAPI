@@ -8,9 +8,15 @@ from unittest.mock import patch, mock_open
 import json
 from database import create_database
 from config import CURRENT_DIR
+from asgi_lifespan import LifespanManager
 
 client = TestClient(app)
 
+def test_startup():
+    with TestClient(app) as client:
+        response = client.get("/version")
+        assert response.status_code == 200
+    
 
 def test_reset_database():
     try:
@@ -24,11 +30,20 @@ def test_reset_database():
         assert False
 
 def test_get_token():
-    global VALID_TOKEN
+    global VALID_TOKEN, NOT_VALID_TOKEN
     login_response = client.post("/admin_login", json={"name": "Administrator", "password": "BOSSMAN"})
     assert login_response.status_code == 200
     token = login_response.json()["data"]
+
+    response = client.post("/team_login", json={"team_name": "SanjinX", "password": "652093"})
+    invalid_token = response.json()["data"]
     VALID_TOKEN = token
+    NOT_VALID_TOKEN = invalid_token
+
+def test_version():
+    response = client.get("/version")
+    assert response.status_code == 200
+    assert response.json() == {"status": "success", "message": "Version retrieved successfully", "data": '0.0.1'}
 
 def test_team_signup_success():
     response = client.post("/team_signup", json={"team_name": "NewTeam", "password": "newpass123"})
@@ -65,6 +80,11 @@ def test_reset_rankings_failed_no_admin_password():
         "team_name": "SanjinX"}, headers={"Authorization": "Bearer "})
     assert response.status_code == 401
 
+def test_reset_rankings_all_teams_invalid_token():
+    response = client.post("/reset_rankings/", headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Only admins can reset team data.", "data": None}
+
 def test_reset_questions_score_success():
     response = client.post("/reset_questions_score", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
@@ -78,6 +98,11 @@ def test_reset_questions_score_failed_no_admin_password():
     response = client.post("/reset_questions_score", headers={"Authorization": "Bearer "})
     assert response.status_code == 401
 
+def test_reset_questions_score_invalid_token():
+    response = client.post("/reset_questions_score", headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Only admins can reset team data.", "data": None}
+
 def test_list_json_files_success():
     response = client.get("/json-files", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
@@ -86,6 +111,11 @@ def test_list_json_files_success():
 def test_list_json_files_wrong_password():
     response = client.get("/json-files", headers={"Authorization": "Bearer WRONG_TOKEN"})
     assert response.status_code == 401
+
+def test_list_json_files_invalid_token():
+    response = client.get("/json-files", headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message":"Only admins can reset team data.", "data": None}
 
 def test_set_json_success():
     response = client.post("/set_json/?filename=initial.json", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
@@ -100,6 +130,11 @@ def test_set_json_no_filename():
     response = client.post("/set_json/?filename=", headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "No filename provided", "data": None}
+
+def test_set_json_invalid_token():
+    response = client.post("/set_json/?filename=initial.json", headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message":"Only admins can reset team data.", "data": None}
 
 def test_manual_questions_success():
     
@@ -116,6 +151,11 @@ def test_manual_questions_no_password():
     response = client.get("/manual_questions")
     assert response.status_code == 401
     
+def test_manual_questions_invalid_token():
+    
+    response = client.get("/manual_questions", headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message":"Only admins can see this data.", "data": None}
 
 def test_update_manual_score_success():
         response = client.post("/update_manual_score", json={"teams": [
@@ -136,6 +176,13 @@ def test_update_manual_score_score_out_of_range():
         ]}, headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert "out of range" in response.json()["message"]
+
+def test_update_manual_score_invalid_token():
+        response = client.post("/update_manual_score", json={"teams": [
+            {"team_name": "SanjinX", "scores": {"q1_score": 100, "q2_score": 200, "q3_score": 300, "q4_score": 400}}
+        ]}, headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+        assert response.status_code == 200
+        assert response.json() == {"status": "failed", "message":"Only admins can reset team data.", "data": None}
 
 def test_upload_database_success():
     file_path = os.path.join(os.path.dirname(__file__), 'initial_test.json')
@@ -177,3 +224,46 @@ def test_upload_database_no_file():
     response = client.post("/upload",headers={"Authorization": f"Bearer {VALID_TOKEN}"})
     assert response.status_code == 200
     assert response.json() == {"status": "failed", "message": "No file provided", "data": None}
+
+def test_upload_database_invalid_token():
+    response = client.post("/upload",headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Only admins can reset team data.", "data": None}
+
+def test_current_json_success():
+    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
+            initial_data = json.load(f)
+    response = client.get("/current_json",headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "success", "message": "Current JSON data retrieved.", "data": initial_data}
+
+def test_current_json_failed():
+    if os.path.exists(os.path.join(CURRENT_DIR, "initial.json")):
+            os.rename("initial.json", "initial_changed.json")
+    response = client.get("/current_json",headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Current JSON file not found.", "data": None}
+    if os.path.exists(os.path.join(CURRENT_DIR, "initial_changed.json")):
+            os.rename("initial_changed.json", "initial.json")
+
+def test_current_json_invalid_token():
+    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
+            initial_data = json.load(f)
+    response = client.get("/current_json",headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Only admins can access this endpoint.", "data": None}
+
+def test_update_json_success():
+    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
+            initial_data = json.load(f)
+    response = client.post("/update_json", json = initial_data ,headers={"Authorization": f"Bearer {VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "success", "message": "JSON data updated successfully.", "data": None}
+
+def test_update_json_invalid_token():
+    with open(os.path.join(CURRENT_DIR, "initial.json"), 'r') as f:
+            initial_data = json.load(f)
+    response = client.post("/update_json", json = initial_data ,headers={"Authorization": f"Bearer {NOT_VALID_TOKEN}"})
+    assert response.status_code == 200
+    assert response.json() == {"status": "failed", "message": "Only admins can access this endpoint.", "data": None}
+
